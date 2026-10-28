@@ -4,9 +4,11 @@ import {
   Button,
   Empty,
   IconFolder,
+  IconRefresh,
   IconSearch,
   IconUser,
   Progress,
+  ProgressRing,
   Skeleton,
   Spinner,
   toast,
@@ -15,7 +17,7 @@ import { ShowcaseBlock } from '../components/ShowcaseBlock'
 import type { SectionProps } from './types'
 
 /**
- * 反馈类组件演示：Alert / Toast / Spinner / Progress / Skeleton / Empty
+ * 反馈类组件演示：Alert / Toast / Spinner / Progress / ProgressRing / Skeleton / Empty
  */
 export function FeedbackSection(_props: SectionProps) {
   const [alertClosed, setAlertClosed] = useState(false)
@@ -36,7 +38,7 @@ export function FeedbackSection(_props: SectionProps) {
     if (loadingToastTimer.current !== null) {
       window.clearTimeout(loadingToastTimer.current)
     }
-    const id = toast.loading('正在同步数据…', {
+    const id = toast.loading('正在同步组件目录…', {
       description: 'loading 类型不会自动消失，3 秒后这里手动关闭它',
       position: 'bottom-right',
       closable: true,
@@ -51,6 +53,7 @@ export function FeedbackSection(_props: SectionProps) {
     <>
       <ShowcaseBlock
         title="Alert 提示"
+        anchor="Alert"
         description="4 种语义类型，软色调背景 + 左侧图标，支持关闭按钮与自定义内容。"
         code={`<Alert type="success" title="保存成功" description="配置已同步到本地。" />`}
         column
@@ -87,7 +90,8 @@ export function FeedbackSection(_props: SectionProps) {
 
       <ShowcaseBlock
         title="Toast 轻提示"
-        description="命令式调用，单例容器惰性挂载到 body；支持描述、位置与手动关闭。"
+        anchor="Toast"
+        description="命令式调用，单例容器惰性挂载到 body；支持描述、位置、手动关闭与 loading 常驻。"
         code={`toast.success('保存成功', { description: '配置已同步到本地', duration: 3200 })`}
         column
       >
@@ -113,11 +117,7 @@ export function FeedbackSection(_props: SectionProps) {
           >
             警告
           </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => toast.info('已复制到剪贴板')}
-          >
+          <Button variant="secondary" size="sm" onClick={() => toast.info('已复制到剪贴板')}>
             信息
           </Button>
           <Button variant="ghost" size="sm" onClick={() => toast.loading('正在加载组件…')}>
@@ -150,6 +150,7 @@ export function FeedbackSection(_props: SectionProps) {
 
       <ShowcaseBlock
         title="Spinner 加载指示器"
+        anchor="Spinner"
         description="纯 CSS 转圈动画，3 种尺寸；label 提供屏幕阅读器文案。"
         code={`<Spinner size="md" label="加载中" />`}
         column
@@ -178,6 +179,7 @@ export function FeedbackSection(_props: SectionProps) {
 
       <ShowcaseBlock
         title="Progress 进度条"
+        anchor="Progress"
         description="确定 / 不确定进度，平滑宽度过渡，支持语义颜色与百分比文案。"
         code={`<Progress value={42} showLabel />`}
         column
@@ -211,7 +213,61 @@ export function FeedbackSection(_props: SectionProps) {
       </ShowcaseBlock>
 
       <ShowcaseBlock
+        title="ProgressRing 圆环进度"
+        anchor="ProgressRing"
+        description="纯 SVG stroke-dasharray 实现，确定 / 不确定两种状态，支持尺寸、线宽与语义色调。"
+        code={`<ProgressRing value={42} showValue label="同步进度" />`}
+        column
+      >
+        <div className="demo-grid">
+          <div className="demo-surface demo-stack">
+            <div className="demo-label">确定进度 + 百分比</div>
+            <ProgressRing value={progress} showValue label="组件同步进度" />
+          </div>
+          <div className="demo-surface demo-stack">
+            <div className="demo-label">不确定进度</div>
+            <ProgressRing indeterminate label="正在校验组件" />
+          </div>
+          <div className="demo-surface demo-stack">
+            <div className="demo-label">自定义线宽 10 / 尺寸 96</div>
+            <ProgressRing value={68} size={96} thickness={10} showValue />
+          </div>
+        </div>
+
+        <div className="demo-label">尺寸对比（48 / 64 / 96）</div>
+        <div className="demo-row">
+          <ProgressRing value={progress} size={48} thickness={4} showValue />
+          <ProgressRing value={progress} size={64} showValue />
+          <ProgressRing value={progress} size={96} thickness={8} showValue />
+        </div>
+
+        <div className="demo-label">语义色调：primary / success / warning / danger</div>
+        <div className="demo-row">
+          <ProgressRing value={100} tone="success" showValue label="完成" />
+          <ProgressRing value={72} tone="warning" showValue label="待确认" />
+          <ProgressRing value={45} tone="danger" showValue label="失败" />
+        </div>
+
+        <div className="demo-label">与上方 Progress 共用进度值，点击切换会同步更新</div>
+        <div className="demo-row">
+          <Button variant="secondary" size="sm" onClick={() => setProgress(0)}>
+            0%
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => setProgress(28)}>
+            28%
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => setProgress(64)}>
+            64%
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => setProgress(100)}>
+            100%
+          </Button>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
         title="Skeleton 骨架屏"
+        anchor="Skeleton"
         description="文本、头像与卡片占位；loading 结束后平滑渲染真实内容。"
         code={`<Skeleton loading={loading} lines={3} height={14}>{content}</Skeleton>`}
         column
@@ -220,6 +276,7 @@ export function FeedbackSection(_props: SectionProps) {
           <Button
             variant={skeletonLoading ? 'primary' : 'secondary'}
             size="sm"
+            leftIcon={<IconRefresh size={14} />}
             onClick={() => setSkeletonLoading((value) => !value)}
           >
             {skeletonLoading ? '完成加载' : '重新加载'}
@@ -264,6 +321,7 @@ export function FeedbackSection(_props: SectionProps) {
 
       <ShowcaseBlock
         title="Empty 空状态"
+        anchor="Empty"
         description="内置轻量内联 SVG 插画，支持自定义图标、描述与操作区。"
         code={`<Empty title="暂无数据" description="创建第一条记录开始。" action={<Button>新建</Button>} />`}
         column
@@ -286,11 +344,7 @@ export function FeedbackSection(_props: SectionProps) {
               title="没有搜索结果"
               description="试试更换关键词，或重置筛选条件。"
               action={
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => toast.info('已重置筛选条件')}
-                >
+                <Button variant="secondary" size="sm" onClick={() => toast.info('已重置筛选条件')}>
                   重置筛选
                 </Button>
               }

@@ -1,0 +1,57 @@
+/* ===== Toolbar ===== */
+.aelux-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  min-width: 0;
+  font-family: var(--aelux-font-sans);
+  color: var(--aelux-text);
+}
+
+.aelux-toolbar--sm {
+  min-height: 32px;
+  padding: var(--aelux-space-1) var(--aelux-space-2);
+}
+
+.aelux-toolbar--md {
+  min-height: 40px;
+  padding: var(--aelux-space-1-5) var(--aelux-space-3);
+}
+
+.aelux-toolbar--bordered {
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+}
+
+.aelux-toolbar--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid var(--aelux-border);
+  background: var(--aelux-surface);
+}
+
+.aelux-toolbar__slot {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  min-width: 0;
+}
+
+.aelux-toolbar__slot--end {
+  margin-left: auto;
+}
+
+.aelux-toolbar__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+}

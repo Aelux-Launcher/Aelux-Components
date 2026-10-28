@@ -29,7 +29,7 @@ export function Demo() {
 }`
 
 const STATS = [
-  { value: '25', label: '开箱即用组件' },
+  { value: '48', label: '开箱即用组件' },
   { value: 'ESM', label: '仅现代模块产物' },
   { value: '0', label: '运行时依赖' },
   { value: 'd.ts', label: '完整类型声明' },
@@ -59,13 +59,26 @@ const FEATURES = [
 ]
 
 const COMPONENT_INDEX = [
-  { section: 'basic', label: '基础组件', comps: ['Button', 'IconButton'] },
-  { section: 'form', label: '表单组件', comps: ['Input', 'Textarea', 'Select', 'Checkbox', 'Radio', 'Switch', 'Slider', 'FormItem'] },
-  { section: 'feedback', label: '反馈组件', comps: ['Alert', 'Toast', 'Spinner', 'Progress', 'Empty'] },
-  { section: 'overlay', label: '浮层组件', comps: ['Modal', 'Tooltip'] },
-  { section: 'data-display', label: '数据展示', comps: ['Card', 'Tag', 'Badge', 'Avatar'] },
-  { section: 'layout', label: '导航与布局', comps: ['Tabs', 'Divider', 'Space'] },
-  { section: 'theme', label: '设计变量', comps: ['Tokens', 'Dark Mode'] },
+  { section: 'basic', label: '基础', comps: ['Button', 'IconButton', 'Kbd'] },
+  {
+    section: 'form',
+    label: '输入与选择',
+    comps: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'DropZone', 'FormItem'],
+  },
+  { section: 'choice', label: '开关与滑块', comps: ['Checkbox', 'Radio', 'Switch', 'Slider', 'SegmentedControl', 'Stepper'] },
+  {
+    section: 'feedback',
+    label: '反馈',
+    comps: ['Alert', 'Toast', 'Spinner', 'Progress', 'ProgressRing', 'Skeleton', 'Empty'],
+  },
+  { section: 'overlay', label: '浮层', comps: ['Modal', 'Dialog', 'Drawer', 'Popover', 'Tooltip', 'DropdownMenu'] },
+  {
+    section: 'data-display',
+    label: '数据展示',
+    comps: ['Card', 'Tag', 'Badge', 'Avatar', 'ListBox', 'Table', 'DescriptionList', 'Statistic', 'SettingSection'],
+  },
+  { section: 'layout', label: '导航与布局', comps: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'Accordion', 'Pagination', 'Divider', 'Space'] },
+  { section: 'theme', label: '设计', comps: ['Design Tokens', 'Dark Mode'] },
 ]
 
 export function OverviewSection({ onNavigate }: SectionProps) {
@@ -95,7 +108,7 @@ export function OverviewSection({ onNavigate }: SectionProps) {
         </h1>
         <p className="demo-hero__desc">
           一套与 Aelux Launcher 启动器同源的设计系统：React 19 + TypeScript，ESM + d.ts 双产物，
-          零运行时依赖，25 个组件覆盖表单、反馈、展示与布局。
+          零运行时依赖，48 个组件覆盖基础、表单、反馈、浮层、数据展示与窗口布局。
         </p>
 
         <div className="demo-hero__actions">
@@ -182,7 +195,7 @@ export function OverviewSection({ onNavigate }: SectionProps) {
                     type="button"
                     className="demo-index__item"
                     key={comp}
-                    onClick={() => onNavigate?.(group.section)}
+                    onClick={() => onNavigate?.(group.section, comp)}
                   >
                     <span className="demo-index__dot" />
                     <span>{comp}</span>

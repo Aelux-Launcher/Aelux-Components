@@ -1,0 +1,142 @@
+/* ===== Stepper ===== */
+.aelux-stepper {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+}
+
+.aelux-stepper__item {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.aelux-stepper__item:last-child {
+  flex: 0 0 auto;
+  padding-right: 0;
+}
+
+.aelux-stepper__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--aelux-space-1-5);
+  width: 100%;
+  min-width: 0;
+  padding: var(--aelux-space-1-5) var(--aelux-space-3) var(--aelux-space-2) var(--aelux-space-1);
+  border: 0;
+  border-radius: var(--aelux-radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.aelux-stepper__inner--interactive {
+  cursor: pointer;
+  transition: background-color var(--aelux-transition-fast);
+}
+
+.aelux-stepper__inner--interactive:hover {
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-stepper__inner--interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-stepper__head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.aelux-stepper__indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-semibold);
+  line-height: 1;
+}
+
+.aelux-stepper__number {
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-stepper__line {
+  flex: 1 1 auto;
+  height: 1px;
+  margin: 0 var(--aelux-space-2);
+  background: var(--aelux-border);
+}
+
+.aelux-stepper__line--done {
+  background: var(--aelux-primary);
+}
+
+.aelux-stepper__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-left: var(--aelux-space-1);
+}
+
+.aelux-stepper__title {
+  color: var(--aelux-text-secondary);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-stepper__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 状态 */
+.aelux-stepper__item--done .aelux-stepper__indicator {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+  color: var(--aelux-primary-contrast);
+}
+
+.aelux-stepper__item--done .aelux-stepper__title {
+  color: var(--aelux-text);
+}
+
+.aelux-stepper__item--current .aelux-stepper__indicator {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+  box-shadow: 0 0 0 3px var(--aelux-primary-soft);
+}
+
+.aelux-stepper__item--current .aelux-stepper__title {
+  color: var(--aelux-text);
+  font-weight: var(--aelux-font-weight-semibold);
+}
+
+.aelux-stepper__item--disabled {
+  opacity: 0.6;
+}

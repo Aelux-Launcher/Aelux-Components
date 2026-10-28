@@ -1,0 +1,27 @@
+/* Kbd —— 实体键帽 */
+.aelux-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--aelux-space-1-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-xs);
+  background: var(--aelux-surface-subtle);
+  box-shadow: 0 1px 0 var(--aelux-border-strong);
+  color: var(--aelux-text-secondary);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.aelux-kbd--md {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 var(--aelux-space-2);
+  font-size: var(--aelux-font-size-sm);
+}

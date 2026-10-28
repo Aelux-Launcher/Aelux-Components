@@ -1,0 +1,213 @@
+/* ===== SidebarNav ===== */
+.aelux-sidebar {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 240px;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+  transition: width var(--aelux-transition);
+}
+
+.aelux-sidebar__header,
+.aelux-sidebar__footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  padding: var(--aelux-space-2);
+}
+
+.aelux-sidebar__header {
+  border-bottom: 1px solid var(--aelux-border);
+}
+
+.aelux-sidebar__footer {
+  border-top: 1px solid var(--aelux-border);
+}
+
+.aelux-sidebar__nav {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--aelux-space-3);
+  min-height: 0;
+  padding: var(--aelux-space-2);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.aelux-sidebar__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+}
+
+.aelux-sidebar__group-label {
+  padding: var(--aelux-space-1) var(--aelux-space-2);
+  overflow: hidden;
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+  font-weight: var(--aelux-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.aelux-sidebar__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+}
+
+.aelux-sidebar__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  height: 30px;
+  margin: 0;
+  padding: 0 var(--aelux-space-2);
+  border: 0;
+  border-radius: var(--aelux-radius-sm);
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  font-family: inherit;
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color var(--aelux-transition-fast),
+    background-color var(--aelux-transition-fast),
+    box-shadow var(--aelux-transition-fast);
+}
+
+.aelux-sidebar__item:hover:not(:disabled) {
+  background: var(--aelux-surface-hover);
+  color: var(--aelux-text);
+}
+
+.aelux-sidebar__item:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-sidebar__item--active {
+  background: var(--aelux-surface-active);
+  box-shadow: inset 2px 0 0 var(--aelux-primary);
+  color: var(--aelux-text);
+}
+
+.aelux-sidebar__item--active:hover:not(:disabled) {
+  background: var(--aelux-surface-active);
+}
+
+.aelux-sidebar__item:disabled,
+.aelux-sidebar__item--disabled {
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-sidebar__item-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-sidebar__item--active .aelux-sidebar__item-icon {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-sidebar__item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-sidebar__item-badge {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--aelux-space-1);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-sidebar__item--active .aelux-sidebar__item-badge {
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+/* 折叠为仅图标模式 */
+.aelux-sidebar--collapsed {
+  width: 56px;
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__nav {
+  gap: var(--aelux-space-2);
+  padding: var(--aelux-space-2) var(--aelux-space-1-5);
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__group-label {
+  display: none;
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__item {
+  justify-content: center;
+  gap: 0;
+  height: 32px;
+  padding: 0;
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__item-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__item-badge {
+  display: none;
+}
+
+/* 折叠时保留可访问名称，只是视觉上隐藏 */
+.aelux-sidebar--collapsed .aelux-sidebar__item-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.aelux-sidebar--collapsed .aelux-sidebar__header,
+.aelux-sidebar--collapsed .aelux-sidebar__footer {
+  justify-content: center;
+  padding: var(--aelux-space-2) 0;
+  overflow: hidden;
+}

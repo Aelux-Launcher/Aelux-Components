@@ -1,0 +1,149 @@
+/* ===== InputNumber ===== */
+.aelux-input-number {
+  display: inline-flex;
+  align-items: center;
+  width: 140px;
+  height: var(--aelux-control-md);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+  transition:
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-input-number:hover:not(.aelux-input-number--disabled) {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-input-number:focus-within {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-input-number--error {
+  border-color: var(--aelux-danger);
+}
+
+.aelux-input-number--warning {
+  border-color: var(--aelux-warning);
+}
+
+.aelux-input-number--success {
+  border-color: var(--aelux-success);
+}
+
+.aelux-input-number--error:focus-within,
+.aelux-input-number--warning:focus-within,
+.aelux-input-number--success:focus-within {
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-input-number__field {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--aelux-space-1);
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-input-number__field::placeholder {
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-input-number__field:disabled {
+  cursor: not-allowed;
+}
+
+.aelux-input-number__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast),
+    color var(--aelux-transition-fast);
+}
+
+.aelux-input-number__control:hover:not(:disabled) {
+  background: var(--aelux-surface-hover);
+  color: var(--aelux-text);
+}
+
+.aelux-input-number__control:active:not(:disabled) {
+  background: var(--aelux-surface-active);
+}
+
+.aelux-input-number__control:disabled {
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-input-number__control:focus-visible {
+  outline: none;
+  background: var(--aelux-surface-active);
+  box-shadow: inset 0 0 0 2px var(--aelux-border-focus);
+}
+
+.aelux-input-number__affix {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  padding: 0 var(--aelux-space-1);
+}
+
+/* 尺寸 */
+.aelux-input-number--sm {
+  height: var(--aelux-control-sm);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-input-number--sm .aelux-input-number__control {
+  width: 22px;
+}
+
+.aelux-input-number--lg {
+  height: var(--aelux-control-lg);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-input-number--lg .aelux-input-number__control {
+  width: 30px;
+}
+
+.aelux-input-number--block {
+  display: flex;
+  width: 100%;
+}
+
+.aelux-input-number--disabled {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}

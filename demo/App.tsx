@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { IconMoon, IconSearch, IconSun } from 'aelux-components'
+import { IconChevronRight, IconMoon, IconSearch, IconSun } from 'aelux-components'
 import type { DemoTheme } from './sections/types'
 import { navSections } from './sections'
 
@@ -14,9 +14,23 @@ function resolveInitialTheme(): DemoTheme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-function resolveInitialSectionId(): string {
-  const id = window.location.hash.replace(/^#\/?/, '')
-  return navSections.some((section) => section.id === id) ? id : (navSections[0]?.id ?? 'overview')
+interface LocationState {
+  sectionId: string
+  anchor?: string
+}
+
+function parseHash(hash: string): LocationState | null {
+  const raw = hash.replace(/^#\/?/, '')
+  if (!raw) return null
+  const [sectionId, anchor] = raw.split('/')
+  const section = navSections.find((item) => item.id === sectionId)
+  if (!section) return null
+  const validAnchor = anchor && section.components?.includes(anchor) ? anchor : undefined
+  return { sectionId: section.id, anchor: validAnchor }
+}
+
+function resolveInitialLocation(): LocationState {
+  return parseHash(window.location.hash) ?? { sectionId: navSections[0]?.id ?? 'overview' }
 }
 
 function Logo() {
@@ -25,8 +39,15 @@ function Logo() {
 
 export default function App() {
   const [theme, setTheme] = useState<DemoTheme>(resolveInitialTheme)
-  const [activeId, setActiveId] = useState(resolveInitialSectionId)
+  const [location, setLocation] = useState<LocationState>(resolveInitialLocation)
   const [query, setQuery] = useState('')
+  const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
+    const initial = resolveInitialLocation()
+    return initial.sectionId ? { [initial.sectionId]: true } : {}
+  })
+
+  const activeId = location.sectionId
+  const activeAnchor = location.anchor
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -38,25 +59,42 @@ export default function App() {
     [activeId],
   )
 
-  const navigate = useCallback((sectionId: string) => {
-    setActiveId(sectionId)
-    document.querySelector('.demo-content')?.scrollTo({ top: 0, behavior: 'smooth' })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+  const navigate = useCallback((sectionId: string, anchor?: string) => {
+    const section = navSections.find((item) => item.id === sectionId)
+    const nextAnchor = anchor && section?.components?.includes(anchor) ? anchor : undefined
+    setLocation({ sectionId, anchor: nextAnchor })
+    setExpanded((current) => ({ ...current, [sectionId]: true }))
   }, [])
+
+  // 点击二级导航后滚动到对应示例块；普通切页回到顶部
+  useEffect(() => {
+    if (activeAnchor) {
+      const target = document.getElementById(`component-${activeAnchor}`)
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
+    document.querySelector('.demo-content')?.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [activeId, activeAnchor])
+
+  useEffect(() => {
+    window.history.replaceState(null, '', `#${activeId}${activeAnchor ? `/${activeAnchor}` : ''}`)
+  }, [activeId, activeAnchor])
 
   useEffect(() => {
     const handleHash = () => {
-      const id = window.location.hash.replace(/^#\/?/, '')
-      if (id && navSections.some((section) => section.id === id)) setActiveId(id)
+      const next = parseHash(window.location.hash)
+      if (next) {
+        setLocation(next)
+        setExpanded((current) => ({ ...current, [next.sectionId]: true }))
+      }
     }
     handleHash()
     window.addEventListener('hashchange', handleHash)
     return () => window.removeEventListener('hashchange', handleHash)
   }, [])
-
-  useEffect(() => {
-    window.history.replaceState(null, '', `#${activeId}`)
-  }, [activeId])
 
   // Ctrl/Cmd + K 聚焦搜索
   useEffect(() => {
@@ -89,6 +127,10 @@ export default function App() {
     }
     return [...map.entries()]
   }, [filteredSections])
+
+  const toggleExpanded = (sectionId: string) => {
+    setExpanded((current) => ({ ...current, [sectionId]: !current[sectionId] }))
+  }
 
   const activeIndex = navSections.findIndex((section) => section.id === activeId)
   const prev = activeIndex > 0 ? navSections[activeIndex - 1] : undefined
@@ -127,21 +169,55 @@ export default function App() {
             <div className="demo-nav__group" key={group}>
               <p className="demo-nav__label">{group}</p>
               <div className="demo-nav__items">
-                {sections.map((section) => (
-                  <button
-                    key={section.id}
-                    type="button"
-                    className={`demo-nav__item${section.id === activeId ? ' is-active' : ''}`}
-                    aria-current={section.id === activeId ? 'page' : undefined}
-                    onClick={() => navigate(section.id)}
-                  >
-                    {section.icon}
-                    <span>{section.title}</span>
-                    {section.components?.length ? (
-                      <span className="demo-nav__count">{section.components.length}</span>
-                    ) : null}
-                  </button>
-                ))}
+                {sections.map((section) => {
+                  const children = keyword
+                    ? (section.components ?? []).filter((name) => name.toLowerCase().includes(keyword))
+                    : (section.components ?? [])
+                  const expandable = children.length > 1
+                  const open = Boolean(expanded[section.id]) || Boolean(keyword)
+                  return (
+                    <div className="demo-nav__entry" key={section.id}>
+                      <div className="demo-nav__row">
+                        <button
+                          type="button"
+                          className={`demo-nav__item${section.id === activeId ? ' is-active' : ''}`}
+                          aria-current={section.id === activeId && !activeAnchor ? 'page' : undefined}
+                          onClick={() => navigate(section.id)}
+                        >
+                          {section.icon}
+                          <span>{section.title}</span>
+                          {children.length ? <span className="demo-nav__count">{children.length}</span> : null}
+                        </button>
+                        {expandable ? (
+                          <button
+                            type="button"
+                            className={`demo-nav__caret${open ? ' is-open' : ''}`}
+                            aria-label={`${open ? '收起' : '展开'}${section.title}`}
+                            aria-expanded={open}
+                            onClick={() => toggleExpanded(section.id)}
+                          >
+                            <IconChevronRight size={13} />
+                          </button>
+                        ) : null}
+                      </div>
+                      {expandable && open ? (
+                        <div className="demo-nav__children">
+                          {children.map((name) => (
+                            <button
+                              type="button"
+                              key={name}
+                              className={`demo-nav__child${section.id === activeId && activeAnchor === name ? ' is-current' : ''}`}
+                              onClick={() => navigate(section.id, name)}
+                            >
+                              <span className="demo-nav__child-dot" aria-hidden="true" />
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  )
+                })}
               </div>
             </div>
           ))}
@@ -163,6 +239,12 @@ export default function App() {
             <span>{active.group}</span>
             <span className="demo-crumb__sep">/</span>
             <strong>{active.title}</strong>
+            {activeAnchor ? (
+              <>
+                <span className="demo-crumb__sep">/</span>
+                <strong>{activeAnchor}</strong>
+              </>
+            ) : null}
           </div>
           <div className="demo-topbar__actions">
             <span className="demo-chip demo-chip--accent">零运行时依赖</span>
@@ -189,9 +271,14 @@ export default function App() {
                 {active.components?.length ? (
                   <div className="demo-page-head__tags">
                     {active.components.map((name) => (
-                      <span className="demo-chip" key={name}>
+                      <button
+                        type="button"
+                        className="demo-chip demo-chip--link"
+                        key={name}
+                        onClick={() => navigate(active.id, name)}
+                      >
                         {name}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 ) : null}

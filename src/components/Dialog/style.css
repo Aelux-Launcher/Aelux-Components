@@ -1,0 +1,50 @@
+/* ===== Dialog ===== */
+.aelux-dialog .aelux-modal__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.aelux-dialog__heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-3);
+  max-width: 100%;
+}
+
+.aelux-dialog__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-dialog--danger .aelux-dialog__icon {
+  background: var(--aelux-danger-soft);
+  color: var(--aelux-danger-text);
+}
+
+.aelux-dialog__title {
+  min-width: 0;
+  font-size: var(--aelux-font-size-lg);
+  font-weight: var(--aelux-font-weight-semibold);
+  line-height: 1.4;
+  color: var(--aelux-text);
+}
+
+.aelux-dialog__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-3);
+}
+
+.aelux-dialog__description {
+  margin: 0;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+}

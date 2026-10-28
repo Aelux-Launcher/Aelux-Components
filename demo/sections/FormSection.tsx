@@ -1,96 +1,155 @@
 import { useId, useState } from 'react'
 import {
-  Checkbox,
+  Combobox,
+  DropZone,
   FormItem,
+  IconPackage,
   IconSearch,
   IconUser,
   Input,
-  RadioGroup,
+  InputNumber,
+  SearchInput,
   Select,
-  Slider,
-  Switch,
   Textarea,
 } from 'aelux-components'
-import type { SelectOption } from 'aelux-components'
+import type { ComboboxOption, SelectOption } from 'aelux-components'
 import type { SectionProps } from './types'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 
-const APP_OPTIONS: SelectOption[] = [
-  { value: 'launcher', label: 'Aelux Launcher' },
-  { value: 'settings', label: '系统设置' },
-  { value: 'files', label: '文件管理器' },
-  { value: 'store', label: '应用商店（即将上线）', disabled: true },
+const JAVA_OPTIONS: SelectOption[] = [
+  { value: '8', label: 'Java 8（LTS）' },
+  { value: '17', label: 'Java 17（LTS）' },
+  { value: '21', label: 'Java 21（LTS）' },
+  { value: '22', label: 'Java 22' },
+  { value: '7', label: 'Java 7（不再支持）', disabled: true },
 ]
 
-const CHANNEL_OPTIONS: SelectOption[] = [
-  { value: 'stable', label: '稳定版' },
-  { value: 'beta', label: '公测版' },
-  { value: 'nightly', label: '每日构建' },
+const PACK_OPTIONS: ComboboxOption[] = [
+  {
+    value: 'fabric-1.21',
+    label: 'Fabric 1.21',
+    description: '轻量模组加载器 · 推荐',
+    icon: <IconPackage size={14} />,
+  },
+  {
+    value: 'forge-1.20.1',
+    label: 'Forge 1.20.1',
+    description: '经典模组生态 · 47.2.0',
+    icon: <IconPackage size={14} />,
+  },
+  {
+    value: 'neoforge-1.21',
+    label: 'NeoForge 1.21',
+    description: 'Forge 社区分支 · 21.0.167',
+    icon: <IconPackage size={14} />,
+  },
+  {
+    value: 'quilt-1.20.6',
+    label: 'Quilt 1.20.6',
+    description: '上游实验性分支',
+    icon: <IconPackage size={14} />,
+  },
 ]
 
-const RADIO_OPTIONS = [
-  { value: 'balanced', label: '均衡模式', description: '性能与功耗的折中方案' },
-  { value: 'performance', label: '性能优先', description: '优先保证动画与响应速度' },
-  { value: 'saver', label: '省电优先', description: '降低动效与后台刷新频率' },
-]
+const MAX_PACK_SIZE = 200 * 1024 * 1024
 
-const CHECK_OPTIONS = [
-  { value: 'analytics', label: '使用统计', description: '匿名上报功能使用频次' },
-  { value: 'crash', label: '崩溃报告', description: '出问题时上传诊断日志' },
-  { value: 'beta', label: '体验计划', description: '接收预览版本更新' },
-]
+const INPUT_CODE = `<Input placeholder="实例名称" value={name} onChange={(e) => setName(e.target.value)} allowClear />
+<Input status="error" placeholder="错误状态" prefix={<IconSearch size={14} />} />`
 
-const INPUT_CODE = `<Input placeholder="请输入名称" value={name} onChange={(e) => setName(e.target.value)} allowClear />
-<Input status="error" placeholder="错误状态" />
-<Input prefix={<IconSearch size={14} />} suffix="@aelux.dev" />`
+const SEARCH_CODE = `<SearchInput
+  value={keyword}
+  onValueChange={setKeyword}
+  onSearch={setSearched}
+  allowClear
+  shortcut="Ctrl K"
+  placeholder="搜索版本、整合包或组件"
+/>`
 
-const FORM_CODE = `<FormItem label="应用名称" htmlFor="app-name" required error={nameError}>
-  <Input id="app-name" value={name} onChange={...} status={nameError ? 'error' : 'default'} />
+const NUMBER_CODE = `<InputNumber
+  value={memory}
+  onValueChange={setMemory}
+  min={512}
+  max={32768}
+  step={512}
+  precision={0}
+  prefix={<IconPackage size={14} />}
+  suffix="MB"
+/>`
+
+const COMBOBOX_CODE = `<Combobox
+  options={packs}
+  value={pack}
+  onValueChange={setPack}
+  allowClear
+  placeholder="选择整合包版本"
+/>`
+
+const DROPZONE_CODE = `<DropZone
+  accept=".zip,.mrpack"
+  multiple
+  maxSize={200 * 1024 * 1024}
+  title="拖入整合包或资源包"
+  onFiles={handleFiles}
+  onReject={handleReject}
+/>`
+
+const FORM_CODE = `<FormItem label="实例名称" htmlFor={formId} required error={nameError}>
+  <Input id={formId} block status={nameError ? 'error' : 'default'} value={name} onChange={...} />
 </FormItem>`
 
-/** 表单组件示例页：Input / Textarea / Select / Checkbox / RadioGroup / Switch / Slider / FormItem。 */
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+/** 表单组件示例页：Input / Textarea / SearchInput / InputNumber / Select / Combobox / DropZone / FormItem。 */
 export function FormSection(_props: SectionProps) {
   const formId = useId()
   const [name, setName] = useState('Aelux Launcher')
   const [note, setNote] = useState('')
-  const [app, setApp] = useState('launcher')
-  const [channel, setChannel] = useState('stable')
-  const [mode, setMode] = useState('balanced')
-  const [receiving, setReceiving] = useState(true)
-  const [volume, setVolume] = useState(40)
-  const [agreed, setAgreed] = useState(false)
-  const [checked, setChecked] = useState<string[]>(['analytics'])
+  const [keyword, setKeyword] = useState('')
+  const [searched, setSearched] = useState('')
+  const [memory, setMemory] = useState<number | null>(4096)
+  const [port, setPort] = useState<number | null>(25565)
+  const [zoom, setZoom] = useState<number | null>(1)
+  const [java, setJava] = useState('17')
+  const [pack, setPack] = useState('fabric-1.21')
+  const [droppedFiles, setDroppedFiles] = useState<File[]>([])
+  const [rejectMessage, setRejectMessage] = useState('')
 
   const trimmedName = name.trim()
   const nameError =
     trimmedName.length === 0
-      ? '应用名称不能为空'
+      ? '实例名称不能为空'
       : trimmedName.length < 2
-        ? '应用名称至少需要 2 个字符'
+        ? '实例名称至少需要 2 个字符'
         : undefined
 
-  const allChecked = checked.length === CHECK_OPTIONS.length
-
-  const toggleOption = (value: string) => {
-    setChecked((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
+  const handleReject = (files: File[], reason: 'size' | 'type') => {
+    const names = files.map((file) => file.name).join('、')
+    setRejectMessage(
+      reason === 'size' ? `文件超过 200 MB 上限：${names}` : `文件类型不在接受范围内：${names}`,
     )
   }
 
-  const currentApp = APP_OPTIONS.find((option) => option.value === app)?.label ?? '（未选择）'
-  const currentMode = RADIO_OPTIONS.find((option) => option.value === mode)?.label ?? '（未选择）'
+  const handleFiles = (files: File[]) => {
+    setDroppedFiles(files)
+    setRejectMessage('')
+  }
 
   return (
     <>
       <ShowcaseBlock
         title="Input 输入框"
-        description="三种尺寸、四种校验状态、前后缀与清除按钮；焦点环与状态色统一由 --aelux-* token 驱动。"
+        description="三种尺寸、四种校验状态、前后缀与清除按钮；实例名称、版本标签等启动器字段的通用输入控件。"
         code={INPUT_CODE}
+        anchor="Input"
         column
       >
         <div className="demo-row">
           <Input
-            placeholder="受控输入 + 清除"
+            placeholder="实例名称"
             value={name}
             onChange={(event) => setName(event.currentTarget.value)}
             allowClear
@@ -101,28 +160,29 @@ export function FormSection(_props: SectionProps) {
           <Input size="lg" placeholder="lg · 40px" />
         </div>
         <div className="demo-row">
-          <Input status="error" placeholder="错误状态" />
-          <Input status="warning" placeholder="警告状态" />
-          <Input status="success" placeholder="成功状态" />
-          <Input prefix={<IconSearch size={14} />} placeholder="带前缀图标" />
-          <Input suffix="@aelux.dev" placeholder="带后缀" />
+          <Input status="error" placeholder="版本号格式错误" />
+          <Input status="warning" placeholder="该版本已停止维护" />
+          <Input status="success" placeholder="路径校验通过" />
+          <Input prefix={<IconSearch size={14} />} placeholder="搜索本地实例" />
+          <Input suffix=".minecraft" placeholder="游戏目录" />
           <Input disabled placeholder="禁用状态" />
         </div>
-        <Input block prefix={<IconUser size={14} />} placeholder="block 输入框铺满整行" />
+        <Input block prefix={<IconUser size={14} />} placeholder="block：玩家名称，铺满整行" />
         <p className="demo-label">受控值：{name || '（空）'}</p>
       </ShowcaseBlock>
 
       <ShowcaseBlock
         title="Textarea 多行输入"
-        description="与 Input 共用状态体系；showCount 配合 maxLength、autoSize 随内容撑高，均为可选增强。"
+        description="与 Input 共用状态体系；showCount 配合 maxLength、autoSize 随内容撑高，适合安装备注与批量配置。"
+        anchor="Textarea"
         column
       >
         <div className="demo-row">
-          <Textarea placeholder="默认多行输入" />
+          <Textarea placeholder="安装备注（例如：保留旧存档）" />
           <Textarea size="sm" placeholder="sm 尺寸" />
-          <Textarea status="error" defaultValue="这个字段不能为空" />
-          <Textarea status="warning" defaultValue="长度接近上限" />
-          <Textarea disabled defaultValue="禁用状态" />
+          <Textarea status="error" defaultValue="启动参数中包含已废弃的 JVM 选项" />
+          <Textarea status="warning" defaultValue="可用内存接近上限" />
+          <Textarea disabled defaultValue="该实例由服务器托管，备注只读" />
         </div>
         <Textarea
           block
@@ -136,149 +196,181 @@ export function FormSection(_props: SectionProps) {
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="Select 下拉选择"
-        description="基于原生 select，保留键盘与可访问性；自定义 SVG 箭头随尺寸缩放，placeholder 在空值时显示。"
+        title="SearchInput 搜索框"
+        description="左侧搜索图标、右侧快捷键提示与清除按钮；回车触发搜索，loading 时图标转为转圈。"
+        code={SEARCH_CODE}
+        anchor="SearchInput"
         column
       >
         <div className="demo-row">
-          <Select options={APP_OPTIONS} value={app} onValueChange={setApp} placeholder="选择目标应用" />
-          <Select options={APP_OPTIONS} defaultValue="settings" />
-          <Select options={APP_OPTIONS} size="sm" defaultValue="launcher" />
-          <Select options={APP_OPTIONS} size="lg" defaultValue="files" />
-        </div>
-        <div className="demo-row">
-          <Select options={APP_OPTIONS} status="error" placeholder="错误状态" />
-          <Select options={APP_OPTIONS} disabled defaultValue="launcher" />
-          <Select options={APP_OPTIONS} placeholder="block 下拉框铺满整行" block />
-        </div>
-        <p className="demo-label">当前应用：{currentApp}</p>
-      </ShowcaseBlock>
-
-      <ShowcaseBlock
-        title="Checkbox 复选框"
-        description="原生 checkbox + 自定义勾选框，支持 label、description、半选态（indeterminate）与 sm 尺寸。"
-        column
-      >
-        <div className="demo-row">
-          <Checkbox label="自动更新" defaultChecked />
-          <Checkbox label="发送使用统计" description="仅包含匿名数据" />
-          <Checkbox label="小尺寸" size="sm" />
-          <Checkbox label="半选态" indeterminate />
-          <Checkbox label="禁用" disabled defaultChecked />
-        </div>
-        <div className="demo-row">
-          <Checkbox
-            label="全选"
-            checked={allChecked}
-            indeterminate={!allChecked && checked.length > 0}
-            onChange={() => setChecked(allChecked ? [] : CHECK_OPTIONS.map((option) => option.value))}
+          <SearchInput
+            value={keyword}
+            onValueChange={setKeyword}
+            onSearch={(value) => setSearched(value)}
+            allowClear
+            shortcut="Ctrl K"
+            placeholder="搜索版本、整合包或组件"
           />
-          {CHECK_OPTIONS.map((option) => (
-            <Checkbox
-              key={option.value}
-              label={option.label}
-              description={option.description}
-              checked={checked.includes(option.value)}
-              onChange={() => toggleOption(option.value)}
-            />
-          ))}
+          <SearchInput loading shortcut="Ctrl K" placeholder="正在搜索版本…" />
+          <SearchInput size="sm" placeholder="sm · 28px" />
+          <SearchInput size="lg" placeholder="lg · 40px" />
+          <SearchInput disabled placeholder="禁用状态" />
         </div>
+        <SearchInput block allowClear placeholder="block：在版本列表上方搜索（回车触发 onSearch）" />
         <p className="demo-label">
-          已选 {checked.length} / {CHECK_OPTIONS.length} 项（点击“全选”观察半选态）
+          回车搜索：{searched || '（尚未回车）'} · 当前输入：{keyword || '（空）'}
         </p>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="RadioGroup 单选组"
-        description="由 RadioGroup 统一管理 name 与受控值；支持横向 / 纵向排列、自定义 gap 与整组禁用。"
-        column
-      >
-        <RadioGroup
-          options={RADIO_OPTIONS}
-          value={mode}
-          onChange={setMode}
-          name={`${formId}-mode`}
-          ariaLabel="性能模式"
-        />
-        <RadioGroup
-          options={RADIO_OPTIONS}
-          defaultValue="saver"
-          direction="vertical"
-          gap={14}
-          name={`${formId}-mode-2`}
-          ariaLabel="性能模式（纵向）"
-        />
-        <RadioGroup
-          options={[
-            { value: 'auto', label: '自动选择' },
-            { value: 'manual', label: '手动指定（暂无权限）', disabled: true },
-          ]}
-          defaultValue="auto"
-          name={`${formId}-mode-3`}
-          ariaLabel="选项禁用"
-        />
-        <RadioGroup
-          options={RADIO_OPTIONS}
-          defaultValue="balanced"
-          disabled
-          name={`${formId}-mode-4`}
-          ariaLabel="整组禁用"
-        />
-        <p className="demo-label">当前模式：{currentMode}</p>
-      </ShowcaseBlock>
-
-      <ShowcaseBlock
-        title="Switch 开关"
-        description="role=switch 的原生 button，Space / Enter 均可切换；onChange 直接返回布尔值，支持描述文字与禁用态。"
+        title="InputNumber 数字输入"
+        description="min / max / step / precision 自动收敛；- / + 按钮与 ↑↓ 键步进，空值回调 null。"
+        code={NUMBER_CODE}
+        anchor="InputNumber"
         column
       >
         <div className="demo-row">
-          <Switch checked={receiving} onChange={setReceiving} label="后台接收更新" />
-          <Switch
-            defaultChecked
-            label="启动时自动检查"
-            description="每次启动检查一次新版本"
+          <InputNumber
+            value={memory}
+            onValueChange={setMemory}
+            min={512}
+            max={32768}
+            step={512}
+            precision={0}
+            prefix={<IconPackage size={14} />}
+            suffix="MB"
+            ariaLabel="分配内存（MB）"
           />
-          <Switch size="sm" defaultChecked label="小尺寸开关" />
-          <Switch disabled label="禁用（关闭）" />
-          <Switch defaultChecked disabled label="禁用（开启）" />
+          <InputNumber
+            value={port}
+            onValueChange={setPort}
+            min={1}
+            max={65535}
+            step={1}
+            precision={0}
+            placeholder="端口"
+            ariaLabel="服务器端口"
+          />
+          <InputNumber
+            value={zoom}
+            onValueChange={setZoom}
+            min={0.5}
+            max={2}
+            step={0.1}
+            precision={1}
+            suffix="×"
+            ariaLabel="界面缩放比例"
+          />
+          <InputNumber defaultValue={null} min={0} max={10} placeholder="空值 → null" ariaLabel="空值示例" />
+          <InputNumber disabled defaultValue={8} ariaLabel="禁用状态" />
+          <InputNumber size="sm" defaultValue={2} ariaLabel="sm 尺寸" />
+          <InputNumber size="lg" defaultValue={24} ariaLabel="lg 尺寸" />
         </div>
-        <p className="demo-label">后台接收更新：{receiving ? '已开启' : '已关闭'}（可点击或聚焦后按空格）</p>
+        <p className="demo-label">
+          分配内存：{memory == null ? 'null' : `${memory} MB`} · 端口：{port ?? 'null'} · 缩放：
+          {zoom == null ? 'null' : `${zoom}×`}
+        </p>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="Slider 滑动输入"
-        description="原生 range 保留键盘方向键操作，轨道与滑块由 CSS 重绘；showValue 在右侧显示当前值。"
+        title="Select 下拉选择"
+        description="基于原生 select，保留键盘与可访问性；用「选择 Java」演示版本切换与禁用项。"
+        anchor="Select"
         column
       >
         <div className="demo-row">
-          <Slider value={volume} onChange={setVolume} showValue />
-          <Slider defaultValue={30} size="sm" showValue />
-          <Slider min={0} max={10} step={2} defaultValue={4} showValue />
-          <Slider defaultValue={60} disabled showValue />
+          <Select options={JAVA_OPTIONS} value={java} onValueChange={setJava} placeholder="选择 Java 版本" />
+          <Select options={JAVA_OPTIONS} defaultValue="21" />
+          <Select options={JAVA_OPTIONS} size="sm" defaultValue="17" />
+          <Select options={JAVA_OPTIONS} size="lg" defaultValue="22" />
         </div>
-        <Slider
-          value={volume}
-          onChange={setVolume}
-          min={0}
-          max={100}
-          step={5}
-          showValue
-          style={{ width: '100%' }}
+        <div className="demo-row">
+          <Select options={JAVA_OPTIONS} status="error" placeholder="缺少可用 Java" />
+          <Select options={JAVA_OPTIONS} disabled defaultValue="8" />
+          <Select options={JAVA_OPTIONS} placeholder="block：启动器默认 Java" block />
+        </div>
+        <p className="demo-label">
+          当前 Java：{JAVA_OPTIONS.find((option) => option.value === java)?.label ?? '（未选择）'}
+        </p>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="Combobox 可搜索下拉"
+        description="输入即过滤选项，↑↓ / Enter / Escape 全键盘操作，选中打勾；allowClear 一键清空。"
+        code={COMBOBOX_CODE}
+        anchor="Combobox"
+        column
+      >
+        <div className="demo-row">
+          <Combobox
+            options={PACK_OPTIONS}
+            value={pack}
+            onValueChange={setPack}
+            allowClear
+            placeholder="选择整合包版本"
+            ariaLabel="选择整合包版本"
+          />
+          <Combobox options={PACK_OPTIONS} defaultValue="forge-1.20.1" size="sm" ariaLabel="sm 尺寸" />
+          <Combobox options={PACK_OPTIONS} size="lg" placeholder="lg 尺寸" ariaLabel="lg 尺寸" />
+          <Combobox options={PACK_OPTIONS} loading placeholder="正在拉取版本列表" ariaLabel="加载状态" />
+          <Combobox options={PACK_OPTIONS} disabled defaultValue="quilt-1.20.6" ariaLabel="禁用状态" />
+        </div>
+        <Combobox
+          options={PACK_OPTIONS}
+          block
+          allowClear
+          placeholder="block：搜索并选择整合包（如 fabric）"
+          ariaLabel="block 整合包选择"
         />
-        <p className="demo-label">音量：{volume}%</p>
+        <p className="demo-label">
+          当前整合包：
+          {PACK_OPTIONS.find((option) => option.value === pack)?.label ?? '（未选择）'}
+        </p>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="DropZone 拖拽导入"
+        description="点击 / 回车打开文件选择，拖入高亮；按 accept 与 maxSize 过滤，分别以 type / size 回调拒绝原因。"
+        code={DROPZONE_CODE}
+        anchor="DropZone"
+        column
+      >
+        <DropZone
+          accept=".zip,.mrpack"
+          multiple
+          maxSize={MAX_PACK_SIZE}
+          title="拖入整合包或资源包"
+          description="支持 .zip 与 .mrpack，单个文件不超过 200 MB"
+          onFiles={handleFiles}
+          onReject={handleReject}
+        />
+        <DropZone
+          accept=".jar"
+          multiple
+          disabled
+          title="拖入模组文件（已禁用）"
+          description="安装完成后才能继续添加模组"
+        />
+        {droppedFiles.length > 0 ? (
+          <p className="demo-label">
+            已导入 {droppedFiles.length} 个文件：
+            {droppedFiles.map((file) => `${file.name}（${formatBytes(file.size)}）`).join('、')}
+          </p>
+        ) : null}
+        {rejectMessage ? <p className="demo-label">已拒绝：{rejectMessage}</p> : null}
       </ShowcaseBlock>
 
       <ShowcaseBlock
         title="FormItem 表单布局"
-        description="label / required / hint / error 与 htmlFor 关联控件；错误信息以 role=alert 播报，inline 让标签与控件同行。"
+        description="label / required / hint / error 与 htmlFor 关联控件，把搜索、数字、下拉与组合框串成实例配置表单。"
         code={FORM_CODE}
+        anchor="FormItem"
         column
       >
         <div className="demo-surface demo-stack">
           <div className="demo-grid">
             <FormItem
-              label="应用名称"
+              label="实例名称"
               htmlFor={`${formId}-name`}
               required
               hint="显示在启动器标题栏，2–20 个字符"
@@ -289,56 +381,56 @@ export function FormSection(_props: SectionProps) {
                 block
                 value={name}
                 status={nameError ? 'error' : 'default'}
-                placeholder="例如：Aelux Launcher"
+                placeholder="例如：Aelux 1.21 生存"
                 onChange={(event) => setName(event.currentTarget.value)}
               />
             </FormItem>
-            <FormItem label="默认应用" htmlFor={`${formId}-app`} hint="启动后默认打开的应用">
-              <Select
-                id={`${formId}-app`}
+            <FormItem label="分配内存" htmlFor={`${formId}-memory`} hint="建议不超过物理内存的一半">
+              <InputNumber
+                id={`${formId}-memory`}
                 block
-                options={APP_OPTIONS}
-                value={app}
-                onValueChange={setApp}
+                value={memory}
+                onValueChange={setMemory}
+                min={512}
+                max={32768}
+                step={512}
+                precision={0}
+                suffix="MB"
+                ariaLabel="分配内存（MB）"
               />
             </FormItem>
-            <FormItem label="更新通道" htmlFor={`${formId}-channel`} hint="切换后重启生效">
+            <FormItem label="Java 版本" htmlFor={`${formId}-java`} hint="切换后需要重启实例">
               <Select
-                id={`${formId}-channel`}
+                id={`${formId}-java`}
                 block
-                options={CHANNEL_OPTIONS}
-                value={channel}
-                onValueChange={setChannel}
+                options={JAVA_OPTIONS}
+                value={java}
+                onValueChange={setJava}
+              />
+            </FormItem>
+            <FormItem label="整合包" htmlFor={`${formId}-pack`} hint="可直接输入关键字过滤">
+              <Combobox
+                id={`${formId}-pack`}
+                block
+                options={PACK_OPTIONS}
+                value={pack}
+                onValueChange={setPack}
+                allowClear
+                placeholder="搜索整合包"
+                ariaLabel="整合包"
               />
             </FormItem>
           </div>
-          <FormItem label="性能模式" inline>
-            <RadioGroup
-              options={RADIO_OPTIONS}
-              value={mode}
-              onChange={setMode}
-              name={`${formId}-perf`}
-              ariaLabel="性能模式"
+          <FormItem label="附加快捷搜索" inline>
+            <SearchInput
+              allowClear
+              shortcut="Ctrl K"
+              placeholder="搜索已安装的模组"
+              onSearch={(value) => setSearched(value)}
             />
           </FormItem>
-          <FormItem label="开机自启" inline>
-            <Switch
-              checked={receiving}
-              onChange={setReceiving}
-              label="启动系统时在后台接收更新"
-              description="关闭后仅在手动检查时更新"
-            />
-          </FormItem>
-          <FormItem
-            label="用户协议"
-            required
-            error={agreed ? undefined : '请先阅读并同意用户协议'}
-          >
-            <Checkbox
-              label="我已阅读并同意《用户协议》与《隐私政策》"
-              checked={agreed}
-              onChange={(event) => setAgreed(event.currentTarget.checked)}
-            />
+          <FormItem label="安装备注" inline>
+            <Input block placeholder="例如：先备份存档再更新" />
           </FormItem>
         </div>
       </ShowcaseBlock>

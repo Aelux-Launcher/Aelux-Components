@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import {
   Button,
   IconButton,
   IconCheck,
   IconChevronRight,
+  IconClose,
+  IconCopy,
   IconDownload,
+  IconEdit,
   IconMore,
   IconPlay,
   IconPlus,
@@ -13,188 +16,282 @@ import {
   IconSettings,
   IconStar,
   IconTrash,
+  Kbd,
 } from 'aelux-components'
 import type { ButtonSize, ButtonVariant } from 'aelux-components'
-import type { SectionProps } from './types'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
+import type { SectionProps } from './types'
 
-const VARIANTS: ReadonlyArray<{ value: ButtonVariant; label: string }> = [
-  { value: 'primary', label: '主要按钮' },
-  { value: 'secondary', label: '次要按钮' },
-  { value: 'ghost', label: '幽灵按钮' },
-  { value: 'danger', label: '危险操作' },
-  { value: 'success', label: '成功状态' },
-  { value: 'warning', label: '警告状态' },
-]
-
-const SIZES: ReadonlyArray<{ value: ButtonSize; label: string }> = [
-  { value: 'sm', label: 'sm · 28px' },
-  { value: 'md', label: 'md · 34px' },
-  { value: 'lg', label: 'lg · 40px' },
-]
-
-const ICON_VARIANTS: ReadonlyArray<{ value: 'primary' | 'secondary' | 'ghost'; label: string }> = [
+const VARIANTS: { value: ButtonVariant; label: string }[] = [
   { value: 'primary', label: '主要' },
   { value: 'secondary', label: '次要' },
   { value: 'ghost', label: '幽灵' },
+  { value: 'danger', label: '危险' },
+  { value: 'success', label: '成功' },
+  { value: 'warning', label: '警告' },
 ]
 
-const VARIANT_CODE = `<Button variant="primary">主要按钮</Button>
-<Button variant="secondary">次要按钮</Button>
-<Button variant="ghost">幽灵按钮</Button>
-<Button variant="danger">危险操作</Button>`
+const SIZES: ButtonSize[] = ['sm', 'md', 'lg']
 
-const ICON_BUTTON_CODE = `<IconButton label="刷新" icon={<IconRefresh size={16} />} title="刷新" />
-<IconButton label="更多" variant="ghost" icon={<IconMore size={16} />} />`
+interface ShortcutSpec {
+  keys: string[]
+  label: string
+}
 
-/** 基础组件示例页：Button 与 IconButton。 */
+const SHORTCUTS: ShortcutSpec[] = [
+  { keys: ['Ctrl', 'K'], label: '快速搜索' },
+  { keys: ['Ctrl', ','], label: '打开设置' },
+  { keys: ['Ctrl', 'Shift', 'P'], label: '命令面板' },
+  { keys: ['Ctrl', 'N'], label: '新建实例' },
+  { keys: ['Ctrl', 'Shift', 'L'], label: '切换主题' },
+  { keys: ['Ctrl', 'Shift', 'Esc'], label: '强制停止正在运行的实例' },
+]
+
+function Shortcut({ keys, label }: ShortcutSpec) {
+  return (
+    <div className="demo-row" style={{ justifyContent: 'space-between', width: '100%' }}>
+      <span className="demo-label">{label}</span>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        {keys.map((key, index) => (
+          <Fragment key={`${key}-${index}`}>
+            {index > 0 ? (
+              <span className="demo-label" aria-hidden="true">
+                +
+              </span>
+            ) : null}
+            <Kbd>{key}</Kbd>
+          </Fragment>
+        ))}
+      </span>
+    </div>
+  )
+}
+
 export function BasicSection(_props: SectionProps) {
-  const [loading, setLoading] = useState(false)
-  const [lastAction, setLastAction] = useState('（尚未点击）')
+  const [lastAction, setLastAction] = useState('尚未点击按钮')
+  const [saving, setSaving] = useState(false)
 
-  const runLoading = () => {
-    if (loading) return
-    setLoading(true)
-    window.setTimeout(() => setLoading(false), 1800)
+  const handleVariantClick = (variant: string, size: ButtonSize) => {
+    setLastAction(`点击了 ${variant} 变体 · ${size} 尺寸`)
+  }
+
+  const handleSave = () => {
+    setSaving(true)
+    setLastAction('保存中：按钮进入 loading 且不可重复点击')
+    window.setTimeout(() => {
+      setSaving(false)
+      setLastAction('保存完成')
+    }, 1500)
   }
 
   return (
     <>
       <ShowcaseBlock
-        title="按钮变体"
-        description="六种变体覆盖主操作、次操作、弱化操作与语义化状态；hover 仅加深底色，focus-visible 使用统一焦点环。"
-        code={VARIANT_CODE}
+        anchor="Button"
+        title="按钮：6 种变体 × 3 种尺寸"
+        description="所有变体共用同一套尺寸、图标与状态能力；primary 用于页面主操作，secondary 用于并列的次要操作，ghost 用于低强调的辅助动作，danger / success / warning 承载语义。"
+        code={`<Button variant="primary" size="md">主要</Button>
+<Button variant="secondary" size="sm">次要</Button>
+<Button variant="ghost" size="lg">幽灵</Button>
+<Button variant="danger">危险</Button>`}
         column
       >
-        <div className="demo-row">
-          {VARIANTS.map((variant) => (
-            <Button
-              key={variant.value}
-              variant={variant.value}
-              onClick={() => setLastAction(variant.label)}
-            >
-              {variant.label}
-            </Button>
+        <div className="demo-stack" style={{ width: '100%' }}>
+          {SIZES.map((size) => (
+            <div className="demo-row" key={size}>
+              <span className="demo-label" style={{ width: 30 }}>
+                {size}
+              </span>
+              {VARIANTS.map((variant) => (
+                <Button
+                  key={variant.value}
+                  variant={variant.value}
+                  size={size}
+                  onClick={() => handleVariantClick(variant.label, size)}
+                >
+                  {variant.label}
+                </Button>
+              ))}
+            </div>
           ))}
         </div>
-        <p className="demo-label">最近点击：{lastAction}</p>
+        <p className="demo-label">最近操作：{lastAction}</p>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="按钮尺寸"
-        description="sm / md / lg 分别对应 28 / 34 / 40px 控件高度，与 Input、Select 等表单控件保持同一网格。"
+        title="按钮：加载中与禁用"
+        description="loading 时自动禁用并显示转圈，避免重复提交；disabled 保留布局但降低强调。"
         column
       >
-        <div className="demo-row">
-          {SIZES.map((size) => (
-            <Button key={size.value} variant="secondary" size={size.value}>
-              {size.label}
-            </Button>
-          ))}
-        </div>
-        <div className="demo-row">
-          {SIZES.map((size) => (
-            <Button key={size.value} variant="primary" size={size.value}>
-              主要 · {size.value}
-            </Button>
-          ))}
-        </div>
-      </ShowcaseBlock>
-
-      <ShowcaseBlock
-        title="加载、禁用与图标"
-        description="loading 时按钮自动 aria-busy 并阻止重复点击；leftIcon / rightIcon 可组合图标，block 让按钮铺满容器。"
-        column
-      >
-        <div className="demo-row">
-          <Button loading={loading}>{loading ? '保存中…' : '保存设置'}</Button>
-          <Button variant="secondary" leftIcon={<IconPlus size={14} />}>
-            新建
-          </Button>
-          <Button variant="secondary" rightIcon={<IconChevronRight size={14} />}>
-            下一步
-          </Button>
-          <Button variant="ghost" leftIcon={<IconDownload size={14} />}>
-            下载
-          </Button>
-          <Button disabled>不可用</Button>
-        </div>
         <div className="demo-row">
           <Button
-            variant="secondary"
-            leftIcon={<IconRefresh size={14} />}
-            loading={loading}
-            onClick={runLoading}
+            loading={saving}
+            leftIcon={<IconCheck size={14} />}
+            onClick={handleSave}
           >
-            模拟加载 1.8s
+            {saving ? '保存中' : '保存设置'}
           </Button>
-          <Button variant="success" leftIcon={<IconCheck size={14} />}>
-            已完成
+          <Button variant="secondary" loading>
+            加载中
+          </Button>
+          <Button variant="secondary" disabled>
+            禁用状态
+          </Button>
+          <Button variant="ghost" disabled leftIcon={<IconRefresh size={14} />}>
+            无法刷新
+          </Button>
+          <Button variant="danger" disabled>
+            无法删除
           </Button>
         </div>
-        <Button block>block 按钮铺满整行</Button>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="图标按钮变体"
-        description="IconButton 的 label 为必填项并映射到 aria-label；同样支持三种变体，适合工具栏与紧凑操作区。"
-        code={ICON_BUTTON_CODE}
+        title="按钮：图标与 block"
+        description="leftIcon / rightIcon 承载操作暗示；block 撑满父容器，用于启动器底部的整宽主操作。"
+        column
       >
-        {ICON_VARIANTS.map((variant) => (
-          <IconButton
-            key={variant.value}
-            label={`${variant.label}图标按钮`}
-            variant={variant.value}
-            icon={<IconPlus size={16} />}
-            title={`${variant.label}图标按钮`}
-            onClick={() => setLastAction(`IconButton · ${variant.label}`)}
-          />
-        ))}
-        <IconButton
-          label="收藏"
-          icon={<IconStar size={16} />}
-          title="收藏"
-          onClick={() => setLastAction('IconButton · 收藏')}
-        />
-        <IconButton
-          label="更多操作"
-          variant="ghost"
-          icon={<IconMore size={16} />}
-          title="更多操作"
-          onClick={() => setLastAction('IconButton · 更多操作')}
-        />
+        <div className="demo-row">
+          <Button leftIcon={<IconPlus size={14} />}>新建实例</Button>
+          <Button variant="secondary" leftIcon={<IconRefresh size={14} />}>
+            检查更新
+          </Button>
+          <Button variant="ghost" rightIcon={<IconChevronRight size={14} />}>
+            查看全部版本
+          </Button>
+          <Button variant="danger" leftIcon={<IconTrash size={14} />}>
+            删除实例
+          </Button>
+          <Button variant="success" leftIcon={<IconPlay size={14} />}>
+            开始游戏
+          </Button>
+        </div>
+        <div className="demo-stack" style={{ width: '100%', maxWidth: 320 }}>
+          <Button block leftIcon={<IconPlay size={14} />}>
+            开始游戏
+          </Button>
+          <Button block variant="secondary" leftIcon={<IconRefresh size={14} />}>
+            检查更新
+          </Button>
+          <Button block variant="ghost">
+            查看运行日志
+          </Button>
+        </div>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="图标按钮尺寸"
-        description="正方形尺寸与图标同步缩放：sm 28px、md 34px、lg 40px。"
+        anchor="IconButton"
+        title="图标按钮：3 种变体 × 3 种尺寸"
+        description="只含图标的方形按钮，label 为必填项，会渲染为 aria-label；用于工具栏、卡片操作区等空间有限的位置。"
+        code={`<IconButton label="启动" icon={<IconPlay />} variant="primary" />
+<IconButton label="设置" icon={<IconSettings />} size="lg" />
+<IconButton label="更多" icon={<IconMore />} variant="ghost" />`}
+        column
       >
-        <IconButton label="搜索（小）" size="sm" icon={<IconSearch size={14} />} title="搜索" />
-        <IconButton label="设置（中）" size="md" icon={<IconSettings size={16} />} title="设置" />
-        <IconButton label="下载（大）" size="lg" icon={<IconDownload size={20} />} title="下载" />
-        <IconButton label="删除" variant="primary" icon={<IconTrash size={16} />} title="删除" />
-        <IconButton label="确认" variant="ghost" icon={<IconCheck size={16} />} title="确认" />
+        <div className="demo-stack" style={{ width: '100%' }}>
+          {SIZES.map((size) => (
+            <div className="demo-row" key={size}>
+              <span className="demo-label" style={{ width: 30 }}>
+                {size}
+              </span>
+              <IconButton
+                label={`启动（${size}）`}
+                size={size}
+                variant="primary"
+                icon={<IconPlay size={size === 'lg' ? 18 : size === 'sm' ? 14 : 16} />}
+                onClick={() => setLastAction(`点击了图标按钮：启动 · ${size}`)}
+              />
+              <IconButton
+                label={`设置（${size}）`}
+                size={size}
+                variant="secondary"
+                icon={<IconSettings size={size === 'lg' ? 18 : size === 'sm' ? 14 : 16} />}
+                onClick={() => setLastAction(`点击了图标按钮：设置 · ${size}`)}
+              />
+              <IconButton
+                label={`更多（${size}）`}
+                size={size}
+                variant="ghost"
+                icon={<IconMore size={size === 'lg' ? 18 : size === 'sm' ? 14 : 16} />}
+                onClick={() => setLastAction(`点击了图标按钮：更多 · ${size}`)}
+              />
+            </div>
+          ))}
+        </div>
+        <p className="demo-label">最近操作：{lastAction}</p>
       </ShowcaseBlock>
 
       <ShowcaseBlock
-        title="图标按钮状态"
-        description="loading 状态会禁用重复点击，并在 spin 动画中保留原尺寸；禁用态降不透明度。"
+        title="图标按钮：常用操作、加载与禁用"
+        description="常见工具栏动作；loading 与 disabled 时保留占位，避免工具栏抖动。"
+        column
       >
-        <IconButton
-          label="刷新"
-          icon={<IconRefresh size={16} />}
-          loading={loading}
-          onClick={runLoading}
-          title="点击刷新（加载中）"
-        />
-        <IconButton
-          label="播放"
-          variant="primary"
-          icon={<IconPlay size={16} />}
-          disabled
-          title="不可用"
-        />
-        <IconButton label="同步" variant="ghost" icon={<IconRefresh size={16} />} loading />
+        <div className="demo-row">
+          <IconButton label="搜索" icon={<IconSearch size={16} />} />
+          <IconButton label="刷新" icon={<IconRefresh size={16} />} />
+          <IconButton label="收藏" icon={<IconStar size={16} />} />
+          <IconButton label="复制" icon={<IconCopy size={16} />} />
+          <IconButton label="编辑" icon={<IconEdit size={16} />} />
+          <IconButton label="下载" icon={<IconDownload size={16} />} />
+          <IconButton label="添加" icon={<IconPlus size={16} />} variant="primary" />
+          <IconButton label="删除" icon={<IconTrash size={16} />} variant="ghost" />
+          <IconButton label="关闭" icon={<IconClose size={16} />} variant="ghost" />
+          <IconButton label="加载中" icon={<IconRefresh size={16} />} loading />
+          <IconButton label="禁用" icon={<IconSearch size={16} />} disabled />
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        anchor="Kbd"
+        title="键盘按键：快捷键组合"
+        description="等宽字体 + 1px 底部阴影的实体键帽；组合键之间用 + 分隔，尺寸支持 sm / md。"
+        code={`<span style={{ display: 'inline-flex', gap: 4 }}>
+  <Kbd>Ctrl</Kbd>
+  <span>+</span>
+  <Kbd>K</Kbd>
+</span>`}
+        column
+      >
+        <div className="demo-surface" style={{ width: '100%', maxWidth: 480 }}>
+          <div className="demo-stack">
+            {SHORTCUTS.map((shortcut) => (
+              <Shortcut key={shortcut.label} {...shortcut} />
+            ))}
+          </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="键盘按键：尺寸与单键"
+        description="sm 适合表格、工具栏等紧凑环境；md 适合快捷键说明面板。方向键与游戏操作键可直接作为单键展示。"
+        column
+      >
+        <div className="demo-row">
+          <span className="demo-label">尺寸：</span>
+          <Kbd size="sm">Esc</Kbd>
+          <Kbd size="sm">Enter</Kbd>
+          <Kbd>Esc</Kbd>
+          <Kbd>Enter</Kbd>
+          <Kbd>Space</Kbd>
+        </div>
+        <div className="demo-row">
+          <span className="demo-label">方向键：</span>
+          <Kbd>↑</Kbd>
+          <Kbd>↓</Kbd>
+          <Kbd>←</Kbd>
+          <Kbd>→</Kbd>
+          <Kbd>Home</Kbd>
+          <Kbd>End</Kbd>
+        </div>
+        <div className="demo-row">
+          <span className="demo-label">游戏内移动：</span>
+          <Kbd>W</Kbd>
+          <Kbd>A</Kbd>
+          <Kbd>S</Kbd>
+          <Kbd>D</Kbd>
+          <span className="demo-label">跳跃：</span>
+          <Kbd>Space</Kbd>
+        </div>
       </ShowcaseBlock>
     </>
   )

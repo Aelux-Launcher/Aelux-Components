@@ -1,0 +1,77 @@
+/* ===== ProgressRing ===== */
+.aelux-progress-ring-root {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: var(--aelux-primary);
+}
+
+.aelux-progress-ring--primary {
+  color: var(--aelux-primary);
+}
+
+.aelux-progress-ring--success {
+  color: var(--aelux-success);
+}
+
+.aelux-progress-ring--warning {
+  color: var(--aelux-warning);
+}
+
+.aelux-progress-ring--danger {
+  color: var(--aelux-danger);
+}
+
+.aelux-progress-ring__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.aelux-progress-ring__track {
+  stroke: var(--aelux-surface-active);
+}
+
+.aelux-progress-ring__indicator {
+  stroke: currentColor;
+  transition: stroke-dashoffset var(--aelux-transition-slow);
+}
+
+.aelux-progress-ring.is-indeterminate .aelux-progress-ring__svg {
+  animation: aelux-spin 1.1s linear infinite;
+}
+
+.aelux-progress-ring.is-indeterminate .aelux-progress-ring__indicator {
+  opacity: 0.9;
+  transition: none;
+}
+
+.aelux-progress-ring__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--aelux-text);
+  font-weight: var(--aelux-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.aelux-progress-ring__label {
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: var(--aelux-line-height);
+  text-align: center;
+}

@@ -1,0 +1,122 @@
+/* ===== TitleBar ===== */
+.aelux-titlebar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  min-width: 0;
+  padding: 0 0 0 var(--aelux-space-3);
+  border-bottom: 1px solid var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-sm);
+  line-height: var(--aelux-line-height);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.aelux-titlebar__brand {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  min-width: 0;
+  max-width: 42%;
+}
+
+.aelux-titlebar__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-titlebar__titles {
+  display: flex;
+  align-items: baseline;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+}
+
+.aelux-titlebar__title {
+  overflow: hidden;
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-titlebar__subtitle {
+  overflow: hidden;
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-titlebar__center {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+  padding: 0 var(--aelux-space-2);
+  overflow: hidden;
+}
+
+.aelux-titlebar__controls {
+  display: flex;
+  flex: none;
+  align-self: stretch;
+  align-items: center;
+  margin-left: auto;
+}
+
+.aelux-titlebar__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    color var(--aelux-transition-fast),
+    background-color var(--aelux-transition-fast);
+}
+
+.aelux-titlebar__control:hover {
+  background: var(--aelux-surface-hover);
+  color: var(--aelux-text);
+}
+
+.aelux-titlebar__control:active {
+  background: var(--aelux-surface-active);
+}
+
+.aelux-titlebar__control:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-titlebar__control--close:hover {
+  background: var(--aelux-danger);
+  color: var(--aelux-primary-contrast);
+}
+
+.aelux-titlebar__control--close:active {
+  background: var(--aelux-danger-hover);
+  color: var(--aelux-primary-contrast);
+}

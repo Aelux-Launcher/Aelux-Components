@@ -6,8 +6,8 @@ export type DemoTheme = 'light' | 'dark'
 export interface SectionProps {
   /** 当前主题（部分示例需要感知主题） */
   theme: DemoTheme
-  /** 页内跳转到其他展示页（用于总览页的组件索引） */
-  onNavigate?: (sectionId: string) => void
+  /** 页内跳转到其他展示页（可选定位到具体组件的示例块） */
+  onNavigate?: (sectionId: string, anchor?: string) => void
 }
 
 /** 侧边栏 / 路由用的页面声明 */

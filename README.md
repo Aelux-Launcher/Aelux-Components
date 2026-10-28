@@ -6,7 +6,7 @@ Aelux Launcher 通用 UI 组件库 —— 纯 React、无业务逻辑，与 Aelu
 - **产物**：仅 ESM（`dist/aelux-components.js`）+ 完整类型声明（`dist/index.d.ts`）
 - **不打包 React**：`react` / `react-dom` 为 `peerDependencies`，由使用方提供
 - **零运行时依赖**：图标为内置内联 SVG，样式为一份可直接引入的 CSS
-- **25 个组件**：覆盖表单、反馈、展示与布局
+- **48 个组件**：覆盖基础、表单、反馈、浮层、数据展示与窗口布局，面向启动器场景（两栏主界面、设置页、安装向导、任务队列）
 - **中性表面 + 冰蓝强调**：表面、文字、描边使用中性灰阶，品牌色只用于主按钮、选中态与焦点环；不使用渐变、光晕等装饰效果
 - **亮 / 暗双主题**：全部视觉由 `--aelux-*` 设计变量驱动，`data-theme` 一键切换
 
@@ -83,19 +83,31 @@ localStorage.setItem('aelux-theme', 'dark')
 | --- | --- |
 | `Button` | `variant`: primary / secondary / ghost / danger / success / warning；`size`: sm / md / lg；`block`、`loading`、`leftIcon`、`rightIcon` |
 | `IconButton` | 仅图标按钮，`icon`、`label`（无障碍标签）、`size`、`variant`、`loading` |
+| `Kbd` | 键帽样式，`size`: sm / md，用于快捷键提示 |
 
-### 表单
+### 输入与选择
 
 | 组件 | 说明 |
 | --- | --- |
 | `Input` | `size`、`status`（error / warning / success）、`prefix` / `suffix`、`allowClear`、`block` |
 | `Textarea` | 同上，另支持 `autoSize`、`showCount` |
+| `SearchInput` | 搜索框：`onValueChange`、`onSearch`（Enter）、`shortcut`（`⌘K` 提示）、`allowClear`、`loading`、`block` |
+| `InputNumber` | 数字输入：`min` / `max` / `step` / `precision`、`-` / `+` 步进、↑↓ 调整、`role="spinbutton"` |
 | `Select` | `options`、`value` / `defaultValue`、`onValueChange`、`placeholder`、`block` |
+| `Combobox` | 可搜索下拉：输入过滤、↑↓ / Enter / Esc 键盘导航、`allowClear`、`emptyText`、`aria-activedescendant` |
+| `DropZone` | 拖拽 / 点击导入：`accept`、`multiple`、`maxSize`、`onFiles`、`onReject(files, 'type' \| 'size')` |
+| `FormItem` | `label`、`htmlFor`、`required`、`hint`、`error`、`inline` |
+
+### 开关与滑块
+
+| 组件 | 说明 |
+| --- | --- |
 | `Checkbox` | `label`、`description`、`indeterminate`、`size` |
 | `Radio` / `RadioGroup` | 单个 `Radio` 或 `options` + `direction` + `gap` 的 `RadioGroup` |
 | `Switch` | `checked` / `defaultChecked`、`onChange`、`size`、`label`、`description` |
-| `Slider` | `value` / `defaultValue`、`min` / `max` / `step`、`onChange` |
-| `FormItem` | `label`、`htmlFor`、`required`、`hint`、`error`、`inline` |
+| `Slider` | `value` / `defaultValue`、`min` / `max` / `step`、`onChange`、`showValue` |
+| `SegmentedControl` | 分段控制：`options`、受控 / 非受控、`size`、`block`、`aria-checked` |
+| `Stepper` | 步骤条：`steps`、`current`、`clickable`、`onStepChange`、`aria-current="step"`（安装向导） |
 
 ### 反馈
 
@@ -105,6 +117,7 @@ localStorage.setItem('aelux-theme', 'dark')
 | `toast` | 命令式 API：`toast('消息')`、`toast.success()`、`toast.error()`、`toast.warning()`、`toast.info()`、`toast.loading()`、`toast.dismiss(id)`、`toast.clear()` |
 | `Spinner` | `size`、`label` |
 | `Progress` | `value` / `max`、`size`、`variant`、`showLabel`、`indeterminate` |
+| `ProgressRing` | 圆环进度：`value` / `max`、`size`、`thickness`、`showValue`、`indeterminate`、`tone` |
 | `Skeleton` | `width` / `height` / `circle` / `lines` / `animated` / `loading`（`loading` 为 true 时渲染骨架，否则渲染 children） |
 | `Empty` | `title`、`description`、`icon`、`action`、`size` |
 
@@ -113,19 +126,46 @@ localStorage.setItem('aelux-theme', 'dark')
 | 组件 | 说明 |
 | --- | --- |
 | `Modal` | `open`、`onClose`、`title`、`footer`、`width`、`size`、`closeOnOverlay`、`closeOnEsc`、`showClose`、`centered` |
+| `Dialog` | 确认对话框（组合 Modal）：`tone`（default / danger）、`onConfirm`（支持异步 loading）、`hideCancel` |
+| `Drawer` | 抽屉：`placement`（left / right）、`width`、`footer`、遮罩 / Esc 关闭、滚动锁与焦点管理 |
+| `Popover` | 富内容气泡：`content`、`trigger`（click / hover / focus）、`placement`、受控 `open` / `onOpenChange` |
 | `Tooltip` | `content`、`placement`、`delay`、`disabled` |
+| `DropdownMenu` | 下拉菜单：`trigger`、`items`（item / separator / label）、`onSelect`、`checked` / `danger` / `shortcut`、键盘导航 |
 
-### 展示
+### 数据展示
 
 | 组件 | 说明 |
 | --- | --- |
-| `Card` | `variant`、`padding`、`hoverable` |
+| `Card` | `variant`、`padding`、`hoverable`，另含 `Card.Header` / `Title` / `Description` / `Content` / `Footer` |
 | `Tag` | `color`、`variant`、`closable`、`icon` |
 | `Badge` | `count`、`max`、`dot`、`status`、`showZero` |
 | `Avatar` | `src` / `alt` / `name`（无图时显示首字）、`size`、`shape`、`icon`、`status` |
-| `Tabs` | `items`（`key` / `label` / `icon` / `disabled` / `content`），支持键盘方向键 |
+| `ListBox` | 可选列表：`options`（icon / description / badge）、单选 / `multiple`、键盘导航、`height`、`role="listbox"` |
+| `Table` | 泛型表格：`columns`、`data`、`rowKey`、`selectable`、`onRowClick`、`striped`、`loading`、`emptyText`、`stickyHeader` |
+| `DescriptionList` | 键值对列表：`items`、`columns`（1 / 2 / 3）、`layout`（horizontal / vertical）、`bordered` |
+| `Statistic` | 指标：`title`、`value`、`prefix` / `suffix`、`precision`、`icon`、`trend`、`hint`、`loading` |
+| `SettingSection` / `SettingRow` | 设置分组与设置行：`title` / `description` / 控件 / `status`，搭建设置页 |
+
+### 导航与布局
+
+| 组件 | 说明 |
+| --- | --- |
+| `Tabs` | `items`（`key` / `label` / `icon` / `disabled` / `content`），line / pill、键盘方向键 |
+| `SidebarNav` | 侧边导航：`groups`（items：icon / badge / disabled）、受控 / 非受控、`collapsed`、`header` / `footer` |
+| `TitleBar` | 无边框窗口标题栏：`title` / `subtitle` / `icon`、窗口控制按钮、`dragRegion`（写入 `data-tauri-drag-region`）、`maximized` |
+| `Toolbar` | 工具栏：`start` / children / `end` 三槽、`variant`（plain / bordered）、`size`、`sticky`、`role="toolbar"` |
+| `Accordion` | 折叠面板：`items`、`multiple`、受控 / 非受控、高度动画、`bordered` / `plain` |
+| `Pagination` | 分页：`page` / `pageSize` / `total`、`siblingCount` 省略号、`showTotal`、`aria-current` |
 | `Divider` | `orientation`、`variant`、`children`、`align` |
 | `Space` | `direction`、`size`、`align`、`wrap`、`block` |
+
+### 启动器组合示例
+
+展示站的 **启动器组合** 页用上述组件拼出真实界面，可作为接入 Aelux Launcher 的参考：
+
+- **主窗口**：`TitleBar` + `SidebarNav` + `Toolbar` + `ListBox` + `Tabs` + 底部下载进度 → 左列表 / 右详情的两栏主界面
+- **设置页**：`SettingSection` + `SettingRow` + `Slider` / `Select` / `Switch` → 启动器设置面板
+- **任务队列**：`Progress` / `ProgressRing` / `Alert` / `Statistic` → 下载与安装任务状态
 
 ### 图标
 
@@ -177,16 +217,18 @@ import 'aelux-components/style.css'              // → dist/aelux-components.cs
 ```
 Aelux-Components/
 ├── index.html                    # 展示站入口（开发 / showcase 构建）
+├── public/
+│   └── aelux-logo.png            # 品牌图标（展示站 / showcase 站点图标）
 ├── demo/                         # 组件展示站（不随库发布）
-│   ├── App.tsx                   # 侧边栏 + 顶栏 + 页面路由
+│   ├── App.tsx                   # 侧边栏（分类 + 二级组件导航）、顶栏、hash 路由与主题
 │   ├── main.tsx
 │   ├── styles.css                # 展示站样式
 │   ├── components/ShowcaseBlock.tsx
-│   └── sections/                 # 每个展示页一个文件
+│   └── sections/                 # 每个展示页一个文件（overview/basic/form/choice/feedback/overlay/data-display/layout/patterns/theme）
 ├── src/
 │   ├── index.ts                  # 公共 API 入口（唯一对外出口）
 │   ├── components/               # 每个组件一个目录：X.tsx + style.css + index.ts
-│   ├── icons/                    # Icon 基座 + 30 个内置图标
+│   ├── icons/                    # Icon 基座 + 34 个内置图标
 │   ├── styles/
 │   │   ├── tokens.css            # 设计变量（亮 / 暗）
 │   │   ├── base.css              # 基础重置、动画、可访问性

@@ -1,0 +1,86 @@
+/* ===== DropZone ===== */
+.aelux-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aelux-space-1-5);
+  width: 100%;
+  padding: var(--aelux-space-6) var(--aelux-space-4);
+  border: 1px dashed var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-lg);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-dropzone:hover:not(.aelux-dropzone--disabled) {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-surface);
+}
+
+.aelux-dropzone:focus-visible {
+  outline: none;
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-dropzone--dragging {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-dropzone--dragging .aelux-dropzone__icon {
+  border-color: var(--aelux-primary);
+  color: var(--aelux-primary);
+}
+
+.aelux-dropzone__input {
+  display: none;
+}
+
+.aelux-dropzone__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--aelux-space-1);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-dropzone__title {
+  font-weight: var(--aelux-font-weight-medium);
+  color: var(--aelux-text);
+}
+
+.aelux-dropzone__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-dropzone--disabled {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-dropzone--disabled .aelux-dropzone__title {
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-dropzone--disabled .aelux-dropzone__icon {
+  color: var(--aelux-text-disabled);
+}

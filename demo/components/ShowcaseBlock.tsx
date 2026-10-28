@@ -11,13 +11,15 @@ export interface ShowcaseBlockProps {
   code?: string
   /** 纵向排列（默认横向 wrap） */
   column?: boolean
+  /** 组件锚点：填写导出的组件名（如 Button），侧边栏二级导航据此定位 */
+  anchor?: string
   children: ReactNode
 }
 
 /**
  * 展示站的示例区块：标题 + 说明 + 预览区 + 可选代码。
  */
-export function ShowcaseBlock({ title, description, code, column = false, children }: ShowcaseBlockProps) {
+export function ShowcaseBlock({ title, description, code, column = false, anchor, children }: ShowcaseBlockProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -32,7 +34,7 @@ export function ShowcaseBlock({ title, description, code, column = false, childr
   }
 
   return (
-    <section className="demo-block">
+    <section className="demo-block" id={anchor ? `component-${anchor}` : undefined}>
       <header className="demo-block__head">
         <div className="demo-block__heading">
           <h3 className="demo-block__title">{title}</h3>

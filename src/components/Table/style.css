@@ -1,0 +1,120 @@
+/* Table —— 数据表格 */
+.aelux-table-wrapper {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--aelux-border-strong) transparent;
+}
+
+.aelux-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+}
+
+.aelux-table th,
+.aelux-table td {
+  padding: var(--aelux-space-2) var(--aelux-space-3);
+  border-bottom: 1px solid var(--aelux-border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.aelux-table thead th {
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+  white-space: nowrap;
+}
+
+.aelux-table tbody tr:last-child th,
+.aelux-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.aelux-table--sm th,
+.aelux-table--sm td {
+  padding: var(--aelux-space-1-5) var(--aelux-space-2-5);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-table th.aelux-table__cell--center,
+.aelux-table td.aelux-table__cell--center {
+  text-align: center;
+}
+
+.aelux-table th.aelux-table__cell--right,
+.aelux-table td.aelux-table__cell--right {
+  text-align: right;
+}
+
+.aelux-table th.aelux-table__cell--select,
+.aelux-table td.aelux-table__cell--select {
+  width: 42px;
+  padding-right: var(--aelux-space-1);
+  padding-left: var(--aelux-space-3);
+}
+
+.aelux-table__cell--empty {
+  padding: 0;
+}
+
+.aelux-table__empty {
+  padding: var(--aelux-space-6) var(--aelux-space-3);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  text-align: center;
+}
+
+.aelux-table__row {
+  transition: background-color var(--aelux-transition-fast) var(--aelux-ease);
+}
+
+.aelux-table__row--clickable {
+  cursor: pointer;
+}
+
+.aelux-table__row--clickable:hover {
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-table__row--clickable:focus-visible {
+  outline: none;
+  box-shadow: inset var(--aelux-focus-ring);
+}
+
+.aelux-table--striped .aelux-table__row:nth-child(even) {
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-table--striped .aelux-table__row--clickable:hover {
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-table__row--selected,
+.aelux-table--striped .aelux-table__row--selected:nth-child(even) {
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-table__row--selected:hover,
+.aelux-table--striped .aelux-table__row--selected:nth-child(even):hover {
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-table__row--skeleton {
+  pointer-events: none;
+}
+
+.aelux-table--sticky thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

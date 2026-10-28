@@ -1,0 +1,116 @@
+/* DescriptionList —— 键值对列表 */
+.aelux-description-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--aelux-space-3) var(--aelux-space-5);
+  margin: 0;
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+}
+
+.aelux-description-list--columns-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.aelux-description-list--columns-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.aelux-description-list--columns-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.aelux-description-list__item {
+  min-width: 0;
+}
+
+.aelux-description-list--horizontal .aelux-description-list__item {
+  display: grid;
+  grid-template-columns: minmax(72px, 34%) minmax(0, 1fr);
+  gap: var(--aelux-space-2);
+  align-items: start;
+}
+
+.aelux-description-list--vertical .aelux-description-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+}
+
+.aelux-description-list__label {
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+}
+
+.aelux-description-list__value {
+  min-width: 0;
+  margin: 0;
+  color: var(--aelux-text);
+  overflow-wrap: anywhere;
+}
+
+.aelux-description-list--sm {
+  gap: var(--aelux-space-2) var(--aelux-space-4);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-description-list--sm .aelux-description-list__label {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 带边框：用 1px 间距 + 底层描边色画出分隔线 */
+.aelux-description-list--bordered {
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-sm);
+  background: var(--aelux-border);
+}
+
+.aelux-description-list--bordered .aelux-description-list__item {
+  padding: 0;
+  background: var(--aelux-surface);
+}
+
+.aelux-description-list--bordered .aelux-description-list__label {
+  padding: var(--aelux-space-2) var(--aelux-space-3);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-description-list--bordered .aelux-description-list__value {
+  padding: var(--aelux-space-2) var(--aelux-space-3);
+}
+
+.aelux-description-list--bordered.aelux-description-list--horizontal
+  .aelux-description-list__item {
+  grid-template-columns: minmax(88px, 32%) minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
+}
+
+.aelux-description-list--bordered.aelux-description-list--horizontal
+  .aelux-description-list__label {
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--aelux-border);
+}
+
+.aelux-description-list--bordered.aelux-description-list--vertical
+  .aelux-description-list__label {
+  border-bottom: 1px solid var(--aelux-border);
+}
+
+.aelux-description-list--bordered.aelux-description-list--sm
+  .aelux-description-list__label,
+.aelux-description-list--bordered.aelux-description-list--sm
+  .aelux-description-list__value {
+  padding: var(--aelux-space-1-5) var(--aelux-space-2-5);
+}
+
+.aelux-description-list--bordered.aelux-description-list--sm
+  .aelux-description-list__label {
+  font-size: var(--aelux-font-size-xs);
+}

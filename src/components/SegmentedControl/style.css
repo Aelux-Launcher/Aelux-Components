@@ -1,0 +1,101 @@
+/* ===== SegmentedControl ===== */
+.aelux-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: var(--aelux-control-md);
+  padding: 2px;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface-subtle);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.aelux-segmented__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aelux-space-1-5);
+  height: 100%;
+  padding: 0 var(--aelux-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--aelux-radius-sm);
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  font: inherit;
+  font-weight: var(--aelux-font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast),
+    color var(--aelux-transition-fast),
+    box-shadow var(--aelux-transition-fast);
+}
+
+.aelux-segmented__item:hover:not(:disabled):not(.aelux-segmented__item--checked) {
+  color: var(--aelux-text);
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-segmented__item--checked {
+  background: var(--aelux-surface);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text);
+  box-shadow: var(--aelux-shadow-sm);
+}
+
+.aelux-segmented__item:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-segmented__item--checked:focus-visible {
+  box-shadow:
+    0 0 0 1px var(--aelux-border),
+    var(--aelux-focus-ring);
+}
+
+.aelux-segmented__item:disabled {
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-segmented__item:disabled.aelux-segmented__item--checked {
+  background: var(--aelux-surface);
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-segmented__icon {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+/* 尺寸 */
+.aelux-segmented--sm {
+  height: var(--aelux-control-sm);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-segmented--sm .aelux-segmented__item {
+  padding: 0 var(--aelux-space-2);
+  gap: var(--aelux-space-1);
+}
+
+.aelux-segmented--block {
+  display: flex;
+  width: 100%;
+}
+
+.aelux-segmented--block .aelux-segmented__item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.aelux-segmented--disabled {
+  background: var(--aelux-surface-subtle);
+}
