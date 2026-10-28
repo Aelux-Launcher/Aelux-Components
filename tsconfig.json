@@ -18,7 +18,6 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "types": ["vite/client"],
-    "baseUrl": ".",
     "paths": {
       "aelux-components": ["./src/index.ts"],
       "aelux-components/style.css": ["./src/styles/index.css"]

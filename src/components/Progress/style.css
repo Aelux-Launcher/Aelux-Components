@@ -20,7 +20,7 @@
   height: 100%;
   width: 0;
   border-radius: var(--aelux-radius-full);
-  background: linear-gradient(90deg, var(--aelux-primary-400), var(--aelux-primary-500));
+  background: var(--aelux-primary);
   transition: width var(--aelux-transition-slow);
 }
 
@@ -45,15 +45,15 @@
 
 /* 颜色 */
 .aelux-progress--success .aelux-progress__bar {
-  background: linear-gradient(90deg, var(--aelux-success), var(--aelux-success-hover));
+  background: var(--aelux-success);
 }
 
 .aelux-progress--warning .aelux-progress__bar {
-  background: linear-gradient(90deg, var(--aelux-warning), var(--aelux-warning-hover));
+  background: var(--aelux-warning);
 }
 
 .aelux-progress--danger .aelux-progress__bar {
-  background: linear-gradient(90deg, var(--aelux-danger), var(--aelux-danger-hover));
+  background: var(--aelux-danger);
 }
 
 /* 不确定进度 */

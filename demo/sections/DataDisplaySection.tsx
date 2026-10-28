@@ -43,7 +43,7 @@ export function DataDisplaySection(_props: SectionProps) {
     <>
       <ShowcaseBlock
         title="卡片外观"
-        description="default 为 surface 背景 + 1px 边框 + shadow-sm；flat 使用浅色填充；outline 仅保留描边。开启 hoverable 后悬浮会轻微抬升到 shadow-md。"
+        description="default 为 surface 背景 + 1px 边框；flat 使用浅色填充；outline 仅保留描边。开启 hoverable 后悬浮只加深描边。"
         code={`<Card hoverable>
   <Card.Header>
     <Card.Title>默认卡片</Card.Title>

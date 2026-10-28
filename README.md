@@ -7,6 +7,7 @@ Aelux Launcher 通用 UI 组件库 —— 纯 React、无业务逻辑，与 Aelu
 - **不打包 React**：`react` / `react-dom` 为 `peerDependencies`，由使用方提供
 - **零运行时依赖**：图标为内置内联 SVG，样式为一份可直接引入的 CSS
 - **25 个组件**：覆盖表单、反馈、展示与布局
+- **中性表面 + 冰蓝强调**：表面、文字、描边使用中性灰阶，品牌色只用于主按钮、选中态与焦点环；不使用渐变、光晕等装饰效果
 - **亮 / 暗双主题**：全部视觉由 `--aelux-*` 设计变量驱动，`data-theme` 一键切换
 
 ## 快速开始
@@ -64,7 +65,7 @@ localStorage.setItem('aelux-theme', 'dark')
 | 主色 | `--aelux-primary-50` … `--aelux-primary-900` | 冰蓝 10 阶，500 为基准 |
 | 语义主色 | `--aelux-primary`、`-hover`、`-active`、`-soft`、`-text` | 组件实际消费的变量 |
 | 功能色 | `--aelux-success` / `warning` / `danger` / `info` | 各含 `-hover`、`-soft`、`-soft-border`、`-text` 派生 |
-| 表面 | `--aelux-bg-page`、`--aelux-surface`、`-subtle`、`-hover`、`-inverse` | 亮暗主题自动切换 |
+| 表面 | `--aelux-bg-page`、`--aelux-surface`、`-subtle`、`-hover`、`-inverse` | 中性灰阶，亮暗主题自动切换 |
 | 文字 | `--aelux-text`、`-secondary`、`-tertiary`、`-inverse`、`-disabled` | |
 | 描边 | `--aelux-border`、`-strong`、`-focus`、`-danger` | |
 | 焦点 | `--aelux-focus-ring` | 键盘焦点外发光 |

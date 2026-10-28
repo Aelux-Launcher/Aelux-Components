@@ -20,20 +20,7 @@ function resolveInitialSectionId(): string {
 }
 
 function Logo() {
-  return (
-    <span className="demo-logo" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none">
-        <path
-          d="M5.5 19.5 12 4l6.5 15.5"
-          stroke="currentColor"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M8.6 14.6h6.8" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-      </svg>
-    </span>
-  )
+  return <img className="demo-logo" src="/aelux-logo.png" alt="" width={30} height={30} aria-hidden="true" />
 }
 
 export default function App() {
@@ -194,20 +181,22 @@ export default function App() {
 
         <main className="demo-content">
           <div className="demo-page" key={active.id}>
-            <header className="demo-page-head">
-              <p className="demo-page-head__eyebrow">{active.group}</p>
-              <h1>{active.title}</h1>
-              <p className="demo-page-head__desc">{active.description}</p>
-              {active.components?.length ? (
-                <div className="demo-page-head__tags">
-                  {active.components.map((name) => (
-                    <span className="demo-chip" key={name}>
-                      {name}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-            </header>
+            {active.id === 'overview' ? null : (
+              <header className="demo-page-head">
+                <p className="demo-page-head__eyebrow">{active.group}</p>
+                <h1>{active.title}</h1>
+                <p className="demo-page-head__desc">{active.description}</p>
+                {active.components?.length ? (
+                  <div className="demo-page-head__tags">
+                    {active.components.map((name) => (
+                      <span className="demo-chip" key={name}>
+                        {name}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </header>
+            )}
 
             <ActiveSection theme={theme} onNavigate={navigate} />
 

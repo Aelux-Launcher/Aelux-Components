@@ -62,7 +62,7 @@ export function BasicSection(_props: SectionProps) {
     <>
       <ShowcaseBlock
         title="按钮变体"
-        description="六种变体覆盖主操作、次操作、弱化操作与语义化状态；hover 轻微抬起，focus-visible 使用统一焦点环。"
+        description="六种变体覆盖主操作、次操作、弱化操作与语义化状态；hover 仅加深底色，focus-visible 使用统一焦点环。"
         code={VARIANT_CODE}
         column
       >

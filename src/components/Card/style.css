@@ -15,15 +15,14 @@
   transition:
     background-color var(--aelux-transition),
     border-color var(--aelux-transition),
-    box-shadow var(--aelux-transition),
-    transform var(--aelux-transition);
+    box-shadow var(--aelux-transition);
 }
 
 /* 外观 */
 .aelux-card--default {
   border-color: var(--aelux-border);
   background: var(--aelux-surface);
-  box-shadow: var(--aelux-shadow-sm);
+  box-shadow: none;
 }
 
 .aelux-card--flat {
@@ -55,11 +54,10 @@
   padding: var(--aelux-space-6);
 }
 
-/* 悬浮抬升 */
+/* 悬浮反馈：只加深描边，不做位移与光晕 */
 .aelux-card--hoverable:hover {
-  border-color: var(--aelux-primary-soft-border);
-  box-shadow: var(--aelux-shadow-md);
-  transform: translateY(-2px);
+  border-color: var(--aelux-border-strong);
+  box-shadow: var(--aelux-shadow-sm);
 }
 
 /* 可组合子区块 */

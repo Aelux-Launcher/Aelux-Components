@@ -1,6 +1,11 @@
 /* ============================================================================
  * Aelux Components · Design Tokens
- * 冰蓝主色 · 亮/暗双主题
+ * 冰蓝主色 · 中性灰表面 · 亮/暗双主题
+ *
+ * 颜色分工：
+ *   品牌色（--aelux-primary-*）只用于交互强调：主按钮、链接、选中态、焦点环；
+ *   表面 / 文字 / 描边使用中性灰阶，保证与 Aelux Launcher 桌面外壳的 GitHub 风
+ *   灰白界面和谐共存，也避免大面积蓝色底色带来的廉价感。
  *
  * 主题切换：
  *   <html data-theme="light">   强制浅色
@@ -34,52 +39,52 @@
   /* ---------------------------------------------------------------- 功能色 */
   --aelux-success: #22c55e;
   --aelux-success-hover: #16a34a;
-  --aelux-success-soft: #e9f9ef;
-  --aelux-success-soft-border: #bbe9cd;
+  --aelux-success-soft: #eaf7ef;
+  --aelux-success-soft-border: #b9e3c9;
   --aelux-success-text: #15803d;
 
   --aelux-warning: #f59e0b;
   --aelux-warning-hover: #d97706;
-  --aelux-warning-soft: #fdf6e7;
-  --aelux-warning-soft-border: #f8dfb0;
+  --aelux-warning-soft: #fdf5e3;
+  --aelux-warning-soft-border: #f2d9a4;
   --aelux-warning-text: #b45309;
 
   --aelux-danger: #ef4444;
   --aelux-danger-hover: #dc2626;
-  --aelux-danger-soft: #fdeeee;
-  --aelux-danger-soft-border: #f7c6c6;
+  --aelux-danger-soft: #fdecec;
+  --aelux-danger-soft-border: #f5c2c0;
   --aelux-danger-text: #b91c1c;
 
   --aelux-info: #38bdf8;
   --aelux-info-hover: #0ea5e9;
-  --aelux-info-soft: #eaf8ff;
-  --aelux-info-soft-border: #b3e8fb;
+  --aelux-info-soft: #eaf6fd;
+  --aelux-info-soft-border: #b3e3f8;
   --aelux-info-text: #0369a1;
 
-  /* ------------------------------------------------------------------ 表面 */
-  --aelux-bg-page: #f3f8fc;
+  /* ------------------------------------------------------------ 表面（中性） */
+  --aelux-bg-page: #ffffff;
   --aelux-surface: #ffffff;
-  --aelux-surface-subtle: #edf5fb;
-  --aelux-surface-hover: #f2f8fd;
-  --aelux-surface-active: #e6f1f9;
-  --aelux-surface-inverse: #0b1d2b;
-  --aelux-overlay: rgba(8, 26, 40, 0.52);
+  --aelux-surface-subtle: #f6f8fa;
+  --aelux-surface-hover: #eef1f4;
+  --aelux-surface-active: #e4e8ec;
+  --aelux-surface-inverse: #1f2328;
+  --aelux-overlay: rgba(31, 35, 40, 0.55);
 
-  /* ------------------------------------------------------------------ 文字 */
-  --aelux-text: #10222f;
-  --aelux-text-secondary: #4e6779;
-  --aelux-text-tertiary: #7d93a5;
-  --aelux-text-inverse: #f2fbff;
-  --aelux-text-disabled: #a9bccb;
+  /* ------------------------------------------------------------ 文字（中性） */
+  --aelux-text: #1f2328;
+  --aelux-text-secondary: #59636e;
+  --aelux-text-tertiary: #818b98;
+  --aelux-text-inverse: #ffffff;
+  --aelux-text-disabled: #a2abb6;
 
-  /* ------------------------------------------------------------------ 描边 */
-  --aelux-border: #d8e6f1;
-  --aelux-border-strong: #bdd2e2;
+  /* ------------------------------------------------------------ 描边（中性） */
+  --aelux-border: #d1d9e0;
+  --aelux-border-strong: #b7c0ca;
   --aelux-border-focus: var(--aelux-primary-400);
   --aelux-border-danger: #f0a8a8;
 
   /* ---------------------------------------------------------------- 焦点环 */
-  --aelux-focus-ring: 0 0 0 3px rgba(40, 164, 224, 0.22);
+  --aelux-focus-ring: 0 0 0 3px rgba(40, 164, 224, 0.25);
   --aelux-focus-ring-danger: 0 0 0 3px rgba(239, 68, 68, 0.18);
 
   /* ------------------------------------------------------------------ 字体 */
@@ -123,10 +128,10 @@
   --aelux-control-md: 34px;
   --aelux-control-lg: 40px;
 
-  /* ------------------------------------------------------------------ 阴影 */
-  --aelux-shadow-sm: 0 1px 2px rgba(13, 38, 58, 0.05), 0 1px 3px rgba(13, 38, 58, 0.06);
-  --aelux-shadow-md: 0 2px 6px rgba(13, 38, 58, 0.06), 0 8px 20px -6px rgba(13, 38, 58, 0.12);
-  --aelux-shadow-lg: 0 6px 16px rgba(13, 38, 58, 0.08), 0 20px 44px -12px rgba(13, 38, 58, 0.22);
+  /* ------------------------------------------------------ 阴影（克制、无光晕） */
+  --aelux-shadow-sm: 0 1px 0 rgba(31, 35, 40, 0.04);
+  --aelux-shadow-md: 0 3px 6px rgba(140, 149, 159, 0.15);
+  --aelux-shadow-lg: 0 8px 24px rgba(140, 149, 159, 0.2);
 
   /* ------------------------------------------------------------------ 动效 */
   --aelux-ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -148,28 +153,28 @@
   --aelux-primary: var(--aelux-primary-400);
   --aelux-primary-hover: var(--aelux-primary-300);
   --aelux-primary-active: var(--aelux-primary-200);
-  --aelux-primary-soft: rgba(66, 184, 236, 0.16);
+  --aelux-primary-soft: rgba(66, 184, 236, 0.14);
   --aelux-primary-soft-border: rgba(112, 209, 248, 0.38);
   --aelux-primary-text: var(--aelux-primary-200);
   --aelux-primary-contrast: #06182a;
 
-  --aelux-success: #34d399;
-  --aelux-success-hover: #22c55e;
-  --aelux-success-soft: rgba(52, 211, 153, 0.14);
-  --aelux-success-soft-border: rgba(52, 211, 153, 0.34);
-  --aelux-success-text: #6ee7b7;
+  --aelux-success: #3fb950;
+  --aelux-success-hover: #56d364;
+  --aelux-success-soft: rgba(63, 185, 80, 0.14);
+  --aelux-success-soft-border: rgba(63, 185, 80, 0.36);
+  --aelux-success-text: #7ee787;
 
-  --aelux-warning: #fbbf24;
-  --aelux-warning-hover: #f59e0b;
-  --aelux-warning-soft: rgba(251, 191, 36, 0.14);
-  --aelux-warning-soft-border: rgba(251, 191, 36, 0.32);
-  --aelux-warning-text: #fcd34d;
+  --aelux-warning: #d29922;
+  --aelux-warning-hover: #e3b341;
+  --aelux-warning-soft: rgba(210, 153, 34, 0.14);
+  --aelux-warning-soft-border: rgba(210, 153, 34, 0.36);
+  --aelux-warning-text: #e3b341;
 
-  --aelux-danger: #f87171;
-  --aelux-danger-hover: #ef4444;
-  --aelux-danger-soft: rgba(248, 113, 113, 0.14);
-  --aelux-danger-soft-border: rgba(248, 113, 113, 0.32);
-  --aelux-danger-text: #fca5a5;
+  --aelux-danger: #f85149;
+  --aelux-danger-hover: #ff7b72;
+  --aelux-danger-soft: rgba(248, 81, 73, 0.14);
+  --aelux-danger-soft-border: rgba(248, 81, 73, 0.36);
+  --aelux-danger-text: #ffa198;
 
   --aelux-info: #38bdf8;
   --aelux-info-hover: #7dd3fc;
@@ -177,31 +182,31 @@
   --aelux-info-soft-border: rgba(56, 189, 248, 0.32);
   --aelux-info-text: #7dd3fc;
 
-  --aelux-bg-page: #07141f;
-  --aelux-surface: #0d2130;
-  --aelux-surface-subtle: #122c3e;
-  --aelux-surface-hover: #163348;
-  --aelux-surface-active: #1a3b52;
-  --aelux-surface-inverse: #eaf6ff;
-  --aelux-overlay: rgba(2, 10, 16, 0.66);
+  --aelux-bg-page: #0d1117;
+  --aelux-surface: #0d1117;
+  --aelux-surface-subtle: #151b23;
+  --aelux-surface-hover: #1c232c;
+  --aelux-surface-active: #252c36;
+  --aelux-surface-inverse: #f0f6fc;
+  --aelux-overlay: rgba(1, 4, 9, 0.8);
 
-  --aelux-text: #e7f4fd;
-  --aelux-text-secondary: #9bb5c8;
-  --aelux-text-tertiary: #6f8ba0;
-  --aelux-text-inverse: #08141d;
-  --aelux-text-disabled: #56748a;
+  --aelux-text: #e6edf3;
+  --aelux-text-secondary: #9198a1;
+  --aelux-text-tertiary: #6e7681;
+  --aelux-text-inverse: #0d1117;
+  --aelux-text-disabled: #656c76;
 
-  --aelux-border: #1d3c51;
-  --aelux-border-strong: #2c5470;
+  --aelux-border: #30363d;
+  --aelux-border-strong: #444c56;
   --aelux-border-focus: var(--aelux-primary-300);
-  --aelux-border-danger: #7f2e35;
+  --aelux-border-danger: #6e2c2c;
 
-  --aelux-focus-ring: 0 0 0 3px rgba(112, 209, 248, 0.28);
-  --aelux-focus-ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.26);
+  --aelux-focus-ring: 0 0 0 3px rgba(66, 184, 236, 0.3);
+  --aelux-focus-ring-danger: 0 0 0 3px rgba(248, 81, 73, 0.28);
 
-  --aelux-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.32);
-  --aelux-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.3), 0 8px 20px -6px rgba(0, 0, 0, 0.5);
-  --aelux-shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.36), 0 20px 44px -12px rgba(0, 0, 0, 0.62);
+  --aelux-shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --aelux-shadow-md: 0 3px 6px rgba(0, 0, 0, 0.3);
+  --aelux-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* 未显式设置 data-theme 时跟随系统偏好 */
@@ -212,28 +217,28 @@
     --aelux-primary: var(--aelux-primary-400);
     --aelux-primary-hover: var(--aelux-primary-300);
     --aelux-primary-active: var(--aelux-primary-200);
-    --aelux-primary-soft: rgba(66, 184, 236, 0.16);
+    --aelux-primary-soft: rgba(66, 184, 236, 0.14);
     --aelux-primary-soft-border: rgba(112, 209, 248, 0.38);
     --aelux-primary-text: var(--aelux-primary-200);
     --aelux-primary-contrast: #06182a;
 
-    --aelux-success: #34d399;
-    --aelux-success-hover: #22c55e;
-    --aelux-success-soft: rgba(52, 211, 153, 0.14);
-    --aelux-success-soft-border: rgba(52, 211, 153, 0.34);
-    --aelux-success-text: #6ee7b7;
+    --aelux-success: #3fb950;
+    --aelux-success-hover: #56d364;
+    --aelux-success-soft: rgba(63, 185, 80, 0.14);
+    --aelux-success-soft-border: rgba(63, 185, 80, 0.36);
+    --aelux-success-text: #7ee787;
 
-    --aelux-warning: #fbbf24;
-    --aelux-warning-hover: #f59e0b;
-    --aelux-warning-soft: rgba(251, 191, 36, 0.14);
-    --aelux-warning-soft-border: rgba(251, 191, 36, 0.32);
-    --aelux-warning-text: #fcd34d;
+    --aelux-warning: #d29922;
+    --aelux-warning-hover: #e3b341;
+    --aelux-warning-soft: rgba(210, 153, 34, 0.14);
+    --aelux-warning-soft-border: rgba(210, 153, 34, 0.36);
+    --aelux-warning-text: #e3b341;
 
-    --aelux-danger: #f87171;
-    --aelux-danger-hover: #ef4444;
-    --aelux-danger-soft: rgba(248, 113, 113, 0.14);
-    --aelux-danger-soft-border: rgba(248, 113, 113, 0.32);
-    --aelux-danger-text: #fca5a5;
+    --aelux-danger: #f85149;
+    --aelux-danger-hover: #ff7b72;
+    --aelux-danger-soft: rgba(248, 81, 73, 0.14);
+    --aelux-danger-soft-border: rgba(248, 81, 73, 0.36);
+    --aelux-danger-text: #ffa198;
 
     --aelux-info: #38bdf8;
     --aelux-info-hover: #7dd3fc;
@@ -241,30 +246,30 @@
     --aelux-info-soft-border: rgba(56, 189, 248, 0.32);
     --aelux-info-text: #7dd3fc;
 
-    --aelux-bg-page: #07141f;
-    --aelux-surface: #0d2130;
-    --aelux-surface-subtle: #122c3e;
-    --aelux-surface-hover: #163348;
-    --aelux-surface-active: #1a3b52;
-    --aelux-surface-inverse: #eaf6ff;
-    --aelux-overlay: rgba(2, 10, 16, 0.66);
+    --aelux-bg-page: #0d1117;
+    --aelux-surface: #0d1117;
+    --aelux-surface-subtle: #151b23;
+    --aelux-surface-hover: #1c232c;
+    --aelux-surface-active: #252c36;
+    --aelux-surface-inverse: #f0f6fc;
+    --aelux-overlay: rgba(1, 4, 9, 0.8);
 
-    --aelux-text: #e7f4fd;
-    --aelux-text-secondary: #9bb5c8;
-    --aelux-text-tertiary: #6f8ba0;
-    --aelux-text-inverse: #08141d;
-    --aelux-text-disabled: #56748a;
+    --aelux-text: #e6edf3;
+    --aelux-text-secondary: #9198a1;
+    --aelux-text-tertiary: #6e7681;
+    --aelux-text-inverse: #0d1117;
+    --aelux-text-disabled: #656c76;
 
-    --aelux-border: #1d3c51;
-    --aelux-border-strong: #2c5470;
+    --aelux-border: #30363d;
+    --aelux-border-strong: #444c56;
     --aelux-border-focus: var(--aelux-primary-300);
-    --aelux-border-danger: #7f2e35;
+    --aelux-border-danger: #6e2c2c;
 
-    --aelux-focus-ring: 0 0 0 3px rgba(112, 209, 248, 0.28);
-    --aelux-focus-ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.26);
+    --aelux-focus-ring: 0 0 0 3px rgba(66, 184, 236, 0.3);
+    --aelux-focus-ring-danger: 0 0 0 3px rgba(248, 81, 73, 0.28);
 
-    --aelux-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.32);
-    --aelux-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.3), 0 8px 20px -6px rgba(0, 0, 0, 0.5);
-    --aelux-shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.36), 0 20px 44px -12px rgba(0, 0, 0, 0.62);
+    --aelux-shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
+    --aelux-shadow-md: 0 3px 6px rgba(0, 0, 0, 0.3);
+    --aelux-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 }
