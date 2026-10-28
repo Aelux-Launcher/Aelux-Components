@@ -1,0 +1,62 @@
+/* ===== Divider ===== */
+.aelux-divider {
+  display: flex;
+  align-items: center;
+  color: var(--aelux-text-secondary);
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-divider--horizontal {
+  width: 100%;
+  margin: var(--aelux-space-4) 0;
+}
+
+.aelux-divider--vertical {
+  flex: none;
+  align-self: stretch;
+  width: 0;
+  min-height: 1em;
+  margin: 0 var(--aelux-space-3);
+  border-left: 1px solid var(--aelux-border);
+}
+
+.aelux-divider__line {
+  flex: 1 1 auto;
+  border-top: 1px solid var(--aelux-border);
+}
+
+.aelux-divider__text {
+  flex: none;
+  padding: 0 var(--aelux-space-3);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* 线条样式 */
+.aelux-divider--dashed.aelux-divider--horizontal .aelux-divider__line {
+  border-top-style: dashed;
+}
+
+.aelux-divider--dashed.aelux-divider--vertical {
+  border-left-style: dashed;
+}
+
+/* 标题对齐 */
+.aelux-divider--left .aelux-divider__line:first-child {
+  display: none;
+}
+
+.aelux-divider--right .aelux-divider__line:last-child {
+  display: none;
+}
+
+.aelux-divider--left .aelux-divider__text {
+  padding-left: 0;
+}
+
+.aelux-divider--right .aelux-divider__text {
+  padding-right: 0;
+}

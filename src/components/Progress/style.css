@@ -1,0 +1,72 @@
+/* ===== Progress ===== */
+.aelux-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-progress__track {
+  position: relative;
+  flex: 1 1 auto;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-active);
+}
+
+.aelux-progress__bar {
+  height: 100%;
+  width: 0;
+  border-radius: var(--aelux-radius-full);
+  background: linear-gradient(90deg, var(--aelux-primary-400), var(--aelux-primary-500));
+  transition: width var(--aelux-transition-slow);
+}
+
+.aelux-progress__label {
+  flex: none;
+  min-width: 34px;
+  font-size: var(--aelux-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--aelux-text-secondary);
+  text-align: right;
+}
+
+/* 尺寸 */
+.aelux-progress--sm .aelux-progress__track {
+  height: 4px;
+}
+
+.aelux-progress--sm .aelux-progress__label {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 颜色 */
+.aelux-progress--success .aelux-progress__bar {
+  background: linear-gradient(90deg, var(--aelux-success), var(--aelux-success-hover));
+}
+
+.aelux-progress--warning .aelux-progress__bar {
+  background: linear-gradient(90deg, var(--aelux-warning), var(--aelux-warning-hover));
+}
+
+.aelux-progress--danger .aelux-progress__bar {
+  background: linear-gradient(90deg, var(--aelux-danger), var(--aelux-danger-hover));
+}
+
+/* 不确定进度 */
+.aelux-progress--indeterminate .aelux-progress__bar {
+  width: 40%;
+  animation: aelux-progress-indeterminate 1.4s var(--aelux-ease) infinite;
+}
+
+@keyframes aelux-progress-indeterminate {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}

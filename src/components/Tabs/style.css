@@ -1,0 +1,153 @@
+/* ===== Tabs ===== */
+.aelux-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-tabs__nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--aelux-space-0-5);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.aelux-tabs__tab {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aelux-space-1-5);
+  margin: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  font-family: inherit;
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--aelux-transition-fast),
+    background-color var(--aelux-transition-fast),
+    border-color var(--aelux-transition-fast),
+    box-shadow var(--aelux-transition-fast);
+}
+
+.aelux-tabs__tab:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-tabs__tab:disabled {
+  cursor: not-allowed;
+  color: var(--aelux-text-disabled);
+}
+
+/* 尺寸 */
+.aelux-tabs--sm .aelux-tabs__tab {
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-tabs--md .aelux-tabs__tab {
+  height: var(--aelux-control-md);
+  padding: 0 var(--aelux-space-3);
+  font-size: var(--aelux-font-size-md);
+}
+
+/* 图标与文字 */
+.aelux-tabs__tab-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.aelux-tabs__tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 外观 */
+.aelux-tabs--line .aelux-tabs__nav {
+  border-bottom: 1px solid var(--aelux-border);
+}
+
+.aelux-tabs--line .aelux-tabs__tab {
+  position: relative;
+  margin-bottom: -1px;
+  border-radius: var(--aelux-radius-sm) var(--aelux-radius-sm) 0 0;
+}
+
+.aelux-tabs--line .aelux-tabs__tab::after {
+  position: absolute;
+  right: var(--aelux-space-2);
+  bottom: 0;
+  left: var(--aelux-space-2);
+  height: 2px;
+  border-radius: var(--aelux-radius-full);
+  background: transparent;
+  content: '';
+  transition: background-color var(--aelux-transition);
+}
+
+.aelux-tabs--line .aelux-tabs__tab:hover {
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text);
+}
+
+.aelux-tabs--line .aelux-tabs__tab--active {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-tabs--line .aelux-tabs__tab--active::after {
+  background: var(--aelux-primary);
+}
+
+/* pill 外观 */
+.aelux-tabs--pill .aelux-tabs__nav {
+  padding: var(--aelux-space-0-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-tabs--pill .aelux-tabs__tab {
+  border-radius: var(--aelux-radius-sm);
+}
+
+.aelux-tabs--pill .aelux-tabs__tab:hover {
+  color: var(--aelux-text);
+}
+
+.aelux-tabs--pill .aelux-tabs__tab--active {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface);
+  color: var(--aelux-primary-text);
+  box-shadow: var(--aelux-shadow-sm);
+}
+
+/* 等宽 */
+.aelux-tabs--block .aelux-tabs__tab {
+  flex: 1 1 0;
+}
+
+/* 内容区 */
+.aelux-tabs__panel {
+  min-width: 0;
+  padding-top: var(--aelux-space-3);
+  border-radius: var(--aelux-radius-sm);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-md);
+}
+
+.aelux-tabs__panel:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}

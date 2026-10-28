@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Aelux Components · 组件库</title>
+    <script>
+      // 首帧前应用主题，避免亮暗闪烁（key 与 AeluxWebSite 保持一致）
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('aelux-theme')
+          var theme = stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          document.documentElement.setAttribute('data-theme', theme)
+        } catch (error) {
+          document.documentElement.setAttribute('data-theme', 'light')
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/demo/main.tsx"></script>
+  </body>
+</html>

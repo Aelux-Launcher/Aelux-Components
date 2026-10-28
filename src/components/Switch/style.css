@@ -1,0 +1,130 @@
+/* ===== Switch ===== */
+.aelux-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-2-5);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+.aelux-switch__track {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-border-strong);
+  transition:
+    background-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary-contrast);
+  box-shadow: var(--aelux-shadow-sm);
+  transition: transform var(--aelux-transition);
+}
+
+.aelux-switch:hover:not(.aelux-switch--disabled) .aelux-switch__track {
+  background: var(--aelux-text-tertiary);
+}
+
+.aelux-switch:focus-visible .aelux-switch__track {
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-switch--checked .aelux-switch__track {
+  background: var(--aelux-primary);
+}
+
+.aelux-switch--checked:hover:not(.aelux-switch--disabled) .aelux-switch__track {
+  background: var(--aelux-primary-hover);
+}
+
+.aelux-switch--checked .aelux-switch__thumb {
+  transform: translateX(14px);
+}
+
+/* 文案 */
+.aelux-switch__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+  min-width: 0;
+}
+
+.aelux-switch__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+}
+
+.aelux-switch__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+/* 尺寸 */
+.aelux-switch--sm {
+  gap: var(--aelux-space-2);
+}
+
+.aelux-switch--sm .aelux-switch__track {
+  width: 28px;
+  height: 16px;
+}
+
+.aelux-switch--sm .aelux-switch__thumb {
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+}
+
+.aelux-switch--sm.aelux-switch--checked .aelux-switch__thumb {
+  transform: translateX(12px);
+}
+
+.aelux-switch--sm .aelux-switch__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-switch--sm .aelux-switch__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 禁用 */
+.aelux-switch--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.aelux-switch--disabled .aelux-switch__label,
+.aelux-switch--disabled .aelux-switch__desc {
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-switch--disabled .aelux-switch__track {
+  background: var(--aelux-surface-active);
+}
+
+.aelux-switch--disabled.aelux-switch--checked .aelux-switch__track {
+  background: var(--aelux-text-disabled);
+}

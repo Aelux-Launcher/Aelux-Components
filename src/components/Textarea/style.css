@@ -1,0 +1,113 @@
+/* ===== Textarea ===== */
+.aelux-textarea {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1);
+  width: 220px;
+  vertical-align: top;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-textarea__field {
+  display: block;
+  width: 100%;
+  min-height: 68px;
+  padding: var(--aelux-space-2) var(--aelux-space-2-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: inherit;
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+  resize: vertical;
+  outline: none;
+  transition:
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-textarea__field::placeholder {
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-textarea:hover:not(.aelux-textarea--disabled) .aelux-textarea__field {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-textarea__field:focus {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-textarea__count {
+  align-self: flex-end;
+  padding-right: var(--aelux-space-0-5);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* 自动撑高：高度由脚本控制，禁用用户拖拽 */
+.aelux-textarea--autosize .aelux-textarea__field {
+  resize: none;
+  overflow-y: hidden;
+}
+
+/* 尺寸 */
+.aelux-textarea--sm .aelux-textarea__field {
+  min-height: 56px;
+  padding: var(--aelux-space-1-5) var(--aelux-space-2);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-textarea--sm .aelux-textarea__count {
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-textarea--lg .aelux-textarea__field {
+  min-height: 80px;
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-textarea--block {
+  display: flex;
+  width: 100%;
+}
+
+/* 状态 */
+.aelux-textarea--error .aelux-textarea__field {
+  border-color: var(--aelux-danger);
+}
+
+.aelux-textarea--error .aelux-textarea__field:focus {
+  border-color: var(--aelux-danger);
+  box-shadow: var(--aelux-focus-ring-danger);
+}
+
+.aelux-textarea--error .aelux-textarea__count {
+  color: var(--aelux-danger-text);
+}
+
+.aelux-textarea--warning .aelux-textarea__field {
+  border-color: var(--aelux-warning);
+}
+
+.aelux-textarea--warning .aelux-textarea__field:focus {
+  border-color: var(--aelux-warning);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+}
+
+.aelux-textarea--disabled .aelux-textarea__field {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+  resize: none;
+}

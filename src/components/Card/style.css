@@ -1,0 +1,113 @@
+/* ===== Card ===== */
+.aelux-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--aelux-space-5);
+  border: 1px solid transparent;
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    transform var(--aelux-transition);
+}
+
+/* 外观 */
+.aelux-card--default {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface);
+  box-shadow: var(--aelux-shadow-sm);
+}
+
+.aelux-card--flat {
+  border-color: transparent;
+  background: var(--aelux-surface-subtle);
+  box-shadow: none;
+}
+
+.aelux-card--outline {
+  border-color: var(--aelux-border-strong);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* 内边距 */
+.aelux-card--padding-none {
+  padding: 0;
+}
+
+.aelux-card--padding-sm {
+  padding: var(--aelux-space-3);
+}
+
+.aelux-card--padding-md {
+  padding: var(--aelux-space-5);
+}
+
+.aelux-card--padding-lg {
+  padding: var(--aelux-space-6);
+}
+
+/* 悬浮抬升 */
+.aelux-card--hoverable:hover {
+  border-color: var(--aelux-primary-soft-border);
+  box-shadow: var(--aelux-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* 可组合子区块 */
+.aelux-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1);
+  min-width: 0;
+}
+
+.aelux-card__header:not(:last-child) {
+  margin-bottom: var(--aelux-space-3);
+  padding-bottom: var(--aelux-space-3);
+  border-bottom: 1px solid var(--aelux-border);
+}
+
+.aelux-card__title {
+  margin: 0;
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-lg);
+  font-weight: var(--aelux-font-weight-semibold);
+  line-height: 1.4;
+}
+
+.aelux-card__description {
+  margin: 0;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.55;
+}
+
+.aelux-card__content {
+  min-width: 0;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-md);
+}
+
+.aelux-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--aelux-space-2);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-card__footer:not(:first-child) {
+  margin-top: var(--aelux-space-3);
+  padding-top: var(--aelux-space-3);
+  border-top: 1px solid var(--aelux-border);
+}

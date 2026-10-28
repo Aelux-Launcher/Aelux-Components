@@ -1,0 +1,170 @@
+/* ===== Tag ===== */
+.aelux-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-1);
+  max-width: 100%;
+  border: 1px solid transparent;
+  font-family: var(--aelux-font-sans);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    color var(--aelux-transition);
+}
+
+/* 尺寸 */
+.aelux-tag--sm {
+  height: 20px;
+  padding: 0 var(--aelux-space-1-5);
+  border-radius: var(--aelux-radius-xs);
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-tag--md {
+  height: 24px;
+  padding: 0 var(--aelux-space-2);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+/* 结构 */
+.aelux-tag__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.aelux-tag__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aelux-tag__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-right: calc(var(--aelux-space-0-5) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--aelux-radius-full);
+  background: transparent;
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity var(--aelux-transition-fast);
+}
+
+.aelux-tag--sm .aelux-tag__close {
+  width: 12px;
+  height: 12px;
+}
+
+.aelux-tag__close:hover {
+  opacity: 1;
+}
+
+.aelux-tag__close:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+  opacity: 1;
+}
+
+/* soft 外观 */
+.aelux-tag--soft.aelux-tag--primary {
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-tag--soft.aelux-tag--success {
+  background: var(--aelux-success-soft);
+  color: var(--aelux-success-text);
+}
+
+.aelux-tag--soft.aelux-tag--warning {
+  background: var(--aelux-warning-soft);
+  color: var(--aelux-warning-text);
+}
+
+.aelux-tag--soft.aelux-tag--danger {
+  background: var(--aelux-danger-soft);
+  color: var(--aelux-danger-text);
+}
+
+.aelux-tag--soft.aelux-tag--info {
+  background: var(--aelux-info-soft);
+  color: var(--aelux-info-text);
+}
+
+.aelux-tag--soft.aelux-tag--neutral {
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+}
+
+/* solid 外观 */
+.aelux-tag--solid.aelux-tag--primary {
+  background: var(--aelux-primary);
+  color: var(--aelux-primary-contrast);
+}
+
+.aelux-tag--solid.aelux-tag--success {
+  background: var(--aelux-success-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-tag--solid.aelux-tag--warning {
+  background: var(--aelux-warning-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-tag--solid.aelux-tag--danger {
+  background: var(--aelux-danger-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-tag--solid.aelux-tag--info {
+  background: var(--aelux-info-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-tag--solid.aelux-tag--neutral {
+  background: var(--aelux-text-secondary);
+  color: var(--aelux-text-inverse);
+}
+
+/* outline 外观 */
+.aelux-tag--outline {
+  border-color: currentColor;
+  background: transparent;
+}
+
+.aelux-tag--outline.aelux-tag--primary {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-tag--outline.aelux-tag--success {
+  color: var(--aelux-success-text);
+}
+
+.aelux-tag--outline.aelux-tag--warning {
+  color: var(--aelux-warning-text);
+}
+
+.aelux-tag--outline.aelux-tag--danger {
+  color: var(--aelux-danger-text);
+}
+
+.aelux-tag--outline.aelux-tag--info {
+  color: var(--aelux-info-text);
+}
+
+.aelux-tag--outline.aelux-tag--neutral {
+  color: var(--aelux-text-secondary);
+}

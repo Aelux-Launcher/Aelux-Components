@@ -1,0 +1,140 @@
+/* ===== Input ===== */
+.aelux-input {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  width: 220px;
+  height: var(--aelux-control-md);
+  padding: 0 var(--aelux-space-2-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1;
+  vertical-align: middle;
+  transition:
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-input:hover:not(.aelux-input--disabled) {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-input:focus-within {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-input__field {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.aelux-input__field::placeholder {
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-input__field:disabled {
+  cursor: not-allowed;
+}
+
+.aelux-input__prefix,
+.aelux-input__suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-input__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text-tertiary);
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast),
+    color var(--aelux-transition-fast);
+}
+
+.aelux-input__clear:hover {
+  background: var(--aelux-border-strong);
+  color: var(--aelux-text);
+}
+
+/* 尺寸 */
+.aelux-input--sm {
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2);
+  gap: var(--aelux-space-1);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-input--lg {
+  height: var(--aelux-control-lg);
+  padding: 0 var(--aelux-space-3);
+  gap: var(--aelux-space-2);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-input--block {
+  display: flex;
+  width: 100%;
+}
+
+/* 状态 */
+.aelux-input--error {
+  border-color: var(--aelux-danger);
+}
+
+.aelux-input--error:focus-within {
+  border-color: var(--aelux-danger);
+  box-shadow: var(--aelux-focus-ring-danger);
+}
+
+.aelux-input--warning {
+  border-color: var(--aelux-warning);
+}
+
+.aelux-input--warning:focus-within {
+  border-color: var(--aelux-warning);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+}
+
+.aelux-input--success {
+  border-color: var(--aelux-success);
+}
+
+.aelux-input--success:focus-within {
+  border-color: var(--aelux-success);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16);
+}
+
+.aelux-input--disabled {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}

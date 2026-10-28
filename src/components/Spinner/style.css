@@ -1,0 +1,30 @@
+/* ===== Spinner ===== */
+.aelux-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--aelux-primary);
+  vertical-align: middle;
+}
+
+.aelux-spinner__circle {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--aelux-border);
+  border-top-color: currentColor;
+  border-radius: var(--aelux-radius-full);
+  animation: aelux-spin 0.8s linear infinite;
+}
+
+.aelux-spinner--sm .aelux-spinner__circle {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+.aelux-spinner--lg .aelux-spinner__circle {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+}

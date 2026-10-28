@@ -1,0 +1,123 @@
+/* ===== IconButton ===== */
+.aelux-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--aelux-control-md);
+  height: var(--aelux-control-md);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--aelux-radius-md);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    transform var(--aelux-transition-fast);
+}
+
+.aelux-icon-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.aelux-icon-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.aelux-icon-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.aelux-icon-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+/* 尺寸 */
+.aelux-icon-btn--sm {
+  width: var(--aelux-control-sm);
+  height: var(--aelux-control-sm);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-icon-btn--lg {
+  width: var(--aelux-control-lg);
+  height: var(--aelux-control-lg);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+/* 变体：primary */
+.aelux-icon-btn--primary {
+  background: linear-gradient(180deg, var(--aelux-primary-500), var(--aelux-primary-600));
+  border-color: var(--aelux-primary-600);
+  color: var(--aelux-primary-contrast);
+  box-shadow:
+    0 1px 2px rgba(12, 72, 109, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.aelux-icon-btn--primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--aelux-primary-500), var(--aelux-primary-700));
+  border-color: var(--aelux-primary-700);
+  box-shadow:
+    0 4px 12px -4px rgba(24, 135, 199, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.aelux-icon-btn--primary:active:not(:disabled) {
+  background: var(--aelux-primary-700);
+  border-color: var(--aelux-primary-800);
+}
+
+/* 变体：secondary */
+.aelux-icon-btn--secondary {
+  background: var(--aelux-surface);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-secondary);
+  box-shadow: var(--aelux-shadow-sm);
+}
+
+.aelux-icon-btn--secondary:hover:not(:disabled) {
+  background: var(--aelux-primary-soft);
+  border-color: var(--aelux-primary-soft-border);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-icon-btn--secondary:active:not(:disabled) {
+  background: var(--aelux-primary-100);
+}
+
+/* 变体：ghost */
+.aelux-icon-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-icon-btn--ghost:hover:not(:disabled) {
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text);
+}
+
+.aelux-icon-btn--loading {
+  cursor: progress;
+}

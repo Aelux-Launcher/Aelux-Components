@@ -1,0 +1,102 @@
+/* ===== Badge ===== */
+.aelux-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  font-family: var(--aelux-font-sans);
+  vertical-align: middle;
+}
+
+.aelux-badge__content {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.aelux-badge__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--aelux-space-1);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary-text);
+  color: var(--aelux-text-inverse);
+  font-size: var(--aelux-font-size-xs);
+  font-weight: var(--aelux-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.aelux-badge__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary);
+}
+
+/* 包裹子元素时定位到右上角 */
+.aelux-badge--attached .aelux-badge__count,
+.aelux-badge--attached .aelux-badge__dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  box-shadow: 0 0 0 2px var(--aelux-surface);
+}
+
+.aelux-badge--attached .aelux-badge__dot {
+  width: 10px;
+  height: 10px;
+}
+
+/* 数字配色：使用深色语义色保证小字号对比度 */
+.aelux-badge--primary .aelux-badge__count {
+  background: var(--aelux-primary-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-badge--success .aelux-badge__count {
+  background: var(--aelux-success-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-badge--warning .aelux-badge__count {
+  background: var(--aelux-warning-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-badge--danger .aelux-badge__count {
+  background: var(--aelux-danger-text);
+  color: var(--aelux-text-inverse);
+}
+
+.aelux-badge--info .aelux-badge__count {
+  background: var(--aelux-info-text);
+  color: var(--aelux-text-inverse);
+}
+
+/* 状态点使用明亮语义色 */
+.aelux-badge--primary .aelux-badge__dot {
+  background: var(--aelux-primary);
+}
+
+.aelux-badge--success .aelux-badge__dot {
+  background: var(--aelux-success);
+}
+
+.aelux-badge--warning .aelux-badge__dot {
+  background: var(--aelux-warning);
+}
+
+.aelux-badge--danger .aelux-badge__dot {
+  background: var(--aelux-danger);
+}
+
+.aelux-badge--info .aelux-badge__dot {
+  background: var(--aelux-info);
+}

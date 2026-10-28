@@ -1,0 +1,81 @@
+/* ===== FormItem ===== */
+.aelux-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1-5);
+  min-width: 0;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-form-item__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-0-5);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.4;
+}
+
+.aelux-form-item__label-text {
+  display: inline-block;
+}
+
+.aelux-form-item__required {
+  color: var(--aelux-danger);
+  font-weight: var(--aelux-font-weight-semibold);
+  line-height: 1;
+}
+
+.aelux-form-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1);
+  min-width: 0;
+}
+
+.aelux-form-item__control {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.aelux-form-item__control > * {
+  min-width: 0;
+}
+
+.aelux-form-item__message {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+.aelux-form-item__message--error {
+  color: var(--aelux-danger-text);
+}
+
+/* 错误态：标签同步提示 */
+.aelux-form-item--error .aelux-form-item__label {
+  color: var(--aelux-danger-text);
+}
+
+/* 同行布局 */
+.aelux-form-item--inline {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--aelux-space-1-5) var(--aelux-space-3);
+}
+
+.aelux-form-item--inline .aelux-form-item__label {
+  flex: none;
+}
+
+.aelux-form-item--inline .aelux-form-item__body {
+  flex: 1 1 auto;
+  align-items: flex-start;
+}
+
+.aelux-form-item--inline .aelux-form-item__message {
+  text-align: left;
+}

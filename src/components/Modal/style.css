@@ -1,0 +1,143 @@
+/* ===== Modal ===== */
+.aelux-modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--aelux-z-modal);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px var(--aelux-space-4);
+  overflow-y: auto;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-modal-root--centered {
+  align-items: center;
+  padding-top: var(--aelux-space-4);
+  padding-bottom: var(--aelux-space-4);
+}
+
+.aelux-modal-root--hidden {
+  display: none;
+}
+
+.aelux-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--aelux-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: aelux-fade-in var(--aelux-transition) both;
+}
+
+.aelux-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  max-width: 100%;
+  max-height: calc(100vh - 96px);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-xl);
+  background: var(--aelux-surface);
+  box-shadow: var(--aelux-shadow-lg);
+  color: var(--aelux-text);
+  animation: aelux-pop-in var(--aelux-transition-slow) both;
+}
+
+.aelux-modal:focus {
+  outline: none;
+}
+
+/* 尺寸 */
+.aelux-modal--sm {
+  width: 360px;
+}
+
+.aelux-modal--md {
+  width: 460px;
+}
+
+.aelux-modal--lg {
+  width: 640px;
+}
+
+/* 头部 */
+.aelux-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--aelux-space-3);
+  padding: var(--aelux-space-4) var(--aelux-space-5) 0;
+}
+
+.aelux-modal__title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--aelux-font-size-lg);
+  font-weight: var(--aelux-font-weight-semibold);
+  line-height: 1.4;
+  color: var(--aelux-text);
+}
+
+.aelux-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--aelux-radius-sm);
+  background: transparent;
+  color: var(--aelux-text-tertiary);
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast),
+    color var(--aelux-transition-fast);
+}
+
+.aelux-modal__close:hover {
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text);
+}
+
+.aelux-modal__close:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+/* 内容 */
+.aelux-modal__body {
+  flex: 1 1 auto;
+  padding: var(--aelux-space-4) var(--aelux-space-5);
+  overflow-y: auto;
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+  color: var(--aelux-text-secondary);
+}
+
+/* 底部 */
+.aelux-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--aelux-space-2);
+  padding: 0 var(--aelux-space-5) var(--aelux-space-4);
+}
+
+@media (max-width: 560px) {
+  .aelux-modal-root {
+    padding: var(--aelux-space-4) var(--aelux-space-3);
+  }
+
+  .aelux-modal,
+  .aelux-modal--sm,
+  .aelux-modal--md,
+  .aelux-modal--lg {
+    width: 100%;
+  }
+}

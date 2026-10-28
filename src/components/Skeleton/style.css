@@ -1,0 +1,68 @@
+/* ===== Skeleton ===== */
+.aelux-skeleton {
+  display: block;
+  width: 100%;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-skeleton__block,
+.aelux-skeleton__line {
+  position: relative;
+  overflow: hidden;
+  background: var(--aelux-surface-active);
+  border-radius: var(--aelux-radius-sm);
+}
+
+.aelux-skeleton__block {
+  display: block;
+  width: 100%;
+  height: 16px;
+}
+
+.aelux-skeleton__block--circle {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--aelux-radius-full);
+}
+
+/* 多行段落 */
+.aelux-skeleton--lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-2);
+}
+
+.aelux-skeleton__line {
+  width: 100%;
+  height: 12px;
+}
+
+.aelux-skeleton__line:last-child {
+  width: 60%;
+}
+
+/* 光泽扫过 */
+.aelux-skeleton--animated .aelux-skeleton__block::after,
+.aelux-skeleton--animated .aelux-skeleton__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--aelux-border-strong) 50%,
+    transparent 100%
+  );
+  opacity: 0.45;
+  transform: translateX(-100%);
+  animation: aelux-skeleton-sweep 1.4s var(--aelux-ease) infinite;
+}
+
+@keyframes aelux-skeleton-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

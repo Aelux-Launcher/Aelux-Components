@@ -1,0 +1,164 @@
+/* ===== Radio ===== */
+.aelux-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--aelux-space-2);
+  vertical-align: middle;
+  font-family: var(--aelux-font-sans);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 原生输入铺在圆框位置，视觉隐藏但保留交互与焦点 */
+.aelux-radio__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.aelux-radio__box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  transition:
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-radio__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary-contrast);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--aelux-transition-fast),
+    transform var(--aelux-transition-fast);
+}
+
+.aelux-radio:hover .aelux-radio__box {
+  border-color: var(--aelux-primary);
+}
+
+.aelux-radio__input:focus-visible + .aelux-radio__box {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-radio__input:checked + .aelux-radio__box {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+}
+
+.aelux-radio__input:checked + .aelux-radio__box .aelux-radio__dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 文案 */
+.aelux-radio__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+  min-width: 0;
+}
+
+.aelux-radio__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1.35;
+}
+
+.aelux-radio__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+/* 尺寸 */
+.aelux-radio--sm {
+  gap: var(--aelux-space-1-5);
+}
+
+.aelux-radio--sm .aelux-radio__input {
+  width: 14px;
+  height: 14px;
+}
+
+.aelux-radio--sm .aelux-radio__box {
+  width: 14px;
+  height: 14px;
+}
+
+.aelux-radio--sm .aelux-radio__dot {
+  width: 5px;
+  height: 5px;
+}
+
+.aelux-radio--sm .aelux-radio__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-radio--sm .aelux-radio__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 禁用 */
+.aelux-radio--disabled {
+  cursor: not-allowed;
+}
+
+.aelux-radio--disabled .aelux-radio__box {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+}
+
+.aelux-radio--disabled .aelux-radio__input:checked + .aelux-radio__box {
+  background: var(--aelux-text-disabled);
+  border-color: var(--aelux-text-disabled);
+}
+
+.aelux-radio--disabled .aelux-radio__label,
+.aelux-radio--disabled .aelux-radio__desc {
+  color: var(--aelux-text-disabled);
+}
+
+/* ===== RadioGroup ===== */
+.aelux-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--aelux-space-4);
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-radio-group--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: var(--aelux-space-2);
+}
+
+.aelux-radio-group--horizontal {
+  flex-direction: row;
+}
+
+.aelux-radio-group--disabled {
+  cursor: not-allowed;
+}

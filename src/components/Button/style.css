@@ -1,0 +1,173 @@
+/* ===== Button ===== */
+.aelux-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--aelux-space-1-5);
+  height: var(--aelux-control-md);
+  padding: 0 var(--aelux-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--aelux-radius-md);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    transform var(--aelux-transition-fast);
+}
+
+.aelux-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.aelux-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.aelux-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.aelux-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.aelux-btn__label {
+  display: inline-block;
+}
+
+/* 尺寸 */
+.aelux-btn--sm {
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2-5);
+  gap: var(--aelux-space-1);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-btn--lg {
+  height: var(--aelux-control-lg);
+  padding: 0 var(--aelux-space-5);
+  gap: var(--aelux-space-2);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-btn--block {
+  display: flex;
+  width: 100%;
+}
+
+/* 变体：primary */
+.aelux-btn--primary {
+  background: linear-gradient(180deg, var(--aelux-primary-500), var(--aelux-primary-600));
+  border-color: var(--aelux-primary-600);
+  color: var(--aelux-primary-contrast);
+  box-shadow: 0 1px 2px rgba(12, 72, 109, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.aelux-btn--primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--aelux-primary-500), var(--aelux-primary-700));
+  border-color: var(--aelux-primary-700);
+  box-shadow: 0 4px 12px -4px rgba(24, 135, 199, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.aelux-btn--primary:active:not(:disabled) {
+  background: var(--aelux-primary-700);
+  border-color: var(--aelux-primary-800);
+}
+
+/* 变体：secondary */
+.aelux-btn--secondary {
+  background: var(--aelux-surface);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text);
+  box-shadow: var(--aelux-shadow-sm);
+}
+
+.aelux-btn--secondary:hover:not(:disabled) {
+  border-color: var(--aelux-primary-soft-border);
+  color: var(--aelux-primary-text);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-btn--secondary:active:not(:disabled) {
+  background: var(--aelux-primary-100);
+}
+
+/* 变体：ghost */
+.aelux-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-btn--ghost:hover:not(:disabled) {
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text);
+}
+
+/* 变体：danger */
+.aelux-btn--danger {
+  background: var(--aelux-danger);
+  border-color: var(--aelux-danger);
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.2);
+}
+
+.aelux-btn--danger:hover:not(:disabled) {
+  background: var(--aelux-danger-hover);
+  border-color: var(--aelux-danger-hover);
+  box-shadow: 0 4px 12px -4px rgba(220, 38, 38, 0.5);
+}
+
+/* 变体：success */
+.aelux-btn--success {
+  background: var(--aelux-success);
+  border-color: var(--aelux-success);
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(21, 128, 61, 0.2);
+}
+
+.aelux-btn--success:hover:not(:disabled) {
+  background: var(--aelux-success-hover);
+  border-color: var(--aelux-success-hover);
+}
+
+/* 变体：warning */
+.aelux-btn--warning {
+  background: var(--aelux-warning);
+  border-color: var(--aelux-warning);
+  color: #4a2c05;
+  box-shadow: 0 1px 2px rgba(180, 83, 9, 0.18);
+}
+
+.aelux-btn--warning:hover:not(:disabled) {
+  background: var(--aelux-warning-hover);
+  border-color: var(--aelux-warning-hover);
+}
+
+/* 加载中：图标转动，文案半透明 */
+.aelux-btn--loading .aelux-btn__label {
+  opacity: 0.75;
+}

@@ -1,0 +1,159 @@
+/* ===== Checkbox ===== */
+.aelux-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--aelux-space-2);
+  vertical-align: middle;
+  font-family: var(--aelux-font-sans);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 原生输入铺在方框位置，视觉隐藏但保留交互与焦点 */
+.aelux-checkbox__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.aelux-checkbox__box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-xs);
+  background: var(--aelux-surface);
+  color: var(--aelux-primary-contrast);
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-checkbox__icon {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity var(--aelux-transition-fast),
+    transform var(--aelux-transition-fast);
+}
+
+.aelux-checkbox__icon--check,
+.aelux-checkbox__icon--dash {
+  line-height: 0;
+}
+
+.aelux-checkbox:hover .aelux-checkbox__box {
+  border-color: var(--aelux-primary);
+}
+
+.aelux-checkbox__input:focus-visible + .aelux-checkbox__box {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-checkbox__input:checked + .aelux-checkbox__box {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+}
+
+.aelux-checkbox__input:checked + .aelux-checkbox__box .aelux-checkbox__icon--check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 半选态 */
+.aelux-checkbox--indeterminate .aelux-checkbox__box {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+}
+
+.aelux-checkbox--indeterminate .aelux-checkbox__icon--dash {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.aelux-checkbox--indeterminate .aelux-checkbox__icon--check {
+  opacity: 0;
+}
+
+/* 文案 */
+.aelux-checkbox__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+  min-width: 0;
+}
+
+.aelux-checkbox__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-normal);
+  line-height: 1.35;
+}
+
+.aelux-checkbox__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+/* 尺寸 */
+.aelux-checkbox--sm {
+  gap: var(--aelux-space-1-5);
+}
+
+.aelux-checkbox--sm .aelux-checkbox__input {
+  width: 14px;
+  height: 14px;
+}
+
+.aelux-checkbox--sm .aelux-checkbox__box {
+  width: 14px;
+  height: 14px;
+}
+
+.aelux-checkbox--sm .aelux-checkbox__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-checkbox--sm .aelux-checkbox__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 禁用 */
+.aelux-checkbox--disabled {
+  cursor: not-allowed;
+}
+
+.aelux-checkbox--disabled .aelux-checkbox__box {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+}
+
+.aelux-checkbox--disabled .aelux-checkbox__input:checked + .aelux-checkbox__box,
+.aelux-checkbox--disabled.aelux-checkbox--indeterminate .aelux-checkbox__box {
+  background: var(--aelux-text-disabled);
+  border-color: var(--aelux-text-disabled);
+}
+
+.aelux-checkbox--disabled .aelux-checkbox__label,
+.aelux-checkbox--disabled .aelux-checkbox__desc {
+  color: var(--aelux-text-disabled);
+}

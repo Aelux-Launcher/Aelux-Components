@@ -1,0 +1,126 @@
+/* ===== Select ===== */
+.aelux-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 220px;
+  height: var(--aelux-control-md);
+  vertical-align: middle;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-select__native {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  padding: 0 30px 0 var(--aelux-space-2-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: inherit;
+  font-size: var(--aelux-font-size-md);
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-select__native:hover:not(:disabled) {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-select__native:focus,
+.aelux-select__native:focus-visible {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-select__native:disabled {
+  cursor: not-allowed;
+}
+
+.aelux-select__arrow {
+  position: absolute;
+  top: 50%;
+  right: var(--aelux-space-2-5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--aelux-text-tertiary);
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color var(--aelux-transition);
+}
+
+.aelux-select:hover:not(.aelux-select--disabled) .aelux-select__arrow {
+  color: var(--aelux-text-secondary);
+}
+
+/* 尺寸 */
+.aelux-select--sm {
+  height: var(--aelux-control-sm);
+}
+
+.aelux-select--sm .aelux-select__native {
+  padding: 0 24px 0 var(--aelux-space-2);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-select--sm .aelux-select__arrow {
+  right: var(--aelux-space-2);
+}
+
+.aelux-select--lg {
+  height: var(--aelux-control-lg);
+}
+
+.aelux-select--lg .aelux-select__native {
+  padding: 0 34px 0 var(--aelux-space-3);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-select--lg .aelux-select__arrow {
+  right: var(--aelux-space-3);
+}
+
+.aelux-select--block {
+  display: flex;
+  width: 100%;
+}
+
+/* 状态 */
+.aelux-select--placeholder .aelux-select__native {
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-select--error .aelux-select__native {
+  border-color: var(--aelux-danger);
+}
+
+.aelux-select--error .aelux-select__native:focus {
+  border-color: var(--aelux-danger);
+  box-shadow: var(--aelux-focus-ring-danger);
+}
+
+.aelux-select--error .aelux-select__arrow {
+  color: var(--aelux-danger);
+}
+
+.aelux-select--disabled .aelux-select__native {
+  background: var(--aelux-surface-subtle);
+  border-color: var(--aelux-border);
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-select--disabled .aelux-select__arrow {
+  color: var(--aelux-text-disabled);
+}

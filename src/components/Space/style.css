@@ -1,0 +1,56 @@
+/* ===== Space ===== */
+.aelux-space {
+  display: inline-flex;
+  min-width: 0;
+  gap: var(--aelux-space-3);
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-space--horizontal {
+  flex-direction: row;
+}
+
+.aelux-space--vertical {
+  flex-direction: column;
+}
+
+/* 间距 */
+.aelux-space--sm {
+  gap: var(--aelux-space-1-5);
+}
+
+.aelux-space--md {
+  gap: var(--aelux-space-3);
+}
+
+.aelux-space--lg {
+  gap: var(--aelux-space-5);
+}
+
+/* 交叉轴对齐 */
+.aelux-space--align-start {
+  align-items: flex-start;
+}
+
+.aelux-space--align-center {
+  align-items: center;
+}
+
+.aelux-space--align-end {
+  align-items: flex-end;
+}
+
+.aelux-space--align-stretch {
+  align-items: stretch;
+}
+
+/* 换行 */
+.aelux-space--wrap {
+  flex-wrap: wrap;
+}
+
+/* 占满整行 */
+.aelux-space--block {
+  display: flex;
+  width: 100%;
+}
