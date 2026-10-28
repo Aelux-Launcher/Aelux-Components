@@ -15,6 +15,7 @@ import {
   IconSettings,
   IconUser,
   IconWarning,
+  Image,
   ListBox,
   ListItem,
   Select,
@@ -40,6 +41,9 @@ import type { SectionProps } from './types'
 
 const DEMO_AVATAR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2356c4ef'/%3E%3Cstop offset='1' stop-color='%231878b3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='24' r='11' fill='%23eaf9ff'/%3E%3Cpath d='M11 62c2-13 10-20 21-20s19 7 21 20z' fill='%23eaf9ff'/%3E%3C/svg%3E"
+
+const DEMO_COVER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23cfe7f6'/%3E%3Ccircle cx='502' cy='86' r='46' fill='%23f8fcff'/%3E%3Cpath d='M0 268 104 182 206 246 322 148 452 258 552 196 640 248V360H0z' fill='%237aa77f'/%3E%3Cpath d='M0 306 118 258 236 302 372 244 512 298 640 268V360H0z' fill='%234f7a58'/%3E%3C/svg%3E"
 
 const TAG_COLORS: TagColor[] = ['primary', 'success', 'warning', 'danger', 'info', 'neutral']
 const TAG_VARIANTS = ['soft', 'solid', 'outline'] as const
@@ -298,6 +302,7 @@ export function DataDisplaySection(_props: SectionProps) {
   const [statsLoading, setStatsLoading] = useState(false)
   const [listItemKey, setListItemKey] = useState<string>('frost')
   const [listItemAction, setListItemAction] = useState<string>('尚未操作')
+  const [imageAction, setImageAction] = useState<string>('点击封面可触发动作')
   const [tasks, setTasks] = useState<TaskItem[]>(INITIAL_TASKS)
 
   const activeInstance = INSTANCES.find((item) => item.key === activeInstanceKey) ?? INSTANCES[0]
@@ -564,6 +569,57 @@ export function DataDisplaySection(_props: SectionProps) {
           <Avatar name="离开" status="away" />
           <Avatar name="离线" status="offline" />
         </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        anchor="Image"
+        title="图片：比例、填充与加载失败"
+        description="ratio 控制宽高比（square / video / wide / auto 或数字），fit 控制裁切方式；src 为空或加载失败时渲染 fallback 占位，可点击时自动获得键盘焦点并支持 Enter / Space。"
+        code={`<Image src="/cover.png" alt="启动器封面" ratio="video" fit="cover" />
+<Image src="/icon.png" alt="实例图标" ratio="square" rounded />
+<Image src="/missing.png" alt="加载失败" ratio="video" />
+<Image src="/cover.png" alt="查看详情" ratio="wide" rounded onClick={open} />`}
+        column
+      >
+        <div className="demo-grid">
+          <div className="demo-stack">
+            <span className="demo-label">16:9 封面（cover）</span>
+            <Image src={DEMO_COVER} alt="冰原生存封面" ratio="video" fit="cover" />
+          </div>
+          <div className="demo-stack">
+            <span className="demo-label">方形圆角（square + rounded）</span>
+            <Image src={DEMO_AVATAR} alt="实例图标" ratio="square" rounded />
+          </div>
+          <div className="demo-stack">
+            <span className="demo-label">加载失败 fallback</span>
+            <Image src="https://example.invalid/cover.png" alt="启动器截图" ratio="video" />
+          </div>
+          <div className="demo-stack">
+            <span className="demo-label">无 src 的纯占位（auto）</span>
+            <Image alt="尚未上传图片" />
+          </div>
+        </div>
+        <div className="demo-row">
+          <div style={{ width: 220 }}>
+            <span className="demo-label">cover 裁切</span>
+            <Image src={DEMO_AVATAR} alt="cover 示例" ratio="video" fit="cover" />
+          </div>
+          <div style={{ width: 220 }}>
+            <span className="demo-label">contain 完整显示</span>
+            <Image src={DEMO_AVATAR} alt="contain 示例" ratio="video" fit="contain" />
+          </div>
+          <div style={{ width: 220 }}>
+            <span className="demo-label">可点击（聚焦后 Enter / Space）</span>
+            <Image
+              src={DEMO_COVER}
+              alt="打开实例详情"
+              ratio="wide"
+              rounded
+              onClick={() => setImageAction('已打开实例详情')}
+            />
+          </div>
+        </div>
+        <p className="demo-label">{imageAction}</p>
       </ShowcaseBlock>
 
       <ShowcaseBlock

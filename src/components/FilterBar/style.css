@@ -1,0 +1,107 @@
+/* FilterBar —— 过滤栏：pill 过滤组 + 内嵌搜索 + 右侧操作区 */
+
+.aelux-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  padding: var(--aelux-space-2) var(--aelux-space-3);
+  font-family: var(--aelux-font-sans);
+  color: var(--aelux-text);
+}
+
+.aelux-filter-bar--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 1px solid var(--aelux-border);
+  background: color-mix(in srgb, var(--aelux-surface) 86%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.aelux-filter-bar__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-1);
+}
+
+.aelux-filter-bar__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2-5);
+  border: 1px solid transparent;
+  border-radius: var(--aelux-radius-full);
+  background: transparent;
+  color: var(--aelux-text-secondary);
+  font-family: inherit;
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast) var(--aelux-ease),
+    border-color var(--aelux-transition-fast) var(--aelux-ease),
+    color var(--aelux-transition-fast) var(--aelux-ease);
+}
+
+.aelux-filter-bar__filter:hover {
+  background: var(--aelux-surface-hover);
+  color: var(--aelux-text);
+}
+
+.aelux-filter-bar__filter:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-filter-bar__filter--active,
+.aelux-filter-bar__filter--active:hover {
+  border-color: var(--aelux-primary-soft-border);
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-filter-bar__filter-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aelux-filter-bar__filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--aelux-space-1);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+  font-weight: var(--aelux-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-filter-bar__filter--active .aelux-filter-bar__filter-count {
+  background: var(--aelux-primary-soft-border);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-filter-bar__search {
+  flex: 1 1 180px;
+  min-width: 160px;
+  max-width: 280px;
+}
+
+.aelux-filter-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  margin-left: auto;
+}

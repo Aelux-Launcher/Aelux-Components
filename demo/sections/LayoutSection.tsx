@@ -5,6 +5,7 @@ import {
   Breadcrumb,
   Button,
   Divider,
+  FilterBar,
   Hint,
   IconBell,
   IconDownload,
@@ -19,7 +20,9 @@ import {
   IconSettings,
   IconStar,
   IconUser,
+  IconWarning,
   IconButton,
+  NotificationPanel,
   PageShell,
   Pagination,
   Progress,
@@ -33,7 +36,14 @@ import {
   Toolbar,
   Wizard,
 } from 'aelux-components'
-import type { AccordionItem, SidebarNavGroup, TabItem, WizardStep } from 'aelux-components'
+import type {
+  AccordionItem,
+  FilterOption,
+  NotificationItem,
+  SidebarNavGroup,
+  TabItem,
+  WizardStep,
+} from 'aelux-components'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 import type { SectionProps } from './types'
 
@@ -139,6 +149,99 @@ const TOOLBAR_CODE = `<Toolbar
 >
   <Button size="sm" variant="primary" leftIcon={<IconPlus size={14} />}>新建</Button>
 </Toolbar>`
+
+/* ---------- FilterBar ---------- */
+
+const FILTER_BAR_CODE = `<FilterBar
+  ariaLabel="模组筛选"
+  filters={filters}
+  value={filter}
+  onValueChange={setFilter}
+  searchValue={keyword}
+  onSearchChange={setKeyword}
+  searchPlaceholder="搜索模组 / 作者"
+  actions={<Button size="sm" variant="secondary">刷新</Button>}
+/>`
+
+const FILTER_MODS: FilterOption[] = [
+  { value: 'all', label: '全部', count: 128 },
+  { value: 'tech', label: '科技', count: 42 },
+  { value: 'magic', label: '魔法', count: 27 },
+  { value: 'adventure', label: '冒险', count: 31 },
+  { value: 'decoration', label: '装饰', count: 18 },
+  { value: 'world', label: '世界生成', count: 10 },
+  { value: 'library', label: '前置库', count: 6 },
+]
+
+/* ---------- NotificationPanel ---------- */
+
+const NOTIFICATION_CODE = `const [open, setOpen] = useState(false)
+
+<NotificationPanel
+  open={open}
+  onClose={() => setOpen(false)}
+  onOpen={() => setOpen(true)}
+  items={items}
+  onReadAll={readAll}
+  onItemClick={(item) => openItem(item.id)}
+  trigger={<IconButton label="通知" icon={<IconBell size={16} />} variant="ghost" size="sm" />}
+  footer={<Button size="sm" variant="secondary" block>查看全部通知</Button>}
+/>`
+
+const NOTIFICATION_ITEMS: NotificationItem[] = [
+  {
+    id: 'fabric',
+    icon: <IconDownload size={15} />,
+    title: 'Fabric 1.21.4 安装完成',
+    description: '28 个模组已校验，可立即启动实例。',
+    time: '2 分钟前',
+    unread: true,
+    action: (
+      <Tag size="sm" color="success" variant="soft">
+        完成
+      </Tag>
+    ),
+  },
+  {
+    id: 'sodium',
+    icon: <IconPackage size={15} />,
+    title: 'Sodium 0.6.5 有可用更新',
+    description: '新版本修复了区块渲染闪烁问题。',
+    time: '1 小时前',
+    unread: true,
+    action: (
+      <Tag size="sm" color="info" variant="soft">
+        更新
+      </Tag>
+    ),
+  },
+  {
+    id: 'memory',
+    icon: <IconWarning size={15} />,
+    title: '内存分配接近上限',
+    description: '当前分配 8 GB，建议调整为 10 GB。',
+    time: '昨天 21:40',
+    unread: true,
+    action: (
+      <Tag size="sm" color="warning" variant="soft">
+        建议
+      </Tag>
+    ),
+  },
+  {
+    id: 'deps',
+    icon: <IconInfo size={15} />,
+    title: '模组依赖已自动解决',
+    description: 'Lithium 需要的前置库已安装完成。',
+    time: '3 天前',
+    unread: false,
+    action: (
+      <Tag size="sm" color="neutral" variant="outline">
+        已读
+      </Tag>
+    ),
+  },
+]
 
 /* ---------- PageShell ---------- */
 
@@ -347,6 +450,15 @@ export function LayoutSection(props: SectionProps) {
   const [maximized, setMaximized] = useState(false)
   const [lastAction, setLastAction] = useState('尚未点击窗口按钮')
 
+  /* FilterBar */
+  const [modFilter, setModFilter] = useState('all')
+  const [modKeyword, setModKeyword] = useState('')
+
+  /* NotificationPanel */
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [notifications, setNotifications] = useState<NotificationItem[]>(NOTIFICATION_ITEMS)
+  const [notifLog, setNotifLog] = useState('尚未操作')
+
   /* Pagination */
   const [page, setPage] = useState(1)
   const [pageSm, setPageSm] = useState(3)
@@ -366,6 +478,18 @@ export function LayoutSection(props: SectionProps) {
 
   const splitInstance = SPLIT_INSTANCES.find((item) => item.key === splitKey) ?? SPLIT_INSTANCES[0]
   const crumbs = CRUMB_LABELS.slice(0, crumbIndex + 1)
+  const selectedModFilter = FILTER_MODS.find((item) => item.value === modFilter)
+  const notifUnread = notifications.filter((item) => item.unread === true).length
+
+  const handleNotificationReadAll = () => {
+    setNotifications((current) => current.map((item) => ({ ...item, unread: false })))
+    setNotifLog('已全部标记为已读')
+  }
+
+  const handleNotificationClick = (item: NotificationItem) => {
+    setNotifications((current) => current.map((entry) => (entry.id === item.id ? { ...entry, unread: false } : entry)))
+    setNotifLog(`打开通知：${typeof item.title === 'string' ? item.title : item.id}`)
+  }
 
   const pageSize = 8
   const pagedRows = PAGED_ITEMS.slice((page - 1) * pageSize, page * pageSize)
@@ -558,6 +682,80 @@ export function LayoutSection(props: SectionProps) {
               </span>
             ))}
           </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="FilterBar：模组筛选工具条"
+        description="左侧 pill 过滤组（active 主色浅底 + 计数 badge），中间内嵌 SearchInput，右侧 actions 插槽；窄宽度自动换行，sticky 时吸顶并加下边框与模糊。"
+        anchor="FilterBar"
+        code={FILTER_BAR_CODE}
+        column
+      >
+        <FilterBar
+          ariaLabel="模组筛选"
+          filters={FILTER_MODS}
+          value={modFilter}
+          onValueChange={setModFilter}
+          searchValue={modKeyword}
+          onSearchChange={setModKeyword}
+          searchPlaceholder="搜索模组 / 作者"
+          actions={
+            <>
+              <IconButton
+                label="刷新"
+                icon={<IconRefresh size={15} />}
+                variant="ghost"
+                size="sm"
+                onClick={() => setModKeyword('')}
+              />
+              <Button size="sm" variant="primary" leftIcon={<IconPlus size={14} />}>
+                新建筛选
+              </Button>
+            </>
+          }
+        />
+        <div className="demo-surface">
+          <span className="demo-label">
+            筛选：{selectedModFilter?.label ?? '全部'}
+            {modKeyword.trim() !== '' ? ` · 关键词「${modKeyword.trim()}」` : ' · 未输入关键词'}
+            {` · 命中 ${selectedModFilter?.count ?? 0} 条`}
+          </span>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="NotificationPanel：通知中心"
+        description="trigger 打开 portal 浮层（fixed 定位、视口翻转/夹取）；未读圆点、未读角标、「全部已读」与空态；点击外部 / Esc 关闭并回焦触发按钮。"
+        anchor="NotificationPanel"
+        code={NOTIFICATION_CODE}
+        column
+      >
+        <div className="demo-row" style={{ alignItems: 'center' }}>
+          <NotificationPanel
+            title="通知"
+            items={notifications}
+            open={notifOpen}
+            onClose={() => setNotifOpen(false)}
+            onOpen={() => setNotifOpen(true)}
+            onReadAll={handleNotificationReadAll}
+            onItemClick={handleNotificationClick}
+            trigger={<IconButton label="通知" icon={<IconBell size={16} />} variant="ghost" size="sm" />}
+            footer={
+              <Button size="sm" variant="secondary" block>
+                查看全部通知
+              </Button>
+            }
+          />
+          <Button size="sm" variant="secondary" onClick={() => setNotifications([])}>
+            清空通知
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => setNotifications(NOTIFICATION_ITEMS)}>
+            恢复示例
+          </Button>
+          <span className="demo-label">
+            未读 {notifUnread} 条 · {notifLog}
+          </span>
         </div>
       </ShowcaseBlock>
 

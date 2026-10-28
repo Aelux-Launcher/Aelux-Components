@@ -79,3 +79,8 @@
 @import '../components/Breadcrumb/style.css';
 @import '../components/Hint/style.css';
 @import '../components/StatusBar/style.css';
+@import '../components/MultiSelect/style.css';
+@import '../components/ColorPicker/style.css';
+@import '../components/Image/style.css';
+@import '../components/FilterBar/style.css';
+@import '../components/NotificationPanel/style.css';

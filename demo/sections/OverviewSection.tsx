@@ -29,7 +29,7 @@ export function Demo() {
 }`
 
 const STATS = [
-  { value: '66', label: '开箱即用组件' },
+  { value: '71', label: '开箱即用组件' },
   { value: 'ESM', label: '仅现代模块产物' },
   { value: '0', label: '运行时依赖' },
   { value: 'd.ts', label: '完整类型声明' },
@@ -70,8 +70,10 @@ const COMPONENT_INDEX = [
       'InputNumber',
       'Select',
       'Combobox',
+      'MultiSelect',
       'FilePicker',
       'DropZone',
+      'ColorPicker',
       'FormItem',
     ],
   },
@@ -118,11 +120,13 @@ const COMPONENT_INDEX = [
       'Tag',
       'Badge',
       'Avatar',
+      'Image',
+      'ListItem',
       'ListBox',
+      'TaskList',
       'Table',
       'DescriptionList',
       'Statistic',
-      'TaskList',
       'Timeline',
       'SettingSection',
     ],
@@ -135,6 +139,8 @@ const COMPONENT_INDEX = [
       'SidebarNav',
       'TitleBar',
       'Toolbar',
+      'FilterBar',
+      'NotificationPanel',
       'PageShell',
       'SplitLayout',
       'Wizard',
@@ -178,7 +184,7 @@ export function OverviewSection({ onNavigate }: SectionProps) {
         </h1>
         <p className="demo-hero__desc">
           一套与 Aelux Launcher 启动器同源的设计系统：React 19 + TypeScript，ESM + d.ts 双产物，
-          零运行时依赖，66 个组件覆盖基础、表单、反馈、浮层、数据展示与窗口布局，并附启动器组合示例。
+          零运行时依赖，71 个组件覆盖基础、表单、反馈、浮层、数据展示与窗口布局，并附启动器组合示例。
         </p>
 
         <div className="demo-hero__actions">

@@ -1,5 +1,6 @@
 import { useId, useState } from 'react'
 import {
+  ColorPicker,
   Combobox,
   DropZone,
   FilePicker,
@@ -9,11 +10,17 @@ import {
   IconUser,
   Input,
   InputNumber,
+  MultiSelect,
   SearchInput,
   Select,
   Textarea,
 } from 'aelux-components'
-import type { ComboboxOption, SelectOption } from 'aelux-components'
+import type {
+  ColorPickerPreset,
+  ComboboxOption,
+  MultiSelectOption,
+  SelectOption,
+} from 'aelux-components'
 import type { SectionProps } from './types'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 
@@ -54,6 +61,29 @@ const PACK_OPTIONS: ComboboxOption[] = [
 
 const MAX_PACK_SIZE = 200 * 1024 * 1024
 
+const MODULE_OPTIONS: MultiSelectOption[] = [
+  { value: 'fabric-api', label: 'Fabric API', description: '大部分 Fabric 模组的前置依赖' },
+  { value: 'sodium', label: 'Sodium', description: '渲染优化 · 帧率提升明显' },
+  { value: 'lithium', label: 'Lithium', description: '物理与服务端逻辑优化' },
+  { value: 'iris', label: 'Iris Shaders', description: '光影支持 · 依赖 Sodium' },
+  { value: 'modmenu', label: 'Mod Menu', description: '游戏内模组列表' },
+  { value: 'optifine', label: 'OptiFine', description: '与 Fabric 不兼容', disabled: true },
+]
+
+const THEME_PRESETS: ColorPickerPreset[] = [
+  { value: '#38BDF8', label: '冰蓝（默认）' },
+  { value: '#22C55E', label: '森绿' },
+  { value: '#F59E0B', label: '琥珀' },
+  { value: '#EF4444', label: '警示红' },
+  { value: '#8B5CF6', label: '紫罗兰' },
+  { value: '#EC4899', label: '品红' },
+]
+
+function moduleLabel(value: string): string {
+  const option = MODULE_OPTIONS.find((item) => item.value === value)
+  return typeof option?.label === 'string' ? option.label : value
+}
+
 const INPUT_CODE = `<Input placeholder="实例名称" value={name} onChange={(e) => setName(e.target.value)} allowClear />
 <Input status="error" placeholder="错误状态" prefix={<IconSearch size={14} />} />`
 
@@ -85,6 +115,15 @@ const COMBOBOX_CODE = `<Combobox
   placeholder="选择整合包版本"
 />`
 
+const MULTISELECT_CODE = `<MultiSelect
+  options={modules}
+  value={mods}
+  onValueChange={setMods}
+  searchable
+  maxDisplay={2}
+  placeholder="选择要安装的模组"
+/>`
+
 const DROPZONE_CODE = `<DropZone
   accept=".zip,.mrpack"
   multiple
@@ -92,6 +131,13 @@ const DROPZONE_CODE = `<DropZone
   title="拖入整合包或资源包"
   onFiles={handleFiles}
   onReject={handleReject}
+/>`
+
+const COLORPICKER_CODE = `<ColorPicker
+  presets={themePresets}
+  value={accent}
+  onValueChange={setAccent}
+  allowCustom
 />`
 
 const FILEPICKER_CODE = `<FilePicker
@@ -114,7 +160,7 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-/** 表单组件示例页：Input / Textarea / SearchInput / InputNumber / Select / Combobox / DropZone / FormItem。 */
+/** 表单组件示例页：Input / Textarea / SearchInput / InputNumber / Select / Combobox / MultiSelect / FilePicker / DropZone / ColorPicker / FormItem。 */
 export function FormSection(_props: SectionProps) {
   const formId = useId()
   const [name, setName] = useState('Aelux Launcher')
@@ -126,6 +172,8 @@ export function FormSection(_props: SectionProps) {
   const [zoom, setZoom] = useState<number | null>(1)
   const [java, setJava] = useState('17')
   const [pack, setPack] = useState('fabric-1.21')
+  const [mods, setMods] = useState<string[]>(['fabric-api', 'sodium'])
+  const [accent, setAccent] = useState('#38BDF8')
   const [droppedFiles, setDroppedFiles] = useState<File[]>([])
   const [packFiles, setPackFiles] = useState<File[]>([])
   const [fileNote, setFileNote] = useState('')
@@ -342,6 +390,69 @@ export function FormSection(_props: SectionProps) {
       </ShowcaseBlock>
 
       <ShowcaseBlock
+        title="MultiSelect 多选下拉"
+        description="点开浮层勾选，已选项以 Tag 展示（超过 maxDisplay 折叠为 +N）；searchable 支持输入过滤，↑↓ / Enter / Space / Escape 全键盘操作，Backspace 删除最近一项。"
+        code={MULTISELECT_CODE}
+        anchor="MultiSelect"
+        column
+      >
+        <div className="demo-row">
+          <MultiSelect
+            options={MODULE_OPTIONS}
+            value={mods}
+            onValueChange={setMods}
+            searchable
+            maxDisplay={2}
+            placeholder="选择要安装的模组"
+            ariaLabel="选择模组"
+          />
+          <MultiSelect
+            options={MODULE_OPTIONS}
+            defaultValue={['fabric-api', 'lithium']}
+            size="sm"
+            searchable
+            placeholder="sm 尺寸"
+            ariaLabel="sm 多选"
+          />
+          <MultiSelect
+            options={MODULE_OPTIONS}
+            defaultValue={['sodium']}
+            size="lg"
+            searchable
+            placeholder="lg 尺寸"
+            ariaLabel="lg 多选"
+          />
+          <MultiSelect
+            options={MODULE_OPTIONS}
+            defaultValue={['iris']}
+            searchable={false}
+            placeholder="不可搜索，点击展开"
+            ariaLabel="不可搜索多选"
+          />
+          <MultiSelect
+            options={MODULE_OPTIONS}
+            defaultValue={['fabric-api', 'sodium']}
+            disabled
+            ariaLabel="禁用状态"
+          />
+        </div>
+        <MultiSelect
+          options={MODULE_OPTIONS}
+          block
+          searchable
+          maxDisplay={3}
+          value={mods}
+          onValueChange={setMods}
+          placeholder="block：搜索并勾选要预装的模组"
+          ariaLabel="block 多选"
+        />
+        <p className="demo-label">
+          已选 {mods.length} 项：
+          {mods.length === 0 ? '（空）' : mods.map(moduleLabel).join('、')}
+        </p>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
         title="FilePicker 文件选择"
         description="点击选择或直接拖入文件，选中项以列表展示文件名与大小，可逐个移除；受控 files + onChange / onRemove，accept 在弹窗选择与拖入时都会过滤。"
         code={FILEPICKER_CODE}
@@ -421,6 +532,32 @@ export function FormSection(_props: SectionProps) {
           </p>
         ) : null}
         {rejectMessage ? <p className="demo-label">已拒绝：{rejectMessage}</p> : null}
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="ColorPicker 颜色选择"
+        description="预设色板以 radiogroup 语义提供（方向键切换、选中描边 + 对勾）；allowCustom 时可输入 #RRGGBB，非法色值不提交并在回车 / 失焦时提示错误。"
+        code={COLORPICKER_CODE}
+        anchor="ColorPicker"
+        column
+      >
+        <div className="demo-row">
+          <ColorPicker
+            presets={THEME_PRESETS}
+            value={accent}
+            onValueChange={setAccent}
+            ariaLabel="启动器强调色"
+          />
+          <ColorPicker presets={THEME_PRESETS} defaultValue="#22C55E" size="sm" ariaLabel="sm 尺寸色板" />
+          <ColorPicker
+            presets={['#38BDF8', '#F59E0B', '#EF4444']}
+            defaultValue="#F59E0B"
+            allowCustom={false}
+            ariaLabel="仅预设色板"
+          />
+          <ColorPicker presets={THEME_PRESETS} defaultValue="#8B5CF6" disabled ariaLabel="禁用色板" />
+        </div>
+        <p className="demo-label">当前强调色：{accent}（主题与按钮高亮会同步应用）</p>
       </ShowcaseBlock>
 
       <ShowcaseBlock

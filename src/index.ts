@@ -221,6 +221,22 @@ export type { HintProps, HintTone } from './components/Hint'
 export { StatusBar } from './components/StatusBar'
 export type { StatusBarProps } from './components/StatusBar'
 
+/* --------------------------------------------------- 第四批细粒度控件 */
+export { MultiSelect } from './components/MultiSelect'
+export type { MultiSelectOption, MultiSelectProps } from './components/MultiSelect'
+
+export { ColorPicker } from './components/ColorPicker'
+export type { ColorPickerPreset, ColorPickerProps } from './components/ColorPicker'
+
+export { Image } from './components/Image'
+export type { ImageProps } from './components/Image'
+
+export { FilterBar } from './components/FilterBar'
+export type { FilterBarProps, FilterOption } from './components/FilterBar'
+
+export { NotificationPanel } from './components/NotificationPanel'
+export type { NotificationItem, NotificationPanelProps } from './components/NotificationPanel'
+
 /* ------------------------------------------------------------------- 图标 */
 export { Icon } from './icons'
 export type { IconProps } from './icons'

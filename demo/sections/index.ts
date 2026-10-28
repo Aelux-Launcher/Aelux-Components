@@ -53,7 +53,7 @@ export const navSections: NavSection[] = [
     description: '文本框、搜索框、数字输入、下拉组合框与拖拽导入，覆盖启动器的各类设置与安装场景。',
     group: '组件',
     icon: icon(IconEdit),
-    components: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'FilePicker', 'DropZone', 'FormItem'],
+    components: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'MultiSelect', 'FilePicker', 'DropZone', 'ColorPicker', 'FormItem'],
     component: FormSection,
   },
   {
@@ -89,7 +89,7 @@ export const navSections: NavSection[] = [
     description: '卡片、标签、头像、列表、表格、键值对与统计 —— 启动器列表与详情页的主要信息载体。',
     group: '展示',
     icon: icon(IconFolder),
-    components: ['Card', 'Tag', 'Badge', 'Avatar', 'ListItem', 'ListBox', 'TaskList', 'Table', 'DescriptionList', 'Statistic', 'Timeline', 'SettingSection'],
+    components: ['Card', 'Tag', 'Badge', 'Avatar', 'Image', 'ListItem', 'ListBox', 'TaskList', 'Table', 'DescriptionList', 'Statistic', 'Timeline', 'SettingSection'],
     component: DataDisplaySection,
   },
   {
@@ -98,7 +98,7 @@ export const navSections: NavSection[] = [
     description: '标签页、侧边导航、标题栏、工具栏、折叠面板与分页，为启动器搭建窗口骨架。',
     group: '展示',
     icon: icon(IconLayout),
-    components: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'PageShell', 'SplitLayout', 'Wizard', 'Breadcrumb', 'Hint', 'StatusBar', 'Accordion', 'Pagination', 'Divider', 'Space'],
+    components: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'FilterBar', 'NotificationPanel', 'PageShell', 'SplitLayout', 'Wizard', 'Breadcrumb', 'Hint', 'StatusBar', 'Accordion', 'Pagination', 'Divider', 'Space'],
     component: LayoutSection,
   },
   {

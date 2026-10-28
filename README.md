@@ -6,7 +6,7 @@ Aelux Launcher 通用 UI 组件库 —— 纯 React、无业务逻辑，与 Aelu
 - **产物**：仅 ESM（`dist/aelux-components.js`）+ 完整类型声明（`dist/index.d.ts`）
 - **不打包 React**：`react` / `react-dom` 为 `peerDependencies`，由使用方提供
 - **零运行时依赖**：图标为内置内联 SVG，样式为一份可直接引入的 CSS
-- **66 个组件**：覆盖基础、表单、反馈、浮层、数据展示与窗口布局，包含 PCL2 / HMCL / Modrinth 式细粒度控件，面向启动器场景（两栏主界面、设置页、安装向导、任务队列）
+- **71 个组件**：覆盖基础、表单、反馈、浮层、数据展示与窗口布局，包含 PCL2 / HMCL / Modrinth 式细粒度控件，面向启动器场景（两栏主界面、设置页、安装向导、任务队列）
 - **中性表面 + 冰蓝强调**：表面、文字、描边使用中性灰阶，品牌色只用于主按钮、选中态与焦点环；不使用渐变、光晕等装饰效果
 - **亮 / 暗双主题**：全部视觉由 `--aelux-*` 设计变量驱动，`data-theme` 一键切换
 
@@ -97,6 +97,8 @@ localStorage.setItem('aelux-theme', 'dark')
 | `InputNumber` | 数字输入：`min` / `max` / `step` / `precision`、`-` / `+` 步进、↑↓ 调整、`role="spinbutton"` |
 | `Select` | `options`、`value` / `defaultValue`、`onValueChange`、`placeholder`、`block` |
 | `Combobox` | 可搜索下拉：输入过滤、↑↓ / Enter / Esc 键盘导航、`allowClear`、`emptyText`、`aria-activedescendant` |
+| `MultiSelect` | 多选下拉：浮层勾选、已选 Chip（超过 `maxDisplay` 折叠为 +N，可逐个移除）、`searchable` 过滤、全键盘操作 |
+| `ColorPicker` | 颜色选择：预设色板（roving tabindex + 方向键）、选中描边 / 对勾、`allowCustom` hex 输入与校验 |
 | `DropZone` | 拖拽 / 点击导入：`accept`、`multiple`、`maxSize`、`onFiles`、`onReject(files, 'type' \| 'size')` |
 | `FilePicker` | 文件选择：受控 / 非受控、`accept` 过滤（扩展名 / `type/*` / MIME）、已选文件列表（大小 / 移除）、拖拽高亮、`block` |
 | `FormItem` | `label`、`htmlFor`、`required`、`hint`、`error`、`inline` |
@@ -149,6 +151,7 @@ localStorage.setItem('aelux-theme', 'dark')
 | `Tag` | `color`、`variant`、`closable`、`icon` |
 | `Badge` | `count`、`max`、`dot`、`status`、`showZero` |
 | `Avatar` | `src` / `alt` / `name`（无图时显示首字）、`size`、`shape`、`icon`、`status` |
+| `Image` | 图片：`src`、`ratio`（square / video / wide / 数字）、`fit`、`rounded`、失败或无图时 `fallback` 占位、可点击 |
 | `ListBox` | 可选列表：`options`（icon / description / badge）、单选 / `multiple`、键盘导航、`height`、`role="listbox"` |
 | `Table` | 泛型表格：`columns`、`data`、`rowKey`、`selectable`、`onRowClick`、`striped`、`loading`、`emptyText`、`stickyHeader` |
 | `DescriptionList` | 键值对列表：`items`、`columns`（1 / 2 / 3）、`layout`（horizontal / vertical）、`bordered` |
@@ -166,6 +169,8 @@ localStorage.setItem('aelux-theme', 'dark')
 | `SidebarNav` | 侧边导航：`groups`（items：icon / badge / disabled）、受控 / 非受控、`collapsed`、`header` / `footer` |
 | `TitleBar` | 无边框窗口标题栏：`title` / `subtitle` / `icon`、窗口控制按钮、`dragRegion`（写入 `data-tauri-drag-region`）、`maximized` |
 | `Toolbar` | 工具栏：`start` / children / `end` 三槽、`variant`（plain / bordered）、`size`、`sticky`、`role="toolbar"` |
+| `FilterBar` | 过滤工具条：pills 过滤组（`aria-pressed` + 计数）、可选内嵌 `SearchInput`、右侧 `actions`、`sticky` 吸顶 |
+| `NotificationPanel` | 通知面板：`trigger` 未读角标、portal 浮层（视口翻转）、列表项未读 / 时间 / 操作、全部已读、空态、footer |
 | `Accordion` | 折叠面板：`items`、`multiple`、受控 / 非受控、高度动画、`bordered` / `plain` |
 | `Pagination` | 分页：`page` / `pageSize` / `total`、`siblingCount` 省略号、`showTotal`、`aria-current` |
 | `Divider` | `orientation`、`variant`、`children`、`align` |
