@@ -1,0 +1,192 @@
+/* ===== FilePicker ===== */
+.aelux-file-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1-5);
+  width: 240px;
+  max-width: 100%;
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-md);
+  line-height: var(--aelux-line-height);
+  color: var(--aelux-text);
+}
+
+.aelux-file-picker--block {
+  width: 100%;
+}
+
+.aelux-file-picker__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+}
+
+.aelux-file-picker__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  height: var(--aelux-control-md);
+  padding: 0 var(--aelux-space-2-5);
+  border: 1px dashed var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--aelux-transition-fast),
+    background-color var(--aelux-transition-fast);
+}
+
+.aelux-file-picker__trigger:hover:not(:disabled) {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-file-picker__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-file-picker__trigger.is-dragging {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-file-picker__trigger:disabled {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-file-picker__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-file-picker__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 1px;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.aelux-file-picker__title {
+  overflow: hidden;
+  color: inherit;
+  font-size: var(--aelux-font-size-md);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-file-picker__hint {
+  overflow: hidden;
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-file-picker--sm .aelux-file-picker__trigger {
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2);
+  border-radius: var(--aelux-radius-sm);
+}
+
+.aelux-file-picker--sm .aelux-file-picker__title {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-file-picker--lg .aelux-file-picker__trigger {
+  height: var(--aelux-control-lg);
+  padding: 0 var(--aelux-space-3);
+  border-radius: var(--aelux-radius-lg);
+}
+
+.aelux-file-picker--lg .aelux-file-picker__title {
+  font-size: var(--aelux-font-size-lg);
+}
+
+.aelux-file-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aelux-file-picker__empty {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-file-picker__item {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  min-height: 26px;
+  padding: 0 var(--aelux-space-1) 0 var(--aelux-space-2);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-sm);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-file-picker__item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--aelux-font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-file-picker__item-size {
+  flex: none;
+  color: var(--aelux-text-tertiary);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-file-picker__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: var(--aelux-radius-xs);
+  background: transparent;
+  color: var(--aelux-text-tertiary);
+  cursor: pointer;
+}
+
+.aelux-file-picker__remove:hover:not(:disabled) {
+  background: var(--aelux-surface-hover);
+  color: var(--aelux-text);
+}
+
+.aelux-file-picker__remove:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-file-picker__remove:disabled {
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-file-picker__input {
+  display: none;
+}

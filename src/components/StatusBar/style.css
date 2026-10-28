@@ -1,0 +1,50 @@
+/* ===== StatusBar ===== */
+.aelux-status-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-3);
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 0 var(--aelux-space-3);
+  border-top: 1px solid var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.4;
+}
+
+.aelux-status-bar__left,
+.aelux-status-bar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  flex: none;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.aelux-status-bar__center {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 语义色调 */
+.aelux-status-bar--info {
+  border-top-color: var(--aelux-info-soft-border);
+  background: var(--aelux-info-soft);
+}
+
+.aelux-status-bar--success {
+  border-top-color: var(--aelux-success-soft-border);
+  background: var(--aelux-success-soft);
+}
+
+.aelux-status-bar--warning {
+  border-top-color: var(--aelux-warning-soft-border);
+  background: var(--aelux-warning-soft);
+}

@@ -1,0 +1,97 @@
+/* ProgressDialog —— 任务进度对话框：进度条 + 状态行 + 统计 + 可折叠详情 */
+
+.aelux-progress-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-3);
+}
+
+.aelux-progress-dialog__description {
+  margin: 0;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: var(--aelux-line-height);
+}
+
+.aelux-progress-dialog__status {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--aelux-space-2);
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-progress-dialog__status-text {
+  min-width: 0;
+}
+
+.aelux-progress-dialog__percent {
+  flex: none;
+  color: var(--aelux-text-tertiary);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.aelux-progress-dialog__stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1-5);
+  margin: 0;
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  background: var(--aelux-surface-subtle);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-sm);
+}
+
+.aelux-progress-dialog__stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--aelux-space-3);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-progress-dialog__stat-label {
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-progress-dialog__stat-value {
+  margin: 0;
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.aelux-progress-dialog__details {
+  max-height: 220px;
+  overflow: auto;
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  background: var(--aelux-surface-subtle);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-sm);
+  color: var(--aelux-text-secondary);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+  line-height: var(--aelux-line-height);
+}
+
+.aelux-progress-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aelux-space-3);
+  width: 100%;
+}
+
+.aelux-progress-dialog__chevron {
+  display: inline-flex;
+  transition: transform var(--aelux-transition-fast);
+}
+
+.aelux-progress-dialog__chevron--open {
+  transform: rotate(180deg);
+}

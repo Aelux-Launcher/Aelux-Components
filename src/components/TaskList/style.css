@@ -1,0 +1,188 @@
+/* ============================================================================
+ * TaskList · 任务队列
+ * ========================================================================== */
+
+.aelux-task-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface);
+  overflow: hidden;
+}
+
+.aelux-task-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aelux-space-2);
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  border-bottom: 1px solid var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-task-list__title {
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-semibold);
+  color: var(--aelux-text);
+}
+
+.aelux-task-list__count {
+  flex: none;
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-task-list__body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.aelux-task-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--aelux-space-2-5);
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+}
+
+.aelux-task-list__item + .aelux-task-list__item {
+  border-top: 1px solid var(--aelux-border);
+}
+
+.aelux-task-list__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--aelux-space-6);
+  height: var(--aelux-space-6);
+  margin-top: 1px;
+  border-radius: var(--aelux-radius-sm);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-task-list__item--running .aelux-task-list__icon {
+  background: var(--aelux-info-soft);
+  color: var(--aelux-info-text);
+}
+
+.aelux-task-list__item--paused .aelux-task-list__icon {
+  background: var(--aelux-warning-soft);
+  color: var(--aelux-warning-text);
+}
+
+.aelux-task-list__item--done .aelux-task-list__icon {
+  background: var(--aelux-success-soft);
+  color: var(--aelux-success-text);
+}
+
+.aelux-task-list__item--error .aelux-task-list__icon {
+  background: var(--aelux-danger-soft);
+  color: var(--aelux-danger-text);
+}
+
+.aelux-task-list__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+}
+
+.aelux-task-list__row {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+}
+
+.aelux-task-list__item-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  color: var(--aelux-text);
+}
+
+.aelux-task-list__item--done .aelux-task-list__item-title {
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-task-list__item--error .aelux-task-list__item-title {
+  color: var(--aelux-danger-text);
+}
+
+.aelux-task-list__actions {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-0-5);
+  margin: calc(var(--aelux-space-1) * -1) calc(var(--aelux-space-1) * -1)
+    calc(var(--aelux-space-1) * -1) 0;
+}
+
+.aelux-task-list__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--aelux-font-size-sm);
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-task-list__item--error .aelux-task-list__description {
+  color: var(--aelux-danger-text);
+}
+
+.aelux-task-list__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  margin-top: var(--aelux-space-1);
+}
+
+.aelux-task-list__bar {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.aelux-task-list__percent {
+  flex: none;
+  min-width: var(--aelux-space-8);
+  text-align: right;
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-task-list__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-1);
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-task-list__empty {
+  padding: var(--aelux-space-6) var(--aelux-space-3);
+  text-align: center;
+  font-size: var(--aelux-font-size-sm);
+  color: var(--aelux-text-tertiary);
+}
+
+.aelux-task-list__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--aelux-space-2) var(--aelux-space-3);
+  border-top: 1px solid var(--aelux-border);
+}

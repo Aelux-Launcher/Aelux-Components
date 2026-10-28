@@ -20,6 +20,7 @@ export {
   IconInfo,
   IconLayout,
   IconLoader,
+  IconMenu,
   IconMinus,
   IconMoon,
   IconMore,

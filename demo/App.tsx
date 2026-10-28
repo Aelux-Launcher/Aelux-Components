@@ -1,311 +1,360 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { IconChevronRight, IconMoon, IconSearch, IconSun } from 'aelux-components'
-import type { DemoTheme } from './sections/types'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconMenu,
+  IconMoon,
+  IconSearch,
+  IconSun,
+  cx,
+} from 'aelux-components'
+import type { NavSection } from './sections/types'
 import { navSections } from './sections'
+import type { DemoTheme } from './sections/types'
 
-const THEME_STORAGE_KEY = 'aelux-theme'
+const THEME_KEY = 'aelux-theme'
 
-function resolveInitialTheme(): DemoTheme {
-  // ?theme=dark 便于截图 / 分享时固定主题
-  const forced = new URLSearchParams(window.location.search).get('theme')
-  if (forced === 'light' || forced === 'dark') return forced
-  const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
-  if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-interface LocationState {
+interface ActiveLocation {
   sectionId: string
   anchor?: string
 }
 
-function parseHash(hash: string): LocationState | null {
-  const raw = hash.replace(/^#\/?/, '')
-  if (!raw) return null
+interface NavGroup {
+  name: string
+  sections: NavSection[]
+}
+
+/* ------------------------------------------------------------------ 工具 */
+
+function resolveInitialTheme(): DemoTheme {
+  if (typeof window === 'undefined') return 'light'
+  const fromUrl = new URLSearchParams(window.location.search).get('theme')
+  if (fromUrl === 'dark' || fromUrl === 'light') return fromUrl
+  const stored = window.localStorage.getItem(THEME_KEY)
+  if (stored === 'dark' || stored === 'light') return stored
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+function parseHash(): ActiveLocation {
+  const raw = window.location.hash.replace(/^#\/?/, '')
   const [sectionId, anchor] = raw.split('/')
   const section = navSections.find((item) => item.id === sectionId)
-  if (!section) return null
+  if (!section) return { sectionId: navSections[0].id }
   const validAnchor = anchor && section.components?.includes(anchor) ? anchor : undefined
   return { sectionId: section.id, anchor: validAnchor }
 }
 
-function resolveInitialLocation(): LocationState {
-  return parseHash(window.location.hash) ?? { sectionId: navSections[0]?.id ?? 'overview' }
-}
-
-function Logo() {
-  return <img className="demo-logo" src="/aelux-logo.png" alt="" width={30} height={30} aria-hidden="true" />
-}
-
-export default function App() {
-  const [theme, setTheme] = useState<DemoTheme>(resolveInitialTheme)
-  const [location, setLocation] = useState<LocationState>(resolveInitialLocation)
-  const [query, setQuery] = useState('')
-  const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
-    const initial = resolveInitialLocation()
-    return initial.sectionId ? { [initial.sectionId]: true } : {}
-  })
-
-  const activeId = location.sectionId
-  const activeAnchor = location.anchor
+function useHashLocation() {
+  const [location, setLocation] = useState<ActiveLocation>(() => parseHash())
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
-  }, [theme])
-
-  const active = useMemo(
-    () => navSections.find((section) => section.id === activeId) ?? navSections[0],
-    [activeId],
-  )
-
-  const navigate = useCallback((sectionId: string, anchor?: string) => {
-    const section = navSections.find((item) => item.id === sectionId)
-    const nextAnchor = anchor && section?.components?.includes(anchor) ? anchor : undefined
-    setLocation({ sectionId, anchor: nextAnchor })
-    setExpanded((current) => ({ ...current, [sectionId]: true }))
+    const handleHashChange = () => setLocation(parseHash())
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
-  // 点击二级导航后滚动到对应示例块；普通切页回到顶部
-  useEffect(() => {
-    if (activeAnchor) {
-      const target = document.getElementById(`component-${activeAnchor}`)
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        return
-      }
+  const navigate = (sectionId: string, anchor?: string) => {
+    const hash = anchor ? `#${sectionId}/${anchor}` : `#${sectionId}`
+    if (window.location.hash !== hash) {
+      window.history.replaceState(null, '', hash)
     }
-    document.querySelector('.demo-content')?.scrollTo({ top: 0, behavior: 'auto' })
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [activeId, activeAnchor])
-
-  useEffect(() => {
-    window.history.replaceState(null, '', `#${activeId}${activeAnchor ? `/${activeAnchor}` : ''}`)
-  }, [activeId, activeAnchor])
-
-  useEffect(() => {
-    const handleHash = () => {
-      const next = parseHash(window.location.hash)
-      if (next) {
-        setLocation(next)
-        setExpanded((current) => ({ ...current, [next.sectionId]: true }))
-      }
-    }
-    handleHash()
-    window.addEventListener('hashchange', handleHash)
-    return () => window.removeEventListener('hashchange', handleHash)
-  }, [])
-
-  // Ctrl/Cmd + K 聚焦搜索
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault()
-        document.querySelector<HTMLInputElement>('.demo-search input')?.focus()
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
-
-  const keyword = query.trim().toLowerCase()
-  const filteredSections = keyword
-    ? navSections.filter((section) => {
-        const haystack = [section.title, section.description, section.group, ...(section.components ?? [])]
-          .join(' ')
-          .toLowerCase()
-        return haystack.includes(keyword)
-      })
-    : navSections
-
-  const groups = useMemo(() => {
-    const map = new Map<string, typeof navSections>()
-    for (const section of filteredSections) {
-      const list = map.get(section.group) ?? []
-      list.push(section)
-      map.set(section.group, list)
-    }
-    return [...map.entries()]
-  }, [filteredSections])
-
-  const toggleExpanded = (sectionId: string) => {
-    setExpanded((current) => ({ ...current, [sectionId]: !current[sectionId] }))
+    setLocation({ sectionId, anchor })
   }
 
-  const activeIndex = navSections.findIndex((section) => section.id === activeId)
-  const prev = activeIndex > 0 ? navSections[activeIndex - 1] : undefined
-  const next = activeIndex >= 0 && activeIndex < navSections.length - 1 ? navSections[activeIndex + 1] : undefined
+  return { location, navigate }
+}
 
-  if (!active) return null
-  const ActiveSection = active.component
+function groupSections(sections: NavSection[]): NavGroup[] {
+  const groups: NavGroup[] = []
+  for (const section of sections) {
+    const existing = groups.find((group) => group.name === section.group)
+    if (existing) existing.sections.push(section)
+    else groups.push({ name: section.group, sections: [section] })
+  }
+  return groups
+}
+
+/* ------------------------------------------------------------------ 页面 */
+
+export function App() {
+  const [theme, setTheme] = useState<DemoTheme>(() => resolveInitialTheme())
+  const { location, navigate } = useHashLocation()
+  const [query, setQuery] = useState('')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [collapsedGroups, setCollapsedGroups] = useState<string[]>([])
+  const [openPages, setOpenPages] = useState<string[]>(() => [parseHash().sectionId])
+  const searchRef = useRef<HTMLInputElement>(null)
+
+  const activeSection = navSections.find((section) => section.id === location.sectionId) ?? navSections[0]
+  const activeIndex = navSections.findIndex((section) => section.id === activeSection.id)
+  const previousSection = activeIndex > 0 ? navSections[activeIndex - 1] : undefined
+  const nextSection = activeIndex >= 0 && activeIndex < navSections.length - 1 ? navSections[activeIndex + 1] : undefined
+
+  const groups = useMemo(() => groupSections(navSections), [])
+
+  const filteredGroups = useMemo(() => {
+    const keyword = query.trim().toLowerCase()
+    if (!keyword) return groups
+    return groups
+      .map((group) => ({
+        ...group,
+        sections: group.sections.filter((section) => {
+          const haystack = [section.title, section.description, section.group, ...(section.components ?? [])]
+            .join(' ')
+            .toLowerCase()
+          return haystack.includes(keyword)
+        }),
+      }))
+      .filter((group) => group.sections.length > 0)
+  }, [groups, query])
+
+  /* 主题：写入 documentElement + localStorage */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    window.localStorage.setItem(THEME_KEY, theme)
+  }, [theme])
+
+  /* 路由变化：同步滚动位置与展开状态 */
+  useEffect(() => {
+    setOpenPages((pages) => (pages.includes(location.sectionId) ? pages : [...pages, location.sectionId]))
+    setSidebarOpen(false)
+    if (location.anchor) {
+      const target = document.getElementById(`component-${location.anchor}`)
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      window.scrollTo({ top: 0 })
+    }
+  }, [location])
+
+  /* Ctrl/Cmd + K 聚焦搜索 */
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        searchRef.current?.focus()
+      }
+      if (event.key === 'Escape' && document.activeElement === searchRef.current) {
+        setQuery('')
+        searchRef.current?.blur()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const toggleGroup = (name: string) => {
+    setCollapsedGroups((current) =>
+      current.includes(name) ? current.filter((item) => item !== name) : [...current, name],
+    )
+  }
+
+  const togglePage = (id: string) => {
+    setOpenPages((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]))
+  }
+
+  const goToAnchor = (anchor: string) => {
+    navigate(activeSection.id, anchor)
+  }
+
+  const isSearching = query.trim().length > 0
 
   return (
     <div className="demo-app">
-      <aside className="demo-sidebar">
-        <div className="demo-sidebar__brand">
-          <Logo />
-          <div>
-            <p className="demo-brand__name">Aelux Components</p>
-            <p className="demo-brand__meta">v0.1.0 · 冰蓝设计系统</p>
-          </div>
-        </div>
+      <header className="site-header">
+        <button
+          type="button"
+          className="menu-btn"
+          aria-label="打开导航"
+          aria-expanded={sidebarOpen}
+          onClick={() => setSidebarOpen((open) => !open)}
+        >
+          <IconMenu size={16} />
+        </button>
 
-        <div className="demo-sidebar__search">
-          <label className="demo-search">
-            <IconSearch size={14} />
-            <input
-              type="search"
-              value={query}
-              placeholder="搜索组件…（Ctrl K）"
-              aria-label="搜索组件"
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-        </div>
+        <button type="button" className="brand" onClick={() => navigate(navSections[0].id)}>
+          <img src="/aelux-logo.png" alt="" />
+          <span>aelux-components</span>
+          <span className="sep">/</span>
+          <span className="path">docs</span>
+        </button>
 
-        <nav className="demo-sidebar__nav" aria-label="组件导航">
-          {groups.length === 0 ? <p className="demo-nav__empty">没有匹配的组件</p> : null}
-          {groups.map(([group, sections]) => (
-            <div className="demo-nav__group" key={group}>
-              <p className="demo-nav__label">{group}</p>
-              <div className="demo-nav__items">
-                {sections.map((section) => {
-                  const children = keyword
-                    ? (section.components ?? []).filter((name) => name.toLowerCase().includes(keyword))
-                    : (section.components ?? [])
-                  const expandable = children.length > 1
-                  const open = Boolean(expanded[section.id]) || Boolean(keyword)
-                  return (
-                    <div className="demo-nav__entry" key={section.id}>
-                      <div className="demo-nav__row">
-                        <button
-                          type="button"
-                          className={`demo-nav__item${section.id === activeId ? ' is-active' : ''}`}
-                          aria-current={section.id === activeId && !activeAnchor ? 'page' : undefined}
-                          onClick={() => navigate(section.id)}
-                        >
-                          {section.icon}
-                          <span>{section.title}</span>
-                          {children.length ? <span className="demo-nav__count">{children.length}</span> : null}
-                        </button>
-                        {expandable ? (
-                          <button
-                            type="button"
-                            className={`demo-nav__caret${open ? ' is-open' : ''}`}
-                            aria-label={`${open ? '收起' : '展开'}${section.title}`}
-                            aria-expanded={open}
-                            onClick={() => toggleExpanded(section.id)}
-                          >
-                            <IconChevronRight size={13} />
-                          </button>
-                        ) : null}
-                      </div>
-                      {expandable && open ? (
-                        <div className="demo-nav__children">
-                          {children.map((name) => (
-                            <button
-                              type="button"
-                              key={name}
-                              className={`demo-nav__child${section.id === activeId && activeAnchor === name ? ' is-current' : ''}`}
-                              onClick={() => navigate(section.id, name)}
-                            >
-                              <span className="demo-nav__child-dot" aria-hidden="true" />
-                              {name}
-                            </button>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
-
-        <div className="demo-sidebar__foot">
-          <span>
-            React 19 · <code>pnpm dev</code>
+        <div className="header-right">
+          <span className="tag">
+            <span className="dot" />
+            通用 UI 组件库
           </span>
-          <span>ESM + d.ts</span>
+          <span className="tag">
+            <span className="ver">v0.1.0</span>
+          </span>
+          <button
+            type="button"
+            className="theme-btn"
+            aria-label={theme === 'dark' ? '切换到亮色主题' : '切换到暗色主题'}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            {theme === 'dark' ? <IconSun size={15} /> : <IconMoon size={15} />}
+          </button>
         </div>
-      </aside>
+      </header>
 
-      <div className="demo-main">
-        <header className="demo-topbar">
-          <div className="demo-crumb">
-            <span>组件库</span>
-            <span className="demo-crumb__sep">/</span>
-            <span>{active.group}</span>
-            <span className="demo-crumb__sep">/</span>
-            <strong>{active.title}</strong>
-            {activeAnchor ? (
+      <div className="layout">
+        {sidebarOpen ? (
+          <button type="button" className="sidebar-backdrop" aria-label="关闭导航" onClick={() => setSidebarOpen(false)} />
+        ) : null}
+
+        <aside className={cx('sidebar', sidebarOpen && 'is-open')}>
+          <div className="sidebar-search">
+            <div className="search-box">
+              <IconSearch size={14} />
+              <input
+                ref={searchRef}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="搜索组件… (Ctrl K)"
+                aria-label="搜索组件"
+              />
+            </div>
+          </div>
+
+          <nav className="nav-tree" aria-label="组件导航">
+            {filteredGroups.map((group) => {
+              const collapsed = !isSearching && collapsedGroups.includes(group.name)
+              return (
+                <section className="nav-group" key={group.name}>
+                  <button
+                    type="button"
+                    className={cx('g-title', collapsed && 'is-collapsed')}
+                    aria-expanded={!collapsed}
+                    onClick={() => toggleGroup(group.name)}
+                  >
+                    <IconChevronDown size={10} />
+                    {group.name}
+                  </button>
+
+                  {collapsed ? null : (
+                    <div className="g-items">
+                      {group.sections.map((section) => {
+                        const isActive = section.id === activeSection.id
+                        const hasChildren = Boolean(section.components?.length)
+                        const open = hasChildren && (isSearching || isActive || openPages.includes(section.id))
+                        return (
+                          <div key={section.id}>
+                            <div className="nav-row">
+                              <button
+                                type="button"
+                                className={cx('nav-link', isActive && 'is-active')}
+                                onClick={() => navigate(section.id)}
+                              >
+                                <span className="nav-ic">{section.icon}</span>
+                                <span className="nav-label">{section.title}</span>
+                                {section.components?.length ? (
+                                  <span className="nav-pin">{section.components.length}</span>
+                                ) : null}
+                              </button>
+                              {hasChildren ? (
+                                <button
+                                  type="button"
+                                  className={cx('nav-caret', open && 'is-open')}
+                                  aria-label={open ? '收起组件列表' : '展开组件列表'}
+                                  aria-expanded={open}
+                                  onClick={() => togglePage(section.id)}
+                                >
+                                  <IconChevronRight size={12} />
+                                </button>
+                              ) : null}
+                            </div>
+
+                            {open ? (
+                              <div className="nav-children">
+                                {section.components?.map((name) => (
+                                  <button
+                                    key={name}
+                                    type="button"
+                                    className={cx(
+                                      'nav-child',
+                                      isActive && location.anchor === name && 'is-current',
+                                    )}
+                                    onClick={() => navigate(section.id, name)}
+                                  >
+                                    {name}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </section>
+              )
+            })}
+
+            {filteredGroups.length === 0 ? <p className="nav-empty">没有匹配的组件，换个关键词试试。</p> : null}
+          </nav>
+        </aside>
+
+        <main className="main">
+          <div className="doc">
+            {activeSection.id !== navSections[0].id ? (
               <>
-                <span className="demo-crumb__sep">/</span>
-                <strong>{activeAnchor}</strong>
-              </>
-            ) : null}
-          </div>
-          <div className="demo-topbar__actions">
-            <span className="demo-chip demo-chip--accent">零运行时依赖</span>
-            <span className="demo-chip">React 19 · TS 5.9</span>
-            <button
-              type="button"
-              className="demo-icon-btn"
-              title={theme === 'light' ? '切换到深色主题' : '切换到浅色主题'}
-              aria-label={theme === 'light' ? '切换到深色主题' : '切换到浅色主题'}
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            >
-              {theme === 'light' ? <IconMoon size={15} /> : <IconSun size={15} />}
-            </button>
-          </div>
-        </header>
-
-        <main className="demo-content">
-          <div className="demo-page" key={active.id}>
-            {active.id === 'overview' ? null : (
-              <header className="demo-page-head">
-                <p className="demo-page-head__eyebrow">{active.group}</p>
-                <h1>{active.title}</h1>
-                <p className="demo-page-head__desc">{active.description}</p>
-                {active.components?.length ? (
-                  <div className="demo-page-head__tags">
-                    {active.components.map((name) => (
-                      <button
-                        type="button"
-                        className="demo-chip demo-chip--link"
-                        key={name}
-                        onClick={() => navigate(active.id, name)}
-                      >
+                <h1>{activeSection.title}</h1>
+                {activeSection.components?.length ? (
+                  <div className="tag-line">
+                    {activeSection.components.map((name) => (
+                      <button key={name} type="button" className="badge" onClick={() => goToAnchor(name)}>
                         {name}
                       </button>
                     ))}
                   </div>
                 ) : null}
-              </header>
-            )}
+                <p className="lead">{activeSection.description}</p>
 
-            <ActiveSection theme={theme} onNavigate={navigate} />
+                {activeSection.components?.length ? (
+                  <div className="toc-box">
+                    <b>本页组件</b>
+                    <ul>
+                      {activeSection.components.map((name) => (
+                        <li key={name}>
+                          <button type="button" onClick={() => goToAnchor(name)}>
+                            {name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </>
+            ) : null}
 
-            <footer className="demo-pager">
-              {prev ? (
-                <button type="button" className="demo-pager__btn" onClick={() => navigate(prev.id)}>
-                  <span className="demo-pager__key">上一页</span>
-                  <span className="demo-pager__title">{prev.title}</span>
+            <activeSection.component theme={theme} onNavigate={navigate} />
+
+            <nav className="prev-next" aria-label="翻页">
+              {previousSection ? (
+                <button type="button" className="prev-next__item" onClick={() => navigate(previousSection.id)}>
+                  <span>上一页</span>
+                  <strong>{previousSection.title}</strong>
                 </button>
               ) : (
                 <span />
               )}
-              {next ? (
-                <button type="button" className="demo-pager__btn demo-pager__btn--next" onClick={() => navigate(next.id)}>
-                  <span className="demo-pager__key">下一页</span>
-                  <span className="demo-pager__title">{next.title}</span>
+              {nextSection ? (
+                <button
+                  type="button"
+                  className="prev-next__item is-next"
+                  onClick={() => navigate(nextSection.id)}
+                >
+                  <span>下一页</span>
+                  <strong>{nextSection.title}</strong>
                 </button>
-              ) : (
-                <span />
-              )}
-            </footer>
+              ) : null}
+            </nav>
           </div>
+
+          <footer className="doc-foot">
+            <span>Aelux Components · v0.1.0 · MIT License</span>
+            <span>React 19 · ESM + d.ts · 为 Aelux Launcher 打造</span>
+          </footer>
         </main>
       </div>
     </div>

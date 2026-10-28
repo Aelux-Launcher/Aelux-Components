@@ -160,6 +160,67 @@ export type { StatisticProps } from './components/Statistic'
 export { SettingSection, SettingRow } from './components/Setting'
 export type { SettingRowProps, SettingSectionProps } from './components/Setting'
 
+/* --------------------------------------------------- 启动器细粒度控件 */
+export { InheritSwitch } from './components/InheritSwitch'
+export type { InheritSwitchProps, InheritSwitchValue } from './components/InheritSwitch'
+
+export { ToggleCard } from './components/ToggleCard'
+export type { ToggleCardProps } from './components/ToggleCard'
+
+export { Chips } from './components/Chips'
+export type { ChipItem, ChipsProps } from './components/Chips'
+
+export { FilePicker } from './components/FilePicker'
+export type { FilePickerProps } from './components/FilePicker'
+
+export { ButtonGroup } from './components/ButtonGroup'
+export type { ButtonGroupProps } from './components/ButtonGroup'
+
+export { SplitButton } from './components/SplitButton'
+export type { SplitButtonItem, SplitButtonProps } from './components/SplitButton'
+
+export { PromptDialog } from './components/PromptDialog'
+export type { PromptDialogProps } from './components/PromptDialog'
+
+export { ProgressDialog } from './components/ProgressDialog'
+export type { ProgressDialogProps, ProgressDialogStat } from './components/ProgressDialog'
+
+export { ContextMenu } from './components/ContextMenu'
+export type {
+  ContextMenuEntry,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuProps,
+  ContextMenuSeparator,
+} from './components/ContextMenu'
+
+export { ListItem } from './components/ListItem'
+export type { ListItemProps } from './components/ListItem'
+
+export { TaskList } from './components/TaskList'
+export type { TaskItem, TaskListProps, TaskStatus } from './components/TaskList'
+
+export { Timeline } from './components/Timeline'
+export type { TimelineItem, TimelineProps, TimelineStatus } from './components/Timeline'
+
+export { PageShell } from './components/PageShell'
+export type { PageShellProps } from './components/PageShell'
+
+export { SplitLayout } from './components/SplitLayout'
+export type { SplitLayoutProps } from './components/SplitLayout'
+
+export { Wizard } from './components/Wizard'
+export type { WizardProps, WizardStep } from './components/Wizard'
+
+export { Breadcrumb } from './components/Breadcrumb'
+export type { BreadcrumbItem, BreadcrumbProps } from './components/Breadcrumb'
+
+export { Hint } from './components/Hint'
+export type { HintProps, HintTone } from './components/Hint'
+
+export { StatusBar } from './components/StatusBar'
+export type { StatusBarProps } from './components/StatusBar'
+
 /* ------------------------------------------------------------------- 图标 */
 export { Icon } from './icons'
 export type { IconProps } from './icons'
@@ -183,6 +244,7 @@ export {
   IconInfo,
   IconLayout,
   IconLoader,
+  IconMenu,
   IconMinus,
   IconMoon,
   IconMore,

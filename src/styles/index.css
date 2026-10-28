@@ -59,3 +59,23 @@
 @import '../components/DescriptionList/style.css';
 @import '../components/Statistic/style.css';
 @import '../components/Setting/style.css';
+
+/* 启动器细粒度控件 */
+@import '../components/InheritSwitch/style.css';
+@import '../components/ToggleCard/style.css';
+@import '../components/Chips/style.css';
+@import '../components/FilePicker/style.css';
+@import '../components/ButtonGroup/style.css';
+@import '../components/SplitButton/style.css';
+@import '../components/PromptDialog/style.css';
+@import '../components/ProgressDialog/style.css';
+@import '../components/ContextMenu/style.css';
+@import '../components/ListItem/style.css';
+@import '../components/TaskList/style.css';
+@import '../components/Timeline/style.css';
+@import '../components/PageShell/style.css';
+@import '../components/SplitLayout/style.css';
+@import '../components/Wizard/style.css';
+@import '../components/Breadcrumb/style.css';
+@import '../components/Hint/style.css';
+@import '../components/StatusBar/style.css';

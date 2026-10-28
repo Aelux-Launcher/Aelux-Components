@@ -1,0 +1,73 @@
+/* ===== ButtonGroup ===== */
+.aelux-button-group {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.aelux-button-group--block {
+  display: flex;
+  width: 100%;
+}
+
+.aelux-button-group--vertical {
+  flex-direction: column;
+}
+
+.aelux-button-group:not(.aelux-button-group--attached) {
+  gap: var(--aelux-space-2);
+}
+
+/* 组尺寸：统一伸展组内按钮的高度、内边距与字号 */
+.aelux-button-group--sm > .aelux-btn {
+  height: var(--aelux-control-sm);
+  padding: 0 var(--aelux-space-2-5);
+  gap: var(--aelux-space-1);
+  border-radius: var(--aelux-radius-sm);
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-button-group--lg > .aelux-btn {
+  height: var(--aelux-control-lg);
+  padding: 0 var(--aelux-space-5);
+  gap: var(--aelux-space-2);
+  border-radius: var(--aelux-radius-lg);
+  font-size: var(--aelux-font-size-lg);
+}
+
+/* 贴合成组：相邻按钮共用一条边，仅保留首尾圆角 */
+.aelux-button-group--attached:not(.aelux-button-group--vertical) > *:not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.aelux-button-group--attached:not(.aelux-button-group--vertical) > *:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.aelux-button-group--attached.aelux-button-group--vertical > *:not(:first-child) {
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.aelux-button-group--attached.aelux-button-group--vertical > *:not(:last-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* 悬停 / 聚焦时把按钮提到上层，避免共享边框被遮挡 */
+.aelux-button-group--attached > *:hover,
+.aelux-button-group--attached > *:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+/* block：按钮等分整行宽度 */
+.aelux-button-group--block > .aelux-btn {
+  flex: 1 1 0;
+  min-width: 0;
+}

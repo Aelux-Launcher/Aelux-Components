@@ -157,3 +157,99 @@
 .aelux-checkbox--disabled .aelux-checkbox__desc {
   color: var(--aelux-text-disabled);
 }
+
+/* ===== 卡片变体：整卡可点击的两行说明复选框 ===== */
+.aelux-checkbox--card {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--aelux-space-3) var(--aelux-space-4);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-lg);
+  background: var(--aelux-surface);
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-checkbox--card:hover {
+  border-color: var(--aelux-primary-soft-border);
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-checkbox--card .aelux-checkbox__input {
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.aelux-checkbox--card .aelux-checkbox__content {
+  gap: var(--aelux-space-1);
+}
+
+.aelux-checkbox--card .aelux-checkbox__label {
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.35;
+}
+
+.aelux-checkbox--card .aelux-checkbox__desc {
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+/* 选中态：主色描边 + 主色浅底 */
+.aelux-checkbox--card:has(.aelux-checkbox__input:checked) {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-checkbox--card:has(.aelux-checkbox__input:checked) .aelux-checkbox__label {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-checkbox--card:hover:has(.aelux-checkbox__input:checked) {
+  border-color: var(--aelux-primary);
+}
+
+/* 焦点环落在整卡上 */
+.aelux-checkbox--card:has(.aelux-checkbox__input:focus-visible) {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-checkbox--card .aelux-checkbox__input:focus-visible + .aelux-checkbox__box {
+  box-shadow: none;
+}
+
+/* 卡片 + 小尺寸 */
+.aelux-checkbox--card.aelux-checkbox--sm {
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  border-radius: var(--aelux-radius-md);
+}
+
+.aelux-checkbox--card.aelux-checkbox--sm .aelux-checkbox__input {
+  width: 16px;
+  height: 16px;
+}
+
+.aelux-checkbox--card.aelux-checkbox--sm .aelux-checkbox__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-checkbox--card.aelux-checkbox--sm .aelux-checkbox__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 禁用卡片 */
+.aelux-checkbox--card.aelux-checkbox--disabled {
+  opacity: 0.55;
+}
+
+.aelux-checkbox--card.aelux-checkbox--disabled:hover {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface);
+}
+

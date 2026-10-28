@@ -1,0 +1,178 @@
+/* ===== Chips 可选可移除标签组 ===== */
+.aelux-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-chips--block {
+  width: 100%;
+}
+
+.aelux-chips__chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  color: var(--aelux-text-secondary);
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition),
+    color var(--aelux-transition);
+}
+
+.aelux-chips__chip:hover {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-chips__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aelux-space-1-5);
+  min-width: 0;
+  height: 30px;
+  padding: 0 var(--aelux-space-3);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--aelux-transition);
+}
+
+.aelux-chips__chip:has(.aelux-chips__remove) .aelux-chips__toggle {
+  padding-right: var(--aelux-space-1-5);
+}
+
+.aelux-chips__toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-chips__icon {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  line-height: 0;
+  color: inherit;
+}
+
+.aelux-chips__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 选中态 */
+.aelux-chips__chip--selected {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-chips__chip--selected:hover {
+  border-color: var(--aelux-primary-hover);
+}
+
+/* 移除按钮 */
+.aelux-chips__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-right: var(--aelux-space-1-5);
+  padding: 0;
+  border: 0;
+  border-radius: var(--aelux-radius-full);
+  background: transparent;
+  color: var(--aelux-text-tertiary);
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition-fast),
+    color var(--aelux-transition-fast);
+}
+
+.aelux-chips__remove:hover {
+  background: var(--aelux-surface-active);
+  color: var(--aelux-text);
+}
+
+.aelux-chips__remove:focus-visible {
+  outline: none;
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-chips__chip--selected .aelux-chips__remove {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-chips__chip--selected .aelux-chips__remove:hover {
+  background: var(--aelux-primary-soft-border);
+  color: var(--aelux-primary-text);
+}
+
+/* 小尺寸 */
+.aelux-chips--sm {
+  gap: var(--aelux-space-1-5);
+}
+
+.aelux-chips--sm .aelux-chips__toggle {
+  gap: var(--aelux-space-1);
+  height: 24px;
+  padding: 0 var(--aelux-space-2-5);
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-chips--sm .aelux-chips__chip:has(.aelux-chips__remove) .aelux-chips__toggle {
+  padding-right: var(--aelux-space-1);
+}
+
+.aelux-chips--sm .aelux-chips__remove {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--aelux-space-1);
+}
+
+/* 禁用 */
+.aelux-chips--disabled {
+  cursor: not-allowed;
+}
+
+.aelux-chips__chip--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.aelux-chips__chip--disabled:hover {
+  border-color: var(--aelux-border);
+}
+
+.aelux-chips__chip--disabled .aelux-chips__toggle,
+.aelux-chips__chip--disabled .aelux-chips__remove {
+  cursor: not-allowed;
+}
+
+.aelux-chips__chip--disabled .aelux-chips__toggle:hover {
+  background: transparent;
+  color: inherit;
+}
+
+.aelux-chips__chip--disabled.aelux-chips__chip--selected {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-chips__chip--disabled.aelux-chips__chip--selected .aelux-chips__remove {
+  color: var(--aelux-text-disabled);
+}

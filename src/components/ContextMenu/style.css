@@ -1,0 +1,112 @@
+/* ContextMenu —— 右键上下文菜单：fixed 定位浮层 + 菜单项/分隔线/分组标题 */
+
+.aelux-context-menu__trigger {
+  display: contents;
+}
+
+.aelux-context-menu__menu {
+  position: fixed;
+  z-index: var(--aelux-z-dropdown);
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  max-width: 300px;
+  max-height: min(360px, calc(100vh - 16px));
+  overflow-y: auto;
+  padding: var(--aelux-space-1);
+  background: var(--aelux-surface);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-md);
+  box-shadow: var(--aelux-shadow-lg);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  font-size: var(--aelux-font-size-sm);
+  animation: aelux-fade-in var(--aelux-transition-fast);
+}
+
+.aelux-context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  width: 100%;
+  padding: var(--aelux-space-1-5) var(--aelux-space-2);
+  border: 0;
+  border-radius: var(--aelux-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--aelux-transition-fast);
+}
+
+.aelux-context-menu__item:focus {
+  outline: none;
+  background: var(--aelux-surface-hover);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-context-menu__item:hover:not(:disabled) {
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-context-menu__item--danger {
+  color: var(--aelux-danger-text);
+}
+
+.aelux-context-menu__item--danger:hover:not(:disabled),
+.aelux-context-menu__item--danger:focus {
+  background: var(--aelux-danger-soft);
+  box-shadow: var(--aelux-focus-ring-danger);
+}
+
+.aelux-context-menu__item--disabled {
+  color: var(--aelux-text-disabled);
+  cursor: not-allowed;
+}
+
+.aelux-context-menu__indicator {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-context-menu__item--danger .aelux-context-menu__indicator {
+  color: inherit;
+}
+
+.aelux-context-menu__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aelux-context-menu__shortcut {
+  flex: none;
+  color: var(--aelux-text-tertiary);
+  font-family: var(--aelux-font-mono);
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-context-menu__separator {
+  height: 1px;
+  margin: var(--aelux-space-1) var(--aelux-space-2);
+  background: var(--aelux-border);
+}
+
+.aelux-context-menu__group-label {
+  padding: var(--aelux-space-1) var(--aelux-space-2);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+  font-weight: var(--aelux-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

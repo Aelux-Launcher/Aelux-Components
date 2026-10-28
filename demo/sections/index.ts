@@ -44,7 +44,7 @@ export const navSections: NavSection[] = [
     description: '按钮、图标按钮与键盘按键 —— 所有交互的起点，强调层级、变体与加载状态。',
     group: '组件',
     icon: icon(IconPlay),
-    components: ['Button', 'IconButton', 'Kbd'],
+    components: ['Button', 'IconButton', 'Kbd', 'ButtonGroup', 'SplitButton'],
     component: BasicSection,
   },
   {
@@ -53,7 +53,7 @@ export const navSections: NavSection[] = [
     description: '文本框、搜索框、数字输入、下拉组合框与拖拽导入，覆盖启动器的各类设置与安装场景。',
     group: '组件',
     icon: icon(IconEdit),
-    components: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'DropZone', 'FormItem'],
+    components: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'FilePicker', 'DropZone', 'FormItem'],
     component: FormSection,
   },
   {
@@ -62,7 +62,7 @@ export const navSections: NavSection[] = [
     description: '勾选、单选、开关、滑块、分段控制与步骤条 —— 启动器设置项与安装向导的常用控件。',
     group: '组件',
     icon: icon(IconCheck),
-    components: ['Checkbox', 'Radio', 'Switch', 'Slider', 'SegmentedControl', 'Stepper'],
+    components: ['Checkbox', 'CheckboxCard', 'Radio', 'RadioCard', 'Switch', 'InheritSwitch', 'ToggleCard', 'Slider', 'SegmentedControl', 'Chips', 'Stepper'],
     component: ChoiceSection,
   },
   {
@@ -80,7 +80,7 @@ export const navSections: NavSection[] = [
     description: '模态框、对话框、抽屉、气泡、提示与菜单，处理打断式操作与轻量补充说明。',
     group: '反馈',
     icon: icon(IconEye),
-    components: ['Modal', 'Dialog', 'Drawer', 'Popover', 'Tooltip', 'DropdownMenu'],
+    components: ['Modal', 'Dialog', 'PromptDialog', 'ProgressDialog', 'Drawer', 'Popover', 'ContextMenu', 'Tooltip', 'DropdownMenu'],
     component: OverlaySection,
   },
   {
@@ -89,7 +89,7 @@ export const navSections: NavSection[] = [
     description: '卡片、标签、头像、列表、表格、键值对与统计 —— 启动器列表与详情页的主要信息载体。',
     group: '展示',
     icon: icon(IconFolder),
-    components: ['Card', 'Tag', 'Badge', 'Avatar', 'ListBox', 'Table', 'DescriptionList', 'Statistic', 'SettingSection'],
+    components: ['Card', 'Tag', 'Badge', 'Avatar', 'ListItem', 'ListBox', 'TaskList', 'Table', 'DescriptionList', 'Statistic', 'Timeline', 'SettingSection'],
     component: DataDisplaySection,
   },
   {
@@ -98,7 +98,7 @@ export const navSections: NavSection[] = [
     description: '标签页、侧边导航、标题栏、工具栏、折叠面板与分页，为启动器搭建窗口骨架。',
     group: '展示',
     icon: icon(IconLayout),
-    components: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'Accordion', 'Pagination', 'Divider', 'Space'],
+    components: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'PageShell', 'SplitLayout', 'Wizard', 'Breadcrumb', 'Hint', 'StatusBar', 'Accordion', 'Pagination', 'Divider', 'Space'],
     component: LayoutSection,
   },
   {

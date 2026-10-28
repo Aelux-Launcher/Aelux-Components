@@ -1,0 +1,30 @@
+/* PromptDialog —— 输入式确认对话框，组合 Modal 的结构，仅补输入区排版 */
+
+.aelux-prompt-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1-5);
+}
+
+.aelux-prompt-dialog__description {
+  margin: 0;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: var(--aelux-line-height);
+}
+
+.aelux-prompt-dialog__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-sm);
+  font-weight: var(--aelux-font-weight-medium);
+}
+
+.aelux-prompt-dialog__input {
+  margin-top: calc(var(--aelux-space-0-5) * -1);
+}
+
+.aelux-prompt-dialog__error {
+  margin: 0;
+  color: var(--aelux-danger-text);
+  font-size: var(--aelux-font-size-sm);
+}

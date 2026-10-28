@@ -29,7 +29,7 @@ export function Demo() {
 }`
 
 const STATS = [
-  { value: '48', label: '开箱即用组件' },
+  { value: '66', label: '开箱即用组件' },
   { value: 'ESM', label: '仅现代模块产物' },
   { value: '0', label: '运行时依赖' },
   { value: 'd.ts', label: '完整类型声明' },
@@ -59,25 +59,95 @@ const FEATURES = [
 ]
 
 const COMPONENT_INDEX = [
-  { section: 'basic', label: '基础', comps: ['Button', 'IconButton', 'Kbd'] },
+  { section: 'basic', label: '基础', comps: ['Button', 'IconButton', 'ButtonGroup', 'SplitButton', 'Kbd'] },
   {
     section: 'form',
     label: '输入与选择',
-    comps: ['Input', 'Textarea', 'SearchInput', 'InputNumber', 'Select', 'Combobox', 'DropZone', 'FormItem'],
+    comps: [
+      'Input',
+      'Textarea',
+      'SearchInput',
+      'InputNumber',
+      'Select',
+      'Combobox',
+      'FilePicker',
+      'DropZone',
+      'FormItem',
+    ],
   },
-  { section: 'choice', label: '开关与滑块', comps: ['Checkbox', 'Radio', 'Switch', 'Slider', 'SegmentedControl', 'Stepper'] },
+  {
+    section: 'choice',
+    label: '开关与滑块',
+    comps: [
+      'Checkbox',
+      'Radio',
+      'Switch',
+      'InheritSwitch',
+      'ToggleCard',
+      'Chips',
+      'Slider',
+      'SegmentedControl',
+      'Stepper',
+    ],
+  },
   {
     section: 'feedback',
     label: '反馈',
     comps: ['Alert', 'Toast', 'Spinner', 'Progress', 'ProgressRing', 'Skeleton', 'Empty'],
   },
-  { section: 'overlay', label: '浮层', comps: ['Modal', 'Dialog', 'Drawer', 'Popover', 'Tooltip', 'DropdownMenu'] },
+  {
+    section: 'overlay',
+    label: '浮层',
+    comps: [
+      'Modal',
+      'Dialog',
+      'Drawer',
+      'Popover',
+      'Tooltip',
+      'DropdownMenu',
+      'PromptDialog',
+      'ProgressDialog',
+      'ContextMenu',
+    ],
+  },
   {
     section: 'data-display',
     label: '数据展示',
-    comps: ['Card', 'Tag', 'Badge', 'Avatar', 'ListBox', 'Table', 'DescriptionList', 'Statistic', 'SettingSection'],
+    comps: [
+      'Card',
+      'Tag',
+      'Badge',
+      'Avatar',
+      'ListBox',
+      'Table',
+      'DescriptionList',
+      'Statistic',
+      'TaskList',
+      'Timeline',
+      'SettingSection',
+    ],
   },
-  { section: 'layout', label: '导航与布局', comps: ['Tabs', 'SidebarNav', 'TitleBar', 'Toolbar', 'Accordion', 'Pagination', 'Divider', 'Space'] },
+  {
+    section: 'layout',
+    label: '导航与布局',
+    comps: [
+      'Tabs',
+      'SidebarNav',
+      'TitleBar',
+      'Toolbar',
+      'PageShell',
+      'SplitLayout',
+      'Wizard',
+      'Breadcrumb',
+      'Accordion',
+      'Pagination',
+      'Hint',
+      'StatusBar',
+      'Divider',
+      'Space',
+    ],
+  },
+  { section: 'patterns', label: '启动器组合', comps: ['Window', 'Settings', 'Tasks'] },
   { section: 'theme', label: '设计', comps: ['Design Tokens', 'Dark Mode'] },
 ]
 
@@ -108,7 +178,7 @@ export function OverviewSection({ onNavigate }: SectionProps) {
         </h1>
         <p className="demo-hero__desc">
           一套与 Aelux Launcher 启动器同源的设计系统：React 19 + TypeScript，ESM + d.ts 双产物，
-          零运行时依赖，48 个组件覆盖基础、表单、反馈、浮层、数据展示与窗口布局。
+          零运行时依赖，66 个组件覆盖基础、表单、反馈、浮层、数据展示与窗口布局，并附启动器组合示例。
         </p>
 
         <div className="demo-hero__actions">

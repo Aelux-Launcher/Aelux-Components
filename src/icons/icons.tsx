@@ -221,6 +221,9 @@ export const IconGrid = createIcon(
   </>,
 )
 
+/** 菜单（汉堡） */
+export const IconMenu = createIcon('IconMenu', <path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17" />)
+
 /** 编辑（表单） */
 export const IconEdit = createIcon(
   'IconEdit',

@@ -1,0 +1,187 @@
+/* ===== InheritSwitch 三态继承开关 ===== */
+.aelux-inherit-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aelux-space-4);
+  min-width: 0;
+  font-family: var(--aelux-font-sans);
+}
+
+.aelux-inherit-switch__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+  min-width: 0;
+}
+
+.aelux-inherit-switch__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+  line-height: 1.4;
+}
+
+.aelux-inherit-switch__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+.aelux-inherit-switch__control {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-2);
+  flex: none;
+}
+
+/* 开关轨道：三态共享，位置由 __thumb 的位移体现 */
+.aelux-inherit-switch__track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: 42px;
+  height: 24px;
+  padding: 3px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-inherit-switch__track:hover {
+  border-color: var(--aelux-primary);
+}
+
+.aelux-inherit-switch__track:focus-visible {
+  outline: none;
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-inherit-switch__thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  color: var(--aelux-primary);
+  box-shadow: var(--aelux-shadow-sm);
+  transition:
+    transform var(--aelux-transition),
+    background-color var(--aelux-transition),
+    color var(--aelux-transition);
+}
+
+/* 关闭：滑块居左 */
+.aelux-inherit-switch__track--off .aelux-inherit-switch__thumb {
+  transform: translateX(0);
+}
+
+/* 跟随全局：滑块居中、轨道弱强调 */
+.aelux-inherit-switch__track--inherit {
+  background: var(--aelux-primary-soft);
+  border-color: var(--aelux-primary-soft-border);
+}
+
+.aelux-inherit-switch__track--inherit .aelux-inherit-switch__thumb {
+  background: var(--aelux-primary);
+  color: var(--aelux-primary-contrast);
+  transform: translateX(9px);
+}
+
+/* 开启：滑块居右、轨道实心 */
+.aelux-inherit-switch__track--on {
+  background: var(--aelux-primary);
+  border-color: var(--aelux-primary);
+}
+
+.aelux-inherit-switch__track--on .aelux-inherit-switch__thumb {
+  background: var(--aelux-primary-contrast);
+  color: var(--aelux-primary);
+  transform: translateX(18px);
+}
+
+.aelux-inherit-switch__state {
+  min-width: 62px;
+  color: var(--aelux-text-secondary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.3;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.aelux-inherit-switch__global {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 小尺寸 */
+.aelux-inherit-switch--sm {
+  gap: var(--aelux-space-3);
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__track {
+  width: 36px;
+  height: 20px;
+  padding: 3px;
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__thumb {
+  width: 12px;
+  height: 12px;
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__track--inherit .aelux-inherit-switch__thumb {
+  transform: translateX(8px);
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__track--on .aelux-inherit-switch__thumb {
+  transform: translateX(16px);
+}
+
+.aelux-inherit-switch--sm .aelux-inherit-switch__state {
+  min-width: 54px;
+  font-size: var(--aelux-font-size-xs);
+}
+
+/* 禁用 */
+.aelux-inherit-switch--disabled {
+  opacity: 0.55;
+}
+
+.aelux-inherit-switch--disabled .aelux-inherit-switch__track {
+  cursor: not-allowed;
+}
+
+.aelux-inherit-switch--disabled .aelux-inherit-switch__track:hover {
+  border-color: var(--aelux-border-strong);
+}
+
+.aelux-inherit-switch--disabled .aelux-inherit-switch__track--inherit:hover {
+  border-color: var(--aelux-primary-soft-border);
+}
+
+.aelux-inherit-switch--disabled .aelux-inherit-switch__track--on:hover {
+  border-color: var(--aelux-primary);
+}
+
+.aelux-inherit-switch--disabled .aelux-inherit-switch__label,
+.aelux-inherit-switch--disabled .aelux-inherit-switch__desc,
+.aelux-inherit-switch--disabled .aelux-inherit-switch__state {
+  color: var(--aelux-text-disabled);
+}

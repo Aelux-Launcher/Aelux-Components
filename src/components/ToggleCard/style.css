@@ -1,0 +1,175 @@
+/* ===== ToggleCard 整卡开关 ===== */
+.aelux-toggle-card {
+  display: flex;
+  align-items: center;
+  gap: var(--aelux-space-3);
+  width: 100%;
+  min-width: 0;
+  padding: var(--aelux-space-3) var(--aelux-space-4);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-lg);
+  background: var(--aelux-surface);
+  color: var(--aelux-text);
+  font-family: var(--aelux-font-sans);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+.aelux-toggle-card:hover {
+  border-color: var(--aelux-primary-soft-border);
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-toggle-card:focus-visible {
+  outline: none;
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+/* 选中态：主色描边 + 主色浅底 */
+.aelux-toggle-card--checked {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-toggle-card--checked:hover {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-toggle-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+  transition:
+    background-color var(--aelux-transition),
+    color var(--aelux-transition);
+}
+
+.aelux-toggle-card--checked .aelux-toggle-card__icon {
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-toggle-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+  flex: 1;
+  min-width: 0;
+}
+
+.aelux-toggle-card__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.35;
+}
+
+.aelux-toggle-card__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+.aelux-toggle-card--checked .aelux-toggle-card__label {
+  color: var(--aelux-primary-text);
+}
+
+/* 右侧开关视觉 */
+.aelux-toggle-card__switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  padding: 2px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-subtle);
+  transition:
+    background-color var(--aelux-transition),
+    border-color var(--aelux-transition);
+}
+
+.aelux-toggle-card__thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  box-shadow: var(--aelux-shadow-sm);
+  transition: transform var(--aelux-transition), background-color var(--aelux-transition);
+}
+
+.aelux-toggle-card--checked .aelux-toggle-card__switch {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+}
+
+.aelux-toggle-card--checked .aelux-toggle-card__thumb {
+  background: var(--aelux-primary-contrast);
+  transform: translateX(14px);
+}
+
+/* 小尺寸 */
+.aelux-toggle-card--sm {
+  gap: var(--aelux-space-2-5);
+  padding: var(--aelux-space-2-5) var(--aelux-space-3);
+  border-radius: var(--aelux-radius-md);
+}
+
+.aelux-toggle-card--sm .aelux-toggle-card__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--aelux-radius-sm);
+}
+
+.aelux-toggle-card--sm .aelux-toggle-card__label {
+  font-size: var(--aelux-font-size-sm);
+}
+
+.aelux-toggle-card--sm .aelux-toggle-card__desc {
+  font-size: var(--aelux-font-size-xs);
+}
+
+.aelux-toggle-card--sm .aelux-toggle-card__switch {
+  width: 28px;
+  height: 16px;
+  padding: 2px;
+}
+
+.aelux-toggle-card--sm .aelux-toggle-card__thumb {
+  width: 12px;
+  height: 12px;
+}
+
+.aelux-toggle-card--sm.aelux-toggle-card--checked .aelux-toggle-card__thumb {
+  transform: translateX(12px);
+}
+
+/* 禁用 */
+.aelux-toggle-card--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.aelux-toggle-card--disabled:hover {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface);
+}
+
+.aelux-toggle-card--disabled.aelux-toggle-card--checked:hover {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-primary-soft);
+}

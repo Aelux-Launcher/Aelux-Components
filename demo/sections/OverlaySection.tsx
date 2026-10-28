@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
+  ContextMenu,
   Dialog,
   Drawer,
   DropdownMenu,
@@ -12,13 +13,18 @@ import {
   IconFolder,
   IconInfo,
   IconMore,
+  IconPackage,
+  IconPlay,
   IconPlus,
   IconSettings,
+  IconStar,
   IconTrash,
   IconUser,
   Input,
   Modal,
   Popover,
+  ProgressDialog,
+  PromptDialog,
   toast,
   Tooltip,
 } from 'aelux-components'
@@ -32,6 +38,20 @@ const SIZE_LABELS: Record<'sm' | 'md' | 'lg', string> = {
 }
 
 const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms))
+
+const INSTANCES = [
+  { name: 'Aelux Launcher', version: '1.21.1', path: 'instances/aelux-1.21.1' },
+  { name: 'Aelux Snapshot', version: '1.22-snapshot', path: 'instances/aelux-1.22-snapshot' },
+  { name: 'Aelux Modpack', version: '1.20.4', path: 'instances/aelux-modpack' },
+]
+
+const TASK_LOG = [
+  '[00:00] 解析资源清单 manifest.json…',
+  '[00:01] 校验 128 个文件的 SHA-1…',
+  '[00:02] 下载 libraries/asm-9.6.jar…',
+  '[00:03] 下载 assets/minecraft/sounds…',
+  '[00:04] 写入 instances/aelux-1.21.1/options.txt…',
+]
 
 /**
  * 浮层类组件演示：Modal / Dialog / Drawer / Popover / Tooltip / DropdownMenu
@@ -58,6 +78,23 @@ export function OverlaySection(_props: SectionProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [compact, setCompact] = useState(false)
 
+  const [renameOpen, setRenameOpen] = useState(false)
+  const [instanceName, setInstanceName] = useState('Aelux Launcher')
+
+  const [taskOpen, setTaskOpen] = useState(false)
+  const [taskProgress, setTaskProgress] = useState(0)
+  const [connectOpen, setConnectOpen] = useState(false)
+
+  const [pinnedInstances, setPinnedInstances] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!taskOpen || taskProgress >= 100) return
+    const timer = window.setTimeout(() => {
+      setTaskProgress((value) => Math.min(100, value + 4))
+    }, 260)
+    return () => window.clearTimeout(timer)
+  }, [taskOpen, taskProgress])
+
   const submitForm = () => {
     const name = projectName.trim()
     setFormOpen(false)
@@ -71,6 +108,16 @@ export function OverlaySection(_props: SectionProps) {
   const saveDrawer = () => {
     setDrawerRightOpen(false)
     toast.success('项目详情已保存', { description: `项目名称：${detailName}` })
+  }
+
+  const validateInstanceName = (value: string): string | true => {
+    const name = value.trim()
+    if (name.length === 0) return '实例名称不能为空'
+    if (name.length > 20) return '名称不能超过 20 个字符'
+    if (name !== instanceName && INSTANCES.some((instance) => instance.name === name)) {
+      return '该名称已被其他实例占用'
+    }
+    return true
   }
 
   return (
@@ -243,6 +290,131 @@ export function OverlaySection(_props: SectionProps) {
           hideCancel
           showClose
         />
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="PromptDialog 输入对话框"
+        anchor="PromptDialog"
+        description="输入式确认弹窗：打开时自动聚焦并全选输入框，validate 返回错误文案时阻止提交并在输入框下方提示；异步 onConfirm 期间按钮 loading 且防重复提交。"
+        code={`<PromptDialog open={open} onClose={close} title="重命名实例" defaultValue={name} validate={validate} onConfirm={save} />`}
+        column
+      >
+        <div className="demo-row">
+          <Button onClick={() => setRenameOpen(true)} leftIcon={<IconEdit size={14} />}>
+            重命名实例
+          </Button>
+          <span className="demo-label">当前实例名称：{instanceName}</span>
+        </div>
+
+        <PromptDialog
+          open={renameOpen}
+          onClose={() => setRenameOpen(false)}
+          title="重命名实例"
+          description="修改后的名称会立即写入实例列表。"
+          label="实例名称"
+          placeholder="例如：Aelux Launcher 正式版"
+          defaultValue={instanceName}
+          confirmText="保存名称"
+          size="sm"
+          validate={validateInstanceName}
+          onConfirm={(value) =>
+            wait(700).then(() => {
+              const name = value.trim()
+              setInstanceName(name)
+              setRenameOpen(false)
+              toast.success('实例已重命名', { description: `新名称：${name}` })
+            })
+          }
+        />
+
+        <div className="demo-label">
+          校验规则：非空、不超过 20 个字符、且不与现有实例重名；提交中按 Esc、点遮罩与取消按钮均被阻止。
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="ProgressDialog 任务进度对话框"
+        anchor="ProgressDialog"
+        description="任务执行弹窗：进度条 + 状态行 + 统计信息，「详情」默认收起、可展开执行日志；取消后任务中断，完成后底部主按钮切换为「完成」。"
+        code={`<ProgressDialog open={open} progress={progress} statusText={status} stats={stats} details={log} cancellable onCancel={cancel} onClose={close} />`}
+        column
+      >
+        <div className="demo-row">
+          <Button
+            leftIcon={<IconDownload size={14} />}
+            onClick={() => {
+              setTaskProgress(0)
+              setTaskOpen(true)
+            }}
+          >
+            下载并安装资源
+          </Button>
+          <Button variant="secondary" onClick={() => setConnectOpen(true)}>
+            不确定进度（连接中）
+          </Button>
+          <span className="demo-label">进度 {taskProgress}%</span>
+        </div>
+
+        <ProgressDialog
+          open={taskOpen}
+          onClose={() => setTaskOpen(false)}
+          title="下载并安装资源"
+          description="正在为 Aelux Launcher 安装资源包，完成后即可开始游戏。"
+          progress={taskProgress}
+          statusText={
+            taskProgress >= 100
+              ? '资源安装完成。'
+              : taskProgress >= 60
+                ? '正在写入配置文件…'
+                : '正在下载资源文件…'
+          }
+          stats={[
+            { label: '已下载', value: `${(taskProgress * 1.28).toFixed(1)} MB / 128.0 MB` },
+            { label: '当前速度', value: taskProgress >= 100 ? '—' : '6.4 MB/s' },
+            {
+              label: '剩余时间',
+              value:
+                taskProgress >= 100
+                  ? '已完成'
+                  : `约 ${Math.max(1, Math.ceil((100 - taskProgress) / 8))} 秒`,
+            },
+          ]}
+          details={
+            <div className="demo-stack">
+              {TASK_LOG.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </div>
+          }
+          cancellable
+          onCancel={() => {
+            setTaskOpen(false)
+            toast.warning('安装任务已取消')
+          }}
+          closeText="完成"
+        />
+
+        <ProgressDialog
+          open={connectOpen}
+          onClose={() => setConnectOpen(false)}
+          title="连接下载源"
+          description="正在与最近的镜像站建立连接。"
+          indeterminate
+          statusText="正在连接 Aelux 镜像站…"
+          stats={[
+            { label: '镜像站', value: 'mirror.aelux.dev' },
+            { label: '协议', value: 'HTTPS' },
+          ]}
+          cancellable
+          onCancel={() => {
+            setConnectOpen(false)
+            toast.info('已取消连接')
+          }}
+        />
+
+        <div className="demo-label">
+          进度由 setTimeout 每 260ms 递增模拟；「详情」展开日志，「取消」可中断任务，完成后底部按钮变为「完成」。
+        </div>
       </ShowcaseBlock>
 
       <ShowcaseBlock
@@ -422,6 +594,94 @@ export function OverlaySection(_props: SectionProps) {
               {popoverOpen ? '收起受控气泡' : '打开受控气泡'}
             </Button>
           </Popover>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="ContextMenu 右键菜单"
+        anchor="ContextMenu"
+        description="在触发区域监听 contextmenu 并按鼠标坐标 fixed 定位，贴边时自动翻转；点击外部 / Esc / 滚动即关闭，键盘 ↑↓ / Home / End / Enter / Esc 可用。"
+        code={`<ContextMenu items={items}><div className="demo-surface">…</div></ContextMenu>`}
+        column
+      >
+        <div className="demo-stack">
+          {INSTANCES.map((instance) => (
+            <ContextMenu
+              key={instance.name}
+              items={[
+                {
+                  key: 'launch',
+                  label: '启动实例',
+                  icon: <IconPlay size={14} />,
+                  shortcut: 'Enter',
+                  onSelect: () => toast.success(`正在启动 ${instance.name}`),
+                },
+                {
+                  key: 'folder',
+                  label: '打开所在文件夹',
+                  icon: <IconFolder size={14} />,
+                  onSelect: () => toast.info(`打开 ${instance.path}`),
+                },
+                {
+                  key: 'copy-path',
+                  label: '复制实例路径',
+                  icon: <IconCopy size={14} />,
+                  shortcut: 'Ctrl+C',
+                  onSelect: () => toast.success('实例路径已复制'),
+                },
+                { type: 'separator', key: 'sep-manage' },
+                { type: 'label', key: 'group-manage', label: '管理' },
+                {
+                  key: 'pin',
+                  label: pinnedInstances.includes(instance.name) ? '取消置顶' : '置顶实例',
+                  checked: pinnedInstances.includes(instance.name),
+                  onSelect: () =>
+                    setPinnedInstances((names) =>
+                      names.includes(instance.name)
+                        ? names.filter((name) => name !== instance.name)
+                        : [...names, instance.name],
+                    ),
+                },
+                {
+                  key: 'rename',
+                  label: '重命名实例…',
+                  icon: <IconEdit size={14} />,
+                  onSelect: () => {
+                    setInstanceName(instance.name)
+                    setRenameOpen(true)
+                  },
+                },
+                {
+                  key: 'logs',
+                  label: '查看运行日志',
+                  disabled: true,
+                  shortcut: '暂无',
+                },
+                { type: 'separator', key: 'sep-danger' },
+                {
+                  key: 'delete',
+                  label: '删除实例',
+                  icon: <IconTrash size={14} />,
+                  danger: true,
+                  onSelect: () => toast.error(`已删除 ${instance.name}`),
+                },
+              ]}
+            >
+              <div className="demo-surface">
+                <div className="demo-row">
+                  <IconPackage size={16} />
+                  <strong>{instance.name}</strong>
+                  <span className="demo-label">{instance.version}</span>
+                  <span className="demo-label">{instance.path}</span>
+                  {pinnedInstances.includes(instance.name) ? <IconStar size={14} /> : null}
+                </div>
+              </div>
+            </ContextMenu>
+          ))}
+        </div>
+
+        <div className="demo-label">
+          右键任意实例打开菜单；菜单贴边时自动翻转，滚动页面或点击其他位置即关闭，键盘 Home / End / ↑↓ 可快速定位菜单项。
         </div>
       </ShowcaseBlock>
 

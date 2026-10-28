@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import {
   Button,
+  ButtonGroup,
   IconButton,
   IconCheck,
   IconChevronRight,
@@ -17,8 +18,9 @@ import {
   IconStar,
   IconTrash,
   Kbd,
+  SplitButton,
 } from 'aelux-components'
-import type { ButtonSize, ButtonVariant } from 'aelux-components'
+import type { ButtonSize, ButtonVariant, SplitButtonItem } from 'aelux-components'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 import type { SectionProps } from './types'
 
@@ -70,6 +72,25 @@ function Shortcut({ keys, label }: ShortcutSpec) {
 export function BasicSection(_props: SectionProps) {
   const [lastAction, setLastAction] = useState('尚未点击按钮')
   const [saving, setSaving] = useState(false)
+  const [menuAction, setMenuAction] = useState('尚未使用快捷菜单')
+
+  const splitItems: SplitButtonItem[] = [
+    { key: 'new', label: '新建实例', icon: <IconPlus size={14} />, onSelect: () => setMenuAction('从菜单选择了：新建实例') },
+    {
+      key: 'duplicate',
+      label: '复制当前实例',
+      icon: <IconCopy size={14} />,
+      onSelect: () => setMenuAction('从菜单选择了：复制当前实例'),
+    },
+    {
+      key: 'settings',
+      label: '实例设置',
+      icon: <IconSettings size={14} />,
+      onSelect: () => setMenuAction('从菜单选择了：实例设置'),
+    },
+    { key: 'logs', label: '查看运行日志', icon: <IconChevronRight size={14} />, onSelect: () => setMenuAction('从菜单选择了：查看运行日志') },
+    { key: 'delete', label: '删除实例', icon: <IconTrash size={14} />, disabled: true },
+  ]
 
   const handleVariantClick = (variant: string, size: ButtonSize) => {
     setLastAction(`点击了 ${variant} 变体 · ${size} 尺寸`)
@@ -292,6 +313,164 @@ export function BasicSection(_props: SectionProps) {
           <span className="demo-label">跳跃：</span>
           <Kbd>Space</Kbd>
         </div>
+      </ShowcaseBlock>
+      <ShowcaseBlock
+        anchor="ButtonGroup"
+        title="按钮组：贴合、尺寸与排列"
+        description="attached 默认把相邻按钮贴合成一组：只保留首尾圆角、共用一条边；关闭贴合会留出间距，另支持纵向排列、block 整宽与整体尺寸。"
+        code={`<ButtonGroup ariaLabel="实例操作">
+  <Button variant="secondary" leftIcon={<IconPlay />}>启动</Button>
+  <Button variant="secondary" leftIcon={<IconRefresh />}>重启</Button>
+  <Button variant="secondary" leftIcon={<IconTrash />}>删除</Button>
+</ButtonGroup>`}
+        column
+      >
+        <div className="demo-stack" style={{ width: '100%' }}>
+          <div className="demo-row">
+            <span className="demo-label" style={{ width: 64 }}>
+              贴合
+            </span>
+            <ButtonGroup ariaLabel="实例操作">
+              <Button variant="secondary" leftIcon={<IconPlay size={14} />}>
+                启动
+              </Button>
+              <Button variant="secondary" leftIcon={<IconRefresh size={14} />}>
+                重启
+              </Button>
+              <Button variant="secondary" leftIcon={<IconTrash size={14} />}>
+                删除
+              </Button>
+            </ButtonGroup>
+            <ButtonGroup ariaLabel="视图切换">
+              <Button variant="secondary">列表</Button>
+              <Button variant="secondary">网格</Button>
+              <Button variant="secondary">详情</Button>
+            </ButtonGroup>
+          </div>
+          <div className="demo-row">
+            <span className="demo-label" style={{ width: 64 }}>
+              尺寸
+            </span>
+            <ButtonGroup size="sm" ariaLabel="小尺寸按钮组">
+              <Button variant="secondary">sm</Button>
+              <Button variant="secondary">28px</Button>
+              <Button variant="secondary">贴合</Button>
+            </ButtonGroup>
+            <ButtonGroup size="lg" ariaLabel="大尺寸按钮组">
+              <Button variant="secondary">lg</Button>
+              <Button variant="secondary">40px</Button>
+              <Button variant="secondary">贴合</Button>
+            </ButtonGroup>
+          </div>
+          <div className="demo-row">
+            <span className="demo-label" style={{ width: 64 }}>
+              留间距
+            </span>
+            <ButtonGroup attached={false} ariaLabel="留间距按钮组">
+              <Button variant="secondary">编辑</Button>
+              <Button variant="secondary">复制</Button>
+              <Button variant="secondary">删除</Button>
+            </ButtonGroup>
+            <ButtonGroup attached={false} ariaLabel="禁用的按钮组">
+              <Button variant="secondary" disabled>
+                禁用
+              </Button>
+              <Button variant="secondary" disabled>
+                按钮
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="demo-row" style={{ alignItems: 'flex-start' }}>
+            <span className="demo-label" style={{ width: 64 }}>
+              纵向
+            </span>
+            <ButtonGroup vertical ariaLabel="纵向按钮组">
+              <Button variant="secondary" leftIcon={<IconEdit size={14} />}>
+                重命名
+              </Button>
+              <Button variant="secondary" leftIcon={<IconCopy size={14} />}>
+                复制实例
+              </Button>
+              <Button variant="secondary" leftIcon={<IconTrash size={14} />}>
+                删除实例
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div style={{ maxWidth: 380, width: '100%' }}>
+            <ButtonGroup block ariaLabel="整宽按钮组">
+              <Button block leftIcon={<IconPlay size={14} />}>
+                开始游戏
+              </Button>
+              <Button block variant="secondary" leftIcon={<IconSettings size={14} />}>
+                实例设置
+              </Button>
+              <Button block variant="ghost" leftIcon={<IconChevronRight size={14} />}>
+                打开目录
+              </Button>
+            </ButtonGroup>
+          </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        anchor="SplitButton"
+        title="分裂按钮：主操作 + 快捷菜单"
+        description="左侧主按钮执行默认动作，右侧箭头展开快捷菜单；菜单通过 portal + fixed 定位，支持 ↑↓ / Home / End / Enter / Escape 完整键盘操作。"
+        code={`<SplitButton
+  items={[{ key: 'new', label: '新建实例', onSelect: create }, ...]}
+  onClick={launch}
+  menuLabel="更多启动方式"
+>
+  开始游戏
+</SplitButton>`}
+        column
+      >
+        <div className="demo-row">
+          <SplitButton
+            items={splitItems}
+            onClick={() => setMenuAction('点击了主按钮：开始游戏')}
+            menuLabel="更多启动方式"
+          >
+            开始游戏
+          </SplitButton>
+          <SplitButton
+            variant="secondary"
+            items={splitItems}
+            onClick={() => setMenuAction('点击了主按钮：新建实例')}
+            menuLabel="更多实例操作"
+          >
+            新建实例
+          </SplitButton>
+          <SplitButton
+            size="sm"
+            items={splitItems}
+            placement="bottom-end"
+            onClick={() => setMenuAction('点击了主按钮：快速启动')}
+            menuLabel="更多快速启动方式"
+          >
+            快速启动
+          </SplitButton>
+          <SplitButton
+            size="lg"
+            items={splitItems}
+            onClick={() => setMenuAction('点击了主按钮：保存设置')}
+            menuLabel="更多保存方式"
+          >
+            保存设置
+          </SplitButton>
+        </div>
+        <div className="demo-row">
+          <SplitButton items={splitItems} loading menuLabel="更多启动方式">
+            保存中
+          </SplitButton>
+          <SplitButton items={splitItems} disabled menuLabel="更多启动方式">
+            不可用
+          </SplitButton>
+          <SplitButton items={splitItems} variant="secondary" onClick={() => setMenuAction('点击了主按钮：导入整合包')}>
+            导入整合包
+          </SplitButton>
+        </div>
+        <p className="demo-label">最近操作：{menuAction}</p>
       </ShowcaseBlock>
     </>
   )

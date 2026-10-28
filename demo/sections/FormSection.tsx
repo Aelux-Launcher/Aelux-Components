@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 import {
   Combobox,
   DropZone,
+  FilePicker,
   FormItem,
   IconPackage,
   IconSearch,
@@ -93,6 +94,16 @@ const DROPZONE_CODE = `<DropZone
   onReject={handleReject}
 />`
 
+const FILEPICKER_CODE = `<FilePicker
+  label="整合包文件"
+  hint="支持 .zip / .mrpack，可多选"
+  accept=".zip,.mrpack"
+  multiple
+  files={packFiles}
+  onChange={setPackFiles}
+  onRemove={(file) => setFileNote(\`移除了 \${file.name}\`)}
+/>`
+
 const FORM_CODE = `<FormItem label="实例名称" htmlFor={formId} required error={nameError}>
   <Input id={formId} block status={nameError ? 'error' : 'default'} value={name} onChange={...} />
 </FormItem>`
@@ -116,6 +127,8 @@ export function FormSection(_props: SectionProps) {
   const [java, setJava] = useState('17')
   const [pack, setPack] = useState('fabric-1.21')
   const [droppedFiles, setDroppedFiles] = useState<File[]>([])
+  const [packFiles, setPackFiles] = useState<File[]>([])
+  const [fileNote, setFileNote] = useState('')
   const [rejectMessage, setRejectMessage] = useState('')
 
   const trimmedName = name.trim()
@@ -325,6 +338,56 @@ export function FormSection(_props: SectionProps) {
         <p className="demo-label">
           当前整合包：
           {PACK_OPTIONS.find((option) => option.value === pack)?.label ?? '（未选择）'}
+        </p>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="FilePicker 文件选择"
+        description="点击选择或直接拖入文件，选中项以列表展示文件名与大小，可逐个移除；受控 files + onChange / onRemove，accept 在弹窗选择与拖入时都会过滤。"
+        code={FILEPICKER_CODE}
+        anchor="FilePicker"
+        column
+      >
+        <div className="demo-row" style={{ alignItems: 'flex-start' }}>
+          <FilePicker
+            label="整合包文件"
+            hint="支持 .zip / .mrpack，可多选"
+            accept=".zip,.mrpack"
+            multiple
+            files={packFiles}
+            onChange={setPackFiles}
+            onRemove={(file) => setFileNote(`移除了 ${file.name}`)}
+            ariaLabel="选择整合包文件"
+          />
+          <FilePicker
+            label="Java 可执行文件"
+            hint="单选，接受 .exe / .jar"
+            accept=".exe,.jar"
+            size="sm"
+            ariaLabel="选择 Java 可执行文件"
+          />
+          <FilePicker
+            label="资源包"
+            hint="已禁用：安装完成后才能添加"
+            accept=".zip"
+            disabled
+            size="lg"
+            ariaLabel="资源包（已禁用）"
+          />
+        </div>
+        <FilePicker
+          block
+          label="拖入整合包以导入服务器"
+          hint="支持拖拽 .zip / .mrpack，可多选"
+          accept=".zip,.mrpack"
+          multiple
+          ariaLabel="拖入整合包"
+        />
+        <p className="demo-label">
+          {packFiles.length === 0
+            ? '尚未选择整合包文件'
+            : `已选择 ${packFiles.length} 个文件：${packFiles.map((file) => file.name).join('、')}`}
+          {fileNote ? ` · ${fileNote}` : ''}
         </p>
       </ShowcaseBlock>
 

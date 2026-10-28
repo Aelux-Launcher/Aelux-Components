@@ -16,6 +16,7 @@ import {
   IconUser,
   IconWarning,
   ListBox,
+  ListItem,
   Select,
   SettingRow,
   SettingSection,
@@ -23,8 +24,17 @@ import {
   Switch,
   Table,
   Tag,
+  TaskList,
+  Timeline,
 } from 'aelux-components'
-import type { DescriptionItem, ListBoxOption, TableColumn, TagColor } from 'aelux-components'
+import type {
+  DescriptionItem,
+  ListBoxOption,
+  TableColumn,
+  TagColor,
+  TaskItem,
+  TimelineItem,
+} from 'aelux-components'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 import type { SectionProps } from './types'
 
@@ -190,6 +200,93 @@ const VERSION_COLUMNS: TableColumn<GameVersion>[] = [
   },
 ]
 
+const INITIAL_TASKS: TaskItem[] = [
+  {
+    id: 'fabric',
+    title: 'Fabric Loader 0.16.9',
+    description: '正在下载 fabric-loader-0.16.9.jar',
+    status: 'running',
+    progress: 62,
+    speed: '2.4 MB/s',
+    size: '38 / 61 MB',
+  },
+  {
+    id: 'assets',
+    title: '游戏资源索引 1.21.4',
+    description: '正在校验资源完整性…',
+    status: 'running',
+    size: '642 MB',
+  },
+  {
+    id: 'mods',
+    title: '模组资源包 · 27 个文件',
+    description: '等待前面的任务完成',
+    status: 'pending',
+    size: '412 MB',
+  },
+  {
+    id: 'java',
+    title: 'Java 21 运行时',
+    description: '下载已暂停，可稍后继续',
+    status: 'paused',
+    progress: 35,
+    speed: '0 B/s',
+    size: '56 / 160 MB',
+  },
+  {
+    id: 'shaders',
+    title: '光影整合包',
+    description: '连接超时，检查网络后可重试',
+    status: 'error',
+    size: '218 MB',
+  },
+  {
+    id: 'instance',
+    title: '实例「冰原生存」初始化',
+    status: 'done',
+    size: '642 MB',
+  },
+]
+
+const VERSION_HISTORY: TimelineItem[] = [
+  {
+    key: '1.21.4',
+    title: '发布 1.21.4 正式版',
+    description: '同步资源索引，适配 Fabric 0.16.9 与 NeoForge 21.1.0。',
+    time: '2026-09-18',
+    status: 'success',
+    icon: <IconCheck size={13} />,
+  },
+  {
+    key: '1.21.4-rc1',
+    title: '1.21.4 预览通道开放',
+    description: '内测通道开放 3 天，共收集到 42 条反馈。',
+    time: '2026-09-08',
+  },
+  {
+    key: 'forge-args',
+    title: '修复 Forge 启动参数',
+    description: '部分 1.20.6 实例启动时缺少 JVM 参数的问题已修复。',
+    time: '2026-07-02',
+    status: 'warning',
+    icon: <IconWarning size={13} />,
+  },
+  {
+    key: 'rollback',
+    title: '回滚 1.20.6 自动更新',
+    description: '资源索引校验失败，已回滚到稳定版本。',
+    time: '2026-06-14',
+    status: 'danger',
+    icon: <IconRefresh size={13} />,
+  },
+  {
+    key: 'beta',
+    title: 'Aelux Launcher 开启公测',
+    description: '首个公开测试版本，支持 1.19 至 1.21 的实例管理。',
+    time: '2025-12-01',
+  },
+]
+
 export function DataDisplaySection(_props: SectionProps) {
   const [tags, setTags] = useState<DemoTag[]>(DEFAULT_TAGS)
   const [activeInstanceKey, setActiveInstanceKey] = useState<string>('frost')
@@ -199,6 +296,9 @@ export function DataDisplaySection(_props: SectionProps) {
   const [autoUpdate, setAutoUpdate] = useState(true)
   const [cacheCleared, setCacheCleared] = useState(false)
   const [statsLoading, setStatsLoading] = useState(false)
+  const [listItemKey, setListItemKey] = useState<string>('frost')
+  const [listItemAction, setListItemAction] = useState<string>('尚未操作')
+  const [tasks, setTasks] = useState<TaskItem[]>(INITIAL_TASKS)
 
   const activeInstance = INSTANCES.find((item) => item.key === activeInstanceKey) ?? INSTANCES[0]
   const batchInstances = INSTANCES.filter((item) => batchKeys.includes(item.key))
@@ -211,6 +311,24 @@ export function DataDisplaySection(_props: SectionProps) {
     if (statsLoading) return
     setStatsLoading(true)
     window.setTimeout(() => setStatsLoading(false), 1400)
+  }
+
+  const cancelTask = (id: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id))
+  }
+
+  const retryTask = (id: string) => {
+    setTasks((prev) =>
+      prev.map((task): TaskItem =>
+        task.id === id
+          ? { ...task, status: 'running', progress: 0, speed: '0 B/s', description: '正在重新连接…' }
+          : task,
+      ),
+    )
+  }
+
+  const clearDoneTasks = () => {
+    setTasks((prev) => prev.filter((task) => task.status !== 'done'))
   }
 
   const detailItems: DescriptionItem[] = [
@@ -449,6 +567,94 @@ export function DataDisplaySection(_props: SectionProps) {
       </ShowcaseBlock>
 
       <ShowcaseBlock
+        anchor="ListItem"
+        title="列表项：启动器实例列表"
+        description="一行承载图标、标题、副标题、状态标记与右侧操作；selected 用主色浅底 + 左侧竖条标记，disabled 自动降级并禁用点击。"
+        code={`<ListItem
+  icon={<Avatar name="冰原生存" shape="rounded" />}
+  title="冰原生存"
+  description="1.21.4 · Fabric 0.16.9"
+  meta={<Tag size="sm" color="success">运行中</Tag>}
+  trailing={<Button size="sm">启动</Button>}
+  selected
+  onClick={() => openInstance('frost')}
+/>`}
+        column
+      >
+        <div className="demo-stack" style={{ maxWidth: 620 }}>
+          {INSTANCES.map((instance) => (
+            <ListItem
+              key={instance.key}
+              icon={<Avatar name={instance.name} size="md" shape="rounded" />}
+              title={instance.name}
+              description={`${instance.version} · ${instance.loader} · ${instance.memory} 内存`}
+              meta={
+                <Tag size="sm" variant="soft" color={STATUS_META[instance.status].color}>
+                  {STATUS_META[instance.status].label}
+                </Tag>
+              }
+              selected={listItemKey === instance.key}
+              onClick={() => {
+                setListItemKey(instance.key)
+                setListItemAction(`打开实例「${instance.name}」`)
+              }}
+              trailing={
+                <Button
+                  size="sm"
+                  variant={listItemKey === instance.key ? 'secondary' : 'ghost'}
+                  leftIcon={<IconPlay size={13} />}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    setListItemAction(`启动实例「${instance.name}」`)
+                  }}
+                >
+                  启动
+                </Button>
+              }
+            />
+          ))}
+          <p className="demo-label">最近操作：{listItemAction}</p>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="列表项：禁用、标记与超长省略"
+        description="disabled 时整行不可点击；meta 放版本号或状态；标题与副标题过长时自动省略，行高保持一致。"
+        column
+      >
+        <div className="demo-stack" style={{ maxWidth: 520 }}>
+          <ListItem
+            icon={<Avatar name="空岛挑战" shape="rounded" />}
+            title="空岛挑战"
+            description="正在更新，暂时无法启动"
+            meta={
+              <Tag size="sm" variant="soft" color="warning">
+                维护中
+              </Tag>
+            }
+            disabled
+          />
+          <ListItem
+            title="这是一个很长很长的整合包实例名称，用来验证标题在末尾自动省略而不会撑破行"
+            description="1.19.2 · Fabric 0.15.7 · 10 GB 内存 · 最近启动 3 天前"
+            meta={<span>1.19.2</span>}
+            selected
+          />
+          <ListItem
+            icon={<Avatar icon={<IconUser size={14} />} shape="square" />}
+            title="多账号切换"
+            description="当前账号：TXX · 上次同步 10 分钟前"
+            trailing={
+              <Button size="sm" variant="secondary">
+                切换
+              </Button>
+            }
+            onClick={() => setListItemAction('打开账号切换')}
+          />
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
         anchor="ListBox"
         title="可选列表：单选与多选"
         description="role=listbox 语义，方向键循环移动并跳过禁用项，Home / End 跳转，Space / Enter 选择；受控 value 或非受控 defaultValue 均可。"
@@ -554,6 +760,67 @@ export function DataDisplaySection(_props: SectionProps) {
                   ),
                 },
               ]}
+            />
+          </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        anchor="TaskList"
+        title="任务队列：下载任务"
+        description="进行中 / 等待中 / 已暂停 / 已完成 / 失败混合展示；行内进度条、速度与大小，失败可重试、进行中可取消，底部出现「清除已完成」。"
+        code={`<TaskList
+  title="下载队列"
+  items={tasks}
+  onCancel={(id) => cancel(id)}
+  onRetry={(id) => retry(id)}
+  onClearDone={clearDone}
+  maxHeight={300}
+/>`}
+        column
+      >
+        <div className="demo-stack" style={{ maxWidth: 640 }}>
+          <TaskList
+            ariaLabel="下载任务队列"
+            title="下载队列"
+            items={tasks}
+            onCancel={cancelTask}
+            onRetry={retryTask}
+            onClearDone={clearDoneTasks}
+            maxHeight={300}
+          />
+          <div className="demo-row">
+            <Button
+              size="sm"
+              variant="secondary"
+              leftIcon={<IconRefresh size={14} />}
+              onClick={() => setTasks(INITIAL_TASKS)}
+            >
+              重置任务队列
+            </Button>
+            <span className="demo-label">
+              进行中 {tasks.filter((task) => task.status === 'running').length} 个 · 已完成{' '}
+              {tasks.filter((task) => task.status === 'done').length} 个
+            </span>
+          </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="任务队列：空态与单任务"
+        description="items 为空时显示 emptyText；不传 title 时不渲染头部，可直接嵌入面板或卡片。"
+        column
+      >
+        <div className="demo-grid">
+          <div className="demo-surface">
+            <span className="demo-label">空队列</span>
+            <TaskList ariaLabel="空任务队列" items={[]} emptyText="当前没有下载任务" />
+          </div>
+          <div className="demo-surface">
+            <span className="demo-label">仅下载完成</span>
+            <TaskList
+              ariaLabel="已完成任务"
+              items={[{ id: 'java-21', title: 'Java 21 运行时', status: 'done', size: '160 MB' }]}
             />
           </div>
         </div>
@@ -771,6 +1038,96 @@ export function DataDisplaySection(_props: SectionProps) {
         >
           切换帧率加载态
         </Button>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        anchor="Timeline"
+        title="时间线：版本历史"
+        description="节点支持 default / success / warning / danger 四种语义色与自定义图标；timeRight 将时间放到标题右侧，默认显示在标题下方。"
+        code={`<Timeline
+  ariaLabel="版本历史"
+  timeRight
+  items={[
+    { key: '1.21.4', title: '发布 1.21.4 正式版', time: '2026-09-18', status: 'success', icon: <IconCheck /> },
+    { key: 'fix', title: '修复 Forge 启动参数', time: '2026-07-02', status: 'warning' },
+  ]}
+/>`}
+        column
+      >
+        <Card style={{ width: '100%', maxWidth: 620 }}>
+          <Card.Header>
+            <Card.Title>版本历史</Card.Title>
+            <Card.Description>时间显示在右侧，最近一次更新在最上方</Card.Description>
+          </Card.Header>
+          <Card.Content>
+            <Timeline ariaLabel="启动器版本历史" items={VERSION_HISTORY} timeRight />
+          </Card.Content>
+        </Card>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="时间线：默认时间与事件记录"
+        description="time 默认出现在标题下方；status 让节点颜色表达结果，icon 可替换为任意图标。"
+        column
+      >
+        <div className="demo-grid">
+          <div className="demo-surface">
+            <span className="demo-label">时间在标题下</span>
+            <Timeline
+              ariaLabel="实例事件"
+              items={[
+                {
+                  key: 'start',
+                  title: '实例启动',
+                  description: '冰原生存 · 1.21.4',
+                  time: '今天 10:24',
+                  status: 'success',
+                },
+                {
+                  key: 'update',
+                  title: '自动检查更新',
+                  description: '发现 26 个模组可更新',
+                  time: '今天 10:25',
+                },
+                {
+                  key: 'exit',
+                  title: '实例退出',
+                  description: '游戏正常退出，未生成崩溃报告',
+                  time: '今天 12:08',
+                },
+              ]}
+            />
+          </div>
+          <div className="demo-surface">
+            <span className="demo-label">自定义图标</span>
+            <Timeline
+              ariaLabel="安装事件"
+              timeRight
+              items={[
+                {
+                  key: 'download',
+                  title: '下载安装包',
+                  time: '14:02',
+                  status: 'success',
+                  icon: <IconDownload size={13} />,
+                },
+                {
+                  key: 'verify',
+                  title: '校验资源索引',
+                  time: '14:04',
+                  icon: <IconRefresh size={13} />,
+                },
+                {
+                  key: 'fail',
+                  title: '写入磁盘失败',
+                  time: '14:05',
+                  status: 'danger',
+                  icon: <IconWarning size={13} />,
+                },
+              ]}
+            />
+          </div>
+        </div>
       </ShowcaseBlock>
 
       <ShowcaseBlock

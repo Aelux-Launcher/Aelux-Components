@@ -6,7 +6,7 @@ Aelux Launcher 通用 UI 组件库 —— 纯 React、无业务逻辑，与 Aelu
 - **产物**：仅 ESM（`dist/aelux-components.js`）+ 完整类型声明（`dist/index.d.ts`）
 - **不打包 React**：`react` / `react-dom` 为 `peerDependencies`，由使用方提供
 - **零运行时依赖**：图标为内置内联 SVG，样式为一份可直接引入的 CSS
-- **48 个组件**：覆盖基础、表单、反馈、浮层、数据展示与窗口布局，面向启动器场景（两栏主界面、设置页、安装向导、任务队列）
+- **66 个组件**：覆盖基础、表单、反馈、浮层、数据展示与窗口布局，包含 PCL2 / HMCL / Modrinth 式细粒度控件，面向启动器场景（两栏主界面、设置页、安装向导、任务队列）
 - **中性表面 + 冰蓝强调**：表面、文字、描边使用中性灰阶，品牌色只用于主按钮、选中态与焦点环；不使用渐变、光晕等装饰效果
 - **亮 / 暗双主题**：全部视觉由 `--aelux-*` 设计变量驱动，`data-theme` 一键切换
 
@@ -84,6 +84,8 @@ localStorage.setItem('aelux-theme', 'dark')
 | `Button` | `variant`: primary / secondary / ghost / danger / success / warning；`size`: sm / md / lg；`block`、`loading`、`leftIcon`、`rightIcon` |
 | `IconButton` | 仅图标按钮，`icon`、`label`（无障碍标签）、`size`、`variant`、`loading` |
 | `Kbd` | 键帽样式，`size`: sm / md，用于快捷键提示 |
+| `ButtonGroup` | 按钮组：`attached` 贴合共享边框、`vertical`、`size`、`block`、`role="group"` |
+| `SplitButton` | 主操作 + 下拉副操作：`items`、`placement`（bottom-start / bottom-end）、`loading`、键盘导航 |
 
 ### 输入与选择
 
@@ -96,15 +98,19 @@ localStorage.setItem('aelux-theme', 'dark')
 | `Select` | `options`、`value` / `defaultValue`、`onValueChange`、`placeholder`、`block` |
 | `Combobox` | 可搜索下拉：输入过滤、↑↓ / Enter / Esc 键盘导航、`allowClear`、`emptyText`、`aria-activedescendant` |
 | `DropZone` | 拖拽 / 点击导入：`accept`、`multiple`、`maxSize`、`onFiles`、`onReject(files, 'type' \| 'size')` |
+| `FilePicker` | 文件选择：受控 / 非受控、`accept` 过滤（扩展名 / `type/*` / MIME）、已选文件列表（大小 / 移除）、拖拽高亮、`block` |
 | `FormItem` | `label`、`htmlFor`、`required`、`hint`、`error`、`inline` |
 
 ### 开关与滑块
 
 | 组件 | 说明 |
 | --- | --- |
-| `Checkbox` | `label`、`description`、`indeterminate`、`size` |
-| `Radio` / `RadioGroup` | 单个 `Radio` 或 `options` + `direction` + `gap` 的 `RadioGroup` |
+| `Checkbox` | `label`、`description`、`indeterminate`、`size`；`variant="card"` 卡片式选项 |
+| `Radio` / `RadioGroup` | 单个 `Radio` 或 `options` + `direction` + `gap` 的 `RadioGroup`；`variant="card"`、`columns`、`icon` / `badge` |
 | `Switch` | `checked` / `defaultChecked`、`onChange`、`size`、`label`、`description` |
+| `InheritSwitch` | 跟随全局的三态开关（inherit / on / off），`globalValue` 提示，`aria-checked="mixed"` |
+| `ToggleCard` | 整卡可点击的开关卡片：`title`、`description`、`checked`、`icon`，`role="switch"` |
+| `Chips` | 标签选择：`options`、多选 / 可移除（Backspace 删除）、受控 / 非受控 |
 | `Slider` | `value` / `defaultValue`、`min` / `max` / `step`、`onChange`、`showValue` |
 | `SegmentedControl` | 分段控制：`options`、受控 / 非受控、`size`、`block`、`aria-checked` |
 | `Stepper` | 步骤条：`steps`、`current`、`clickable`、`onStepChange`、`aria-current="step"`（安装向导） |
@@ -131,6 +137,9 @@ localStorage.setItem('aelux-theme', 'dark')
 | `Popover` | 富内容气泡：`content`、`trigger`（click / hover / focus）、`placement`、受控 `open` / `onOpenChange` |
 | `Tooltip` | `content`、`placement`、`delay`、`disabled` |
 | `DropdownMenu` | 下拉菜单：`trigger`、`items`（item / separator / label）、`onSelect`、`checked` / `danger` / `shortcut`、键盘导航 |
+| `PromptDialog` | 输入对话框：`label` / `placeholder` / 校验（必填 / 最小长度 / 自定义）、异步 `onConfirm` 锁定 |
+| `ProgressDialog` | 进度对话框：确定 / 不确定进度、`details` 可展开日志、`cancellable` 取消 |
+| `ContextMenu` | 右键菜单：目标区域 `onContextMenu` 定位与视口翻边、`items`、键盘导航、`role="menu"` |
 
 ### 数据展示
 
@@ -145,6 +154,9 @@ localStorage.setItem('aelux-theme', 'dark')
 | `DescriptionList` | 键值对列表：`items`、`columns`（1 / 2 / 3）、`layout`（horizontal / vertical）、`bordered` |
 | `Statistic` | 指标：`title`、`value`、`prefix` / `suffix`、`precision`、`icon`、`trend`、`hint`、`loading` |
 | `SettingSection` / `SettingRow` | 设置分组与设置行：`title` / `description` / 控件 / `status`，搭建设置页 |
+| `ListItem` | 启动器列表项：`icon` / `title` / `description` / `meta` / `trailing`、`selected`（左侧竖条）、键盘可操作 |
+| `TaskList` | 任务队列：5 种任务状态、进行中进度（含不确定态）、取消 / 重试、清除已完成、空态 |
+| `Timeline` | 时间线：语义色圆点（success / warning / danger）、自定义图标、`timeRight` |
 
 ### 导航与布局
 
@@ -158,6 +170,12 @@ localStorage.setItem('aelux-theme', 'dark')
 | `Pagination` | 分页：`page` / `pageSize` / `total`、`siblingCount` 省略号、`showTotal`、`aria-current` |
 | `Divider` | `orientation`、`variant`、`children`、`align` |
 | `Space` | `direction`、`size`、`align`、`wrap`、`block` |
+| `PageShell` | 页面外壳：返回按钮、`title` / `description`、`actions`、`footer`，安装向导与详情页的通用骨架 |
+| `SplitLayout` | 可拖拽分割两栏：`ratio` / `leftWidth` / `rightWidth`、`minRatio` / `maxRatio`、左列表右详情布局 |
+| `Wizard` | 安装向导：步骤内容 + 上一步 / 下一步 / 完成、复用 `Stepper` 展示进度 |
+| `Breadcrumb` | 面包屑：`items`（label / onClick / current） |
+| `Hint` | 行内提示：`tone`（info / tip / success / warning / danger）、`title` / `description`、图标 |
+| `StatusBar` | 底部状态栏：`start` / children / `end` 三槽、32px 高，承载网络状态与下载进度 |
 
 ### 启动器组合示例
 
@@ -177,7 +195,7 @@ import { Icon, IconCheck, IconSearch } from 'aelux-components'
 <Icon size={18}>…自定义 SVG…</Icon>
 ```
 
-34 个内置线性图标（`IconCheck`、`IconClose`、`IconSearch`、`IconSettings`、`IconFolder`、`IconDownload`、`IconCopy`、`IconTrash`、`IconUser`、`IconSun`、`IconMoon` 等），全部内联 SVG，颜色跟随 `currentColor`。
+35 个内置线性图标（`IconCheck`、`IconClose`、`IconSearch`、`IconSettings`、`IconFolder`、`IconDownload`、`IconCopy`、`IconTrash`、`IconUser`、`IconSun`、`IconMoon`、`IconMenu` 等），全部内联 SVG，颜色跟随 `currentColor`。
 
 ## 本地开发
 
@@ -219,16 +237,16 @@ Aelux-Components/
 ├── index.html                    # 展示站入口（开发 / showcase 构建）
 ├── public/
 │   └── aelux-logo.png            # 品牌图标（展示站 / showcase 站点图标）
-├── demo/                         # 组件展示站（不随库发布）
-│   ├── App.tsx                   # 侧边栏（分类 + 二级组件导航）、顶栏、hash 路由与主题
+├── demo/                         # 组件展示站（不随库发布，文档式布局）
+│   ├── App.tsx                   # 顶栏、300px 侧栏（分组 + 二级组件导航 + 搜索）、hash 路由与主题
 │   ├── main.tsx
-│   ├── styles.css                # 展示站样式
+│   ├── styles.css                # 展示站样式（BlockTavern 文档风，亮 / 暗）
 │   ├── components/ShowcaseBlock.tsx
 │   └── sections/                 # 每个展示页一个文件（overview/basic/form/choice/feedback/overlay/data-display/layout/patterns/theme）
 ├── src/
 │   ├── index.ts                  # 公共 API 入口（唯一对外出口）
 │   ├── components/               # 每个组件一个目录：X.tsx + style.css + index.ts
-│   ├── icons/                    # Icon 基座 + 34 个内置图标
+│   ├── icons/                    # Icon 基座 + 35 个内置图标
 │   ├── styles/
 │   │   ├── tokens.css            # 设计变量（亮 / 暗）
 │   │   ├── base.css              # 基础重置、动画、可访问性

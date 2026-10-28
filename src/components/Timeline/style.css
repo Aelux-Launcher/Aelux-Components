@@ -1,0 +1,131 @@
+/* ============================================================================
+ * Timeline · 时间线
+ * ========================================================================== */
+
+.aelux-timeline {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aelux-timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--aelux-space-6) minmax(0, 1fr);
+  column-gap: var(--aelux-space-3);
+  padding-bottom: var(--aelux-space-4);
+}
+
+.aelux-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.aelux-timeline__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aelux-timeline__rail::after {
+  content: '';
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: var(--aelux-space-2);
+  margin-top: var(--aelux-space-1);
+  background: var(--aelux-border);
+}
+
+.aelux-timeline__item:last-child .aelux-timeline__rail::after {
+  display: none;
+}
+
+.aelux-timeline__marker {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--aelux-space-2-5);
+  height: var(--aelux-space-2-5);
+  margin-top: var(--aelux-space-1-5);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-border-strong);
+}
+
+.aelux-timeline__marker--icon {
+  width: var(--aelux-space-6);
+  height: var(--aelux-space-6);
+  margin-top: 0;
+  border: 1px solid var(--aelux-border);
+  background: var(--aelux-surface);
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-timeline__item--success .aelux-timeline__marker {
+  background: var(--aelux-success);
+}
+
+.aelux-timeline__item--warning .aelux-timeline__marker {
+  background: var(--aelux-warning);
+}
+
+.aelux-timeline__item--danger .aelux-timeline__marker {
+  background: var(--aelux-danger);
+}
+
+.aelux-timeline__item--success .aelux-timeline__marker--icon {
+  border-color: var(--aelux-success-soft-border);
+  background: var(--aelux-success-soft);
+  color: var(--aelux-success-text);
+}
+
+.aelux-timeline__item--warning .aelux-timeline__marker--icon {
+  border-color: var(--aelux-warning-soft-border);
+  background: var(--aelux-warning-soft);
+  color: var(--aelux-warning-text);
+}
+
+.aelux-timeline__item--danger .aelux-timeline__marker--icon {
+  border-color: var(--aelux-danger-soft-border);
+  background: var(--aelux-danger-soft);
+  color: var(--aelux-danger-text);
+}
+
+.aelux-timeline__content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-0-5);
+}
+
+.aelux-timeline__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--aelux-space-2);
+  min-width: 0;
+}
+
+.aelux-timeline__title {
+  min-width: 0;
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  color: var(--aelux-text);
+}
+
+.aelux-timeline__description {
+  margin: 0;
+  font-size: var(--aelux-font-size-sm);
+  color: var(--aelux-text-secondary);
+}
+
+.aelux-timeline__time {
+  font-size: var(--aelux-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--aelux-text-tertiary);
+  white-space: nowrap;
+}
+
+.aelux-timeline__head .aelux-timeline__time {
+  margin-left: auto;
+}

@@ -2,8 +2,10 @@ import { useState } from 'react'
 import {
   Accordion,
   Avatar,
+  Breadcrumb,
   Button,
   Divider,
+  Hint,
   IconBell,
   IconDownload,
   IconFolder,
@@ -18,15 +20,20 @@ import {
   IconStar,
   IconUser,
   IconButton,
+  PageShell,
   Pagination,
+  Progress,
   SidebarNav,
   Space,
+  SplitLayout,
+  StatusBar,
   Tabs,
   Tag,
   TitleBar,
   Toolbar,
+  Wizard,
 } from 'aelux-components'
-import type { AccordionItem, SidebarNavGroup, TabItem } from 'aelux-components'
+import type { AccordionItem, SidebarNavGroup, TabItem, WizardStep } from 'aelux-components'
 import { ShowcaseBlock } from '../components/ShowcaseBlock'
 import type { SectionProps } from './types'
 
@@ -132,6 +139,105 @@ const TOOLBAR_CODE = `<Toolbar
 >
   <Button size="sm" variant="primary" leftIcon={<IconPlus size={14} />}>新建</Button>
 </Toolbar>`
+
+/* ---------- PageShell ---------- */
+
+const PAGE_SHELL_CODE = `<PageShell
+  title="Aelux 客户端 · Fabric 1.21.4"
+  description="管理整合包、模组与启动参数，修改会实时同步到本地实例。"
+  backLabel="实例列表"
+  onBack={() => history.back()}
+  meta={<Tag size="sm" color="primary" variant="soft">1.21.4</Tag>}
+  actions={<Button size="sm" variant="secondary">打开文件夹</Button>}
+  footer={
+    <>
+      <Button variant="secondary">编辑配置</Button>
+      <Button variant="primary">启动游戏</Button>
+    </>
+  }
+>
+  {/* 页面内容，超出高度时内容区独立滚动 */}
+</PageShell>`
+
+const PAGE_SHELL_MODS = ['Fabric API', 'Sodium 0.6.5', 'Iris Shaders', 'Mod Menu', 'Lithium', 'AppleSkin']
+
+/* ---------- SplitLayout ---------- */
+
+const SPLIT_CODE = `<SplitLayout
+  leftWidth={196}
+  height={260}
+  divider
+  leftLabel="实例列表"
+  rightLabel="实例详情"
+  left={<InstanceList />}
+  right={<InstanceDetail />}
+/>`
+
+const SPLIT_INSTANCES = [
+  { key: 'fabric', label: 'Fabric 1.21.4', note: '客户端 · 创作模式', meta: '28 个模组 · 2.4 GB' },
+  { key: 'paper', label: 'Paper 1.21.4', note: '服务端 · 生存服', meta: '12 个插件 · 1.1 GB' },
+  { key: 'vanilla', label: '原版 1.20.6', note: '客户端 · 纯净', meta: '0 个模组 · 860 MB' },
+]
+
+/* ---------- Wizard ---------- */
+
+const WIZARD_CODE = `const [step, setStep] = useState(0)
+
+<Wizard
+  steps={steps}
+  current={step}
+  clickable
+  onStepChange={setStep}
+  onNext={() => setStep((value) => value + 1)}
+  onPrev={() => setStep((value) => value - 1)}
+  onFinish={() => install()}
+>
+  {/* 当前步骤内容 */}
+</Wizard>`
+
+const WIZARD_STEPS: WizardStep[] = [
+  { key: 'version', label: '选择版本', description: '1.21.4' },
+  { key: 'loader', label: '选择加载器', description: 'Fabric' },
+  { key: 'confirm', label: '确认配置', description: '检查依赖' },
+  { key: 'install', label: '开始安装', description: '下载文件' },
+]
+
+const WIZARD_CONTENT = [
+  '选择要安装的游戏版本。1.21.4 为当前最新稳定版，支持大部分模组。',
+  '选择模组加载器。Fabric 适合轻量模组环境，Forge 适合大型整合包。',
+  '确认安装位置、内存分配与 Java 运行时，检查完毕后即可开始安装。',
+  '点击「开始安装」创建安装任务，下载进度会显示在底部状态栏。',
+]
+
+/* ---------- Breadcrumb ---------- */
+
+const BREADCRUMB_CODE = `<Breadcrumb
+  items={[
+    { key: 'home', label: '首页', onClick: goHome },
+    { key: 'instances', label: '实例', onClick: goInstances },
+    { key: 'fabric', label: 'Fabric 1.21.4' },
+  ]}
+/>
+
+<Breadcrumb separator="›" items={items} />`
+
+const CRUMB_LABELS = ['首页', '实例', 'Fabric 1.21.4']
+
+/* ---------- Hint ---------- */
+
+const HINT_CODE = `<Hint tone="info">安装前请确认 Java 版本为 21。</Hint>
+<Hint tone="success">配置已保存到本地。</Hint>
+<Hint tone="warning">该实例正在被另一个进程使用。</Hint>
+<Hint tone="danger">无法连接到下载源，请检查网络。</Hint>
+<Hint size="sm" icon={false}>紧凑说明，无图标。</Hint>`
+
+/* ---------- StatusBar ---------- */
+
+const STATUS_BAR_CODE = `<StatusBar left="就绪" right="Java 21 · 12.4 GB" />
+
+<StatusBar tone="info" left="正在下载" right="62%">
+  <Progress value={62} size="sm" />
+</StatusBar>`
 
 /* ---------- Accordion ---------- */
 
@@ -248,6 +354,18 @@ export function LayoutSection(props: SectionProps) {
 
   /* Accordion */
   const [openKeys, setOpenKeys] = useState<string[]>(['tokens', 'a11y'])
+
+  /* PageShell / SplitLayout / Wizard / Breadcrumb / Hint / StatusBar */
+  const [pageShellEvent, setPageShellEvent] = useState('尚未操作')
+  const [splitKey, setSplitKey] = useState('fabric')
+  const [wizardStep, setWizardStep] = useState(0)
+  const [wizardFinished, setWizardFinished] = useState(false)
+  const [wizardInstalling, setWizardInstalling] = useState(false)
+  const [crumbIndex, setCrumbIndex] = useState(CRUMB_LABELS.length - 1)
+  const [statusValue, setStatusValue] = useState(62)
+
+  const splitInstance = SPLIT_INSTANCES.find((item) => item.key === splitKey) ?? SPLIT_INSTANCES[0]
+  const crumbs = CRUMB_LABELS.slice(0, crumbIndex + 1)
 
   const pageSize = 8
   const pagedRows = PAGED_ITEMS.slice((page - 1) * pageSize, page * pageSize)
@@ -440,6 +558,325 @@ export function LayoutSection(props: SectionProps) {
               </span>
             ))}
           </div>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="PageShell：实例详情页外壳"
+        description="页面头部（可选返回按钮 + 标题 + 标记 + 描述 + 操作区）、独立滚动的内容区与固定在底部的 footer；backLabel / onBack 控制返回按钮。"
+        anchor="PageShell"
+        code={PAGE_SHELL_CODE}
+        column
+      >
+        <div
+          style={{
+            width: '100%',
+            height: 360,
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+          }}
+        >
+          <PageShell
+            title="Aelux 客户端 · Fabric 1.21.4"
+            description="管理整合包、模组与启动参数，所有修改都会实时同步到本地实例。"
+            backLabel="实例列表"
+            onBack={() => setPageShellEvent('点击了返回 · 实例列表')}
+            meta={
+              <>
+                <Tag size="sm" color="primary" variant="soft">
+                  1.21.4
+                </Tag>
+                <Tag size="sm" color="neutral" variant="outline">
+                  Fabric
+                </Tag>
+              </>
+            }
+            actions={
+              <Button
+                size="sm"
+                variant="secondary"
+                leftIcon={<IconFolder size={14} />}
+                onClick={() => setPageShellEvent('点击了打开文件夹')}
+              >
+                打开文件夹
+              </Button>
+            }
+            footer={
+              <>
+                <Button size="sm" variant="secondary" onClick={() => setPageShellEvent('点击了编辑配置')}>
+                  编辑配置
+                </Button>
+                <Button size="sm" variant="primary" onClick={() => setPageShellEvent('点击了启动游戏')}>
+                  启动游戏
+                </Button>
+              </>
+            }
+          >
+            <div className="demo-stack">
+              <span className="demo-label">操作记录：{pageShellEvent}</span>
+              {PAGE_SHELL_MODS.map((mod) => (
+                <div
+                  key={mod}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 12,
+                    padding: '6px 0',
+                    borderBottom: '1px solid var(--aelux-border)',
+                  }}
+                >
+                  <span style={{ fontSize: 'var(--aelux-font-size-sm)' }}>{mod}</span>
+                  <Tag size="sm" color="success" variant="soft">
+                    已启用
+                  </Tag>
+                </div>
+              ))}
+            </div>
+          </PageShell>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="SplitLayout：左列表右详情"
+        description="leftWidth 固定左栏宽度（默认 240），右栏 flex:1 并独立滚动；divider 显示 1px 分隔线，leftLabel / rightLabel 作为两侧 region 的无障碍名称。"
+        anchor="SplitLayout"
+        code={SPLIT_CODE}
+        column
+      >
+        <div
+          style={{
+            width: '100%',
+            height: 260,
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+          }}
+        >
+          <SplitLayout
+            leftWidth={196}
+            height="100%"
+            divider
+            leftLabel="实例列表"
+            rightLabel="实例详情"
+            left={
+              <div style={{ display: 'grid', gap: 4, padding: 8 }}>
+                {SPLIT_INSTANCES.map((instance) => (
+                  <Button
+                    key={instance.key}
+                    block
+                    size="sm"
+                    variant={instance.key === splitKey ? 'secondary' : 'ghost'}
+                    onClick={() => setSplitKey(instance.key)}
+                  >
+                    {instance.label}
+                  </Button>
+                ))}
+              </div>
+            }
+            right={
+              <div className="demo-stack" style={{ padding: 16 }}>
+                <span className="demo-label">已选实例：{splitInstance.label}</span>
+                <div className="demo-row">
+                  <Tag size="sm" color="primary" variant="soft">
+                    {splitInstance.note}
+                  </Tag>
+                  <Tag size="sm" color="neutral" variant="outline">
+                    {splitInstance.meta}
+                  </Tag>
+                </div>
+                <p style={{ margin: 0, color: 'var(--aelux-text-secondary)', fontSize: 'var(--aelux-font-size-sm)' }}>
+                  右栏内容独立滚动，左侧列表保持固定宽度；窗口变窄时右栏自动收缩，不会挤压左栏。
+                </p>
+                <div className="demo-row">
+                  <Button size="sm" variant="primary">
+                    启动游戏
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setSplitKey('vanilla')}>
+                    切换到原版实例
+                  </Button>
+                </div>
+              </div>
+            }
+          />
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="Wizard：安装向导分步"
+        description="steps + current 受控；顶部复用 Stepper 步骤条，clickable 时可直接点击切换步骤；底部自动渲染「上一步 / 下一步 / 完成」，最后一步显示 onFinish，loading 禁用切换。"
+        anchor="Wizard"
+        code={WIZARD_CODE}
+        column
+      >
+        <Wizard
+          steps={WIZARD_STEPS}
+          current={wizardStep}
+          clickable
+          loading={wizardInstalling}
+          onStepChange={setWizardStep}
+          onNext={() => setWizardStep((value) => Math.min(value + 1, WIZARD_STEPS.length - 1))}
+          onPrev={() => setWizardStep((value) => Math.max(value - 1, 0))}
+          finishText="开始安装"
+          onFinish={() => {
+            setWizardFinished(true)
+            setWizardInstalling(false)
+          }}
+        >
+          <div className="demo-stack">
+            <span className="demo-label">
+              第 {wizardStep + 1} 步 / 共 {WIZARD_STEPS.length} 步
+              {wizardFinished ? ' · 已创建安装任务' : ''}
+            </span>
+            <p style={{ margin: 0 }}>{WIZARD_CONTENT[wizardStep]}</p>
+            <div className="demo-row">
+              <Tag size="sm" color="info" variant="soft">
+                下载源：BMCLAPI
+              </Tag>
+              <Tag size="sm" color="neutral" variant="outline">
+                安装目录：D:/Aelux/instances
+              </Tag>
+            </div>
+            {wizardFinished ? <Hint tone="success">安装任务已创建，可在任务队列中查看下载进度。</Hint> : null}
+          </div>
+        </Wizard>
+        <div className="demo-row">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              setWizardStep(0)
+              setWizardFinished(false)
+              setWizardInstalling(false)
+            }}
+          >
+            重置向导
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => setWizardInstalling((value) => !value)}>
+            {wizardInstalling ? '结束模拟安装' : '模拟安装中（loading）'}
+          </Button>
+          <span className="demo-label">loading 时上一步 / 下一步按钮禁用。</span>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="Breadcrumb：路径导航"
+        description="nav + ol + li 语义结构；最后一项 aria-current=page，其余项可点击或通过 href 跳转；separator 支持自定义分隔符。"
+        anchor="Breadcrumb"
+        code={BREADCRUMB_CODE}
+        column
+      >
+        <Breadcrumb
+          items={crumbs.map((label, index) => ({
+            key: label,
+            label,
+            onClick: index < crumbs.length - 1 ? () => setCrumbIndex(index) : undefined,
+          }))}
+        />
+        <span className="demo-label">
+          当前层级：{CRUMB_LABELS[crumbIndex]}（点击中间项可回退）
+        </span>
+        <Breadcrumb
+          separator="›"
+          ariaLabel="设置路径"
+          items={[
+            { key: 'settings', label: '设置', onClick: () => setCrumbIndex(0) },
+            { key: 'java', label: 'Java 运行时' },
+          ]}
+        />
+        <div className="demo-row">
+          <Button size="sm" variant="secondary" onClick={() => setCrumbIndex(CRUMB_LABELS.length - 1)}>
+            回到最深层级
+          </Button>
+        </div>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="Hint：行内提示与语义色调"
+        description="tone 提供 default / info / success / warning / danger 五种软色调；size 支持 sm / md；icon 默认按 tone 渲染，传 false 可隐藏。"
+        anchor="Hint"
+        code={HINT_CODE}
+        column
+      >
+        <Hint>默认提示：用于补充说明或轻量引导，单行与多行内容都会自适应高度。</Hint>
+        <Hint tone="info" icon={<IconInfo size={15} />}>
+          信息提示：安装前请确认 Java 版本为 21。
+        </Hint>
+        <Hint tone="success">成功提示：配置已保存到本地。</Hint>
+        <Hint tone="warning">警告提示：该实例正在被另一个进程使用。</Hint>
+        <Hint tone="danger">错误提示：无法连接到下载源，请检查网络后重试。</Hint>
+        <Hint size="sm" icon={false}>
+          sm 尺寸且隐藏图标，适合紧凑表单中的辅助说明。
+        </Hint>
+      </ShowcaseBlock>
+
+      <ShowcaseBlock
+        title="StatusBar：启动器底部状态栏"
+        description="高 32px：左侧状态、中间任务 / 进度、右侧信息，顶部 1px 描边；tone 提供 default / info / success / warning。"
+        anchor="StatusBar"
+        code={STATUS_BAR_CODE}
+        column
+      >
+        <div
+          style={{
+            width: '100%',
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+            background: 'var(--aelux-surface)',
+          }}
+        >
+          <div className="demo-stack" style={{ padding: 14 }}>
+            <span className="demo-label">状态栏通常固定在启动器窗口底部，中间区域可嵌入任务与进度。</span>
+          </div>
+          <StatusBar left="就绪" right="Java 21 · 12.4 GB" />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+            background: 'var(--aelux-surface)',
+          }}
+        >
+          <StatusBar tone="info" left="正在下载" right={`${statusValue}%`}>
+            <div style={{ width: 220 }}>
+              <Progress value={statusValue} size="sm" />
+            </div>
+          </StatusBar>
+        </div>
+        <div className="demo-row">
+          <Button size="sm" variant="secondary" onClick={() => setStatusValue((value) => Math.min(100, value + 10))}>
+            进度 +10%
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => setStatusValue(0)}>
+            重置进度
+          </Button>
+          <span className="demo-label">tone=&quot;info&quot; + Progress 组合示例。</span>
+        </div>
+        <div
+          style={{
+            width: '100%',
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+            background: 'var(--aelux-surface)',
+          }}
+        >
+          <StatusBar tone="success" left="安装完成" right="耗时 1 分 12 秒" />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            border: '1px solid var(--aelux-border)',
+            borderRadius: 'var(--aelux-radius-md)',
+            overflow: 'hidden',
+            background: 'var(--aelux-surface)',
+          }}
+        >
+          <StatusBar tone="warning" left="警告" right="可用内存不足 512 MB" />
         </div>
       </ShowcaseBlock>
 

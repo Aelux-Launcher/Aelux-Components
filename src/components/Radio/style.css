@@ -162,3 +162,210 @@
 .aelux-radio-group--disabled {
   cursor: not-allowed;
 }
+
+/* ===== RadioGroup 卡片变体 ===== */
+.aelux-radio-group--card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: stretch;
+  gap: var(--aelux-space-3);
+}
+
+.aelux-radio-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-lg);
+  background: var(--aelux-surface);
+  font-family: var(--aelux-font-sans);
+  cursor: pointer;
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition),
+    box-shadow var(--aelux-transition);
+}
+
+/* 原生 radio 覆盖整张卡片：点击任意位置都可选中 */
+.aelux-radio-card__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.aelux-radio-card__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--aelux-space-3);
+  width: 100%;
+  min-width: 0;
+  padding: var(--aelux-space-3) var(--aelux-space-4);
+  border-radius: inherit;
+}
+
+.aelux-radio-card:hover {
+  border-color: var(--aelux-primary-soft-border);
+  background: var(--aelux-surface-hover);
+}
+
+.aelux-radio-card:has(.aelux-radio-card__input:focus-visible) {
+  border-color: var(--aelux-border-focus);
+  box-shadow: var(--aelux-focus-ring);
+}
+
+.aelux-radio-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--aelux-radius-md);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-secondary);
+  transition:
+    background-color var(--aelux-transition),
+    color var(--aelux-transition);
+}
+
+.aelux-radio-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aelux-space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.aelux-radio-card__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--aelux-space-2);
+}
+
+.aelux-radio-card__label {
+  color: var(--aelux-text);
+  font-size: var(--aelux-font-size-md);
+  font-weight: var(--aelux-font-weight-medium);
+  line-height: 1.35;
+}
+
+.aelux-radio-card__badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 var(--aelux-space-1-5);
+  border: 1px solid var(--aelux-border);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface-subtle);
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.aelux-radio-card__desc {
+  color: var(--aelux-text-tertiary);
+  font-size: var(--aelux-font-size-sm);
+  line-height: 1.45;
+}
+
+.aelux-radio-card__indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border: 1px solid var(--aelux-border-strong);
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-surface);
+  transition:
+    border-color var(--aelux-transition),
+    background-color var(--aelux-transition);
+}
+
+.aelux-radio-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--aelux-radius-full);
+  background: var(--aelux-primary-contrast);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--aelux-transition-fast),
+    transform var(--aelux-transition-fast);
+}
+
+/* 选中态 */
+.aelux-radio-card--checked {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-radio-card--checked:hover {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-radio-card--checked .aelux-radio-card__icon {
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-radio-card--checked .aelux-radio-card__label {
+  color: var(--aelux-primary-text);
+}
+
+.aelux-radio-card--checked .aelux-radio-card__badge {
+  border-color: var(--aelux-primary-soft-border);
+  background: var(--aelux-primary-soft);
+  color: var(--aelux-primary-text);
+}
+
+.aelux-radio-card--checked .aelux-radio-card__indicator {
+  border-color: var(--aelux-primary);
+  background: var(--aelux-primary);
+}
+
+.aelux-radio-card--checked .aelux-radio-card__dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 禁用 */
+.aelux-radio-card--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.aelux-radio-card--disabled:hover {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface);
+}
+
+.aelux-radio-card--disabled.aelux-radio-card--checked:hover {
+  border-color: var(--aelux-border-focus);
+  background: var(--aelux-primary-soft);
+}
+
+.aelux-radio-card--disabled .aelux-radio-card__label,
+.aelux-radio-card--disabled .aelux-radio-card__desc {
+  color: var(--aelux-text-disabled);
+}
+
+.aelux-radio-card--disabled .aelux-radio-card__indicator {
+  border-color: var(--aelux-border);
+  background: var(--aelux-surface-subtle);
+}
+
+.aelux-radio-card--disabled.aelux-radio-card--checked .aelux-radio-card__indicator {
+  border-color: var(--aelux-text-disabled);
+  background: var(--aelux-text-disabled);
+}
